@@ -1,24 +1,31 @@
 # hj.json 迁移记录
 
-`legacy/hj.json` 是原始 Legado `bookSource` 数组。本次按 Venera JavaScript 规范逐站验证，只把列表、详情、章节和图片链路都能确认的条目转换为私人源。
+`legacy/hj.json` 是原始 Legado `bookSource` 数组。本次按 Venera JavaScript 规范逐站验证，只把列表、详情、章节和图片链路都能确认的条目转换为私人源。Ven 源则直接按 Venera 配置规范整理，并单独记录网络筛选结果。
 
 ## 已转换并保留
 
 | 原始条目 | Venera 文件 | 结果 |
 | --- | --- | --- |
 | 包子漫画 | `sources/private/baozi.js` | 保留，显示为“私人” |
-| 18真人图集 | `sources/private/mh18.js` | 保留，按分页生成章节 |
 | 紳士漫畫·国内直连 | `sources/private/wnacg.js` | 保留，支持自定义域名 |
-| 中国人能飞 | `sources/private/mh250.js` | 新增 |
 | 魅影画廊 | `sources/private/myhl.js` | 新增 |
-| 歪歪漫画 | `sources/private/waimanhua.js` | 新增，使用公开 JSON 接口 |
-| 直连韩漫网 | `sources/private/ssmhw.js` | 新增 |
 
 ## 已验证但按请求移除
 
 | 原始条目 | 处理 |
 | --- | --- |
+| 18真人图集 | 曾转换为私人源，现按请求移除 |
+| 中国人能飞 | 曾转换为私人源，现按请求移除 |
+| 歪歪漫画 | 曾转换为私人源，现按请求移除 |
+| 直连韩漫网 | 曾转换为私人源，现按请求移除 |
 | 漫画1234 | 曾转换为私人源，现按请求移除 |
+
+## 本次新增 Ven 源
+
+| 源 | Venera 文件 | 检测结果 |
+| --- | --- | --- |
+| 禁漫天堂 | `sources/ven/jm.js` | 动态线路、列表、详情、章节和图片均已验证 |
+| 拷贝漫画 | `sources/ven/copy_manga.js` | API 列表、搜索和详情入口已验证；默认使用可达 API 地址 |
 
 ## 未转换
 

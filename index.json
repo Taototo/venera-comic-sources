@@ -21,18 +21,25 @@
     "description": "Ven 配置；首页、搜索和正文接口已通过当前网络检测。"
   },
   {
+    "name": "禁漫天堂（Ven）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/jm.js",
+    "key": "jm",
+    "version": "1.4.0",
+    "description": "Ven 配置；动态线路和图片链路已通过当前网络检测。"
+  },
+  {
+    "name": "拷贝漫画（Ven）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/copy_manga.js",
+    "key": "copy_manga",
+    "version": "1.4.2",
+    "description": "Ven 配置；使用已检测可达的 API 地址，支持手动切换线路。"
+  },
+  {
     "name": "包子漫画（私人）",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js",
     "key": "hj_baozi",
     "version": "1.1.7",
     "description": "私人配置；保留可用的简繁站点和图片 CDN 选项。"
-  },
-  {
-    "name": "18真人图集（私人）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/mh18.js",
-    "key": "hj_mh18",
-    "version": "1.1.1",
-    "description": "私人配置；按 18gallery.com 图集分页生成章节。"
   },
   {
     "name": "紳士漫畫（私人）",
@@ -42,31 +49,10 @@
     "description": "私人配置；支持自定义域名，当前网络需自行选择可达线路。"
   },
   {
-    "name": "中国人能飞（私人）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/mh250.js",
-    "key": "private_mh250",
-    "version": "1.0.0",
-    "description": "私人配置；250 漫画 HTML 列表、详情和章节图片均已验证。"
-  },
-  {
     "name": "魅影画廊（私人）",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js",
     "key": "private_myhl",
     "version": "1.0.0",
     "description": "私人配置；WordPress 图集列表、搜索和原图链接均已验证。"
-  },
-  {
-    "name": "歪歪漫画（私人）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/waimanhua.js",
-    "key": "private_waimanhua",
-    "version": "1.0.0",
-    "description": "私人配置；使用公开分类、搜索和章节 JSON 接口，图片 CDN 可在设置中替换。"
-  },
-  {
-    "name": "直连韩漫网（私人）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/ssmhw.js",
-    "key": "private_ssmhw",
-    "version": "1.0.0",
-    "description": "私人配置；HTML 分类、搜索、章节和图片链路均已验证。"
   }
 ]
