@@ -10,6 +10,15 @@
 https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/index.json
 ```
 
+不要填写 `github.com/.../blob/...` 的网页地址。若你的 App 版本仍然无法加载清单，也可以逐条添加下面的 raw 源地址：
+
+```text
+https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_baozi.js
+https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_mh18.js
+https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_wnacg.js
+https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_mh1234.js
+```
+
 也可以使用 jsDelivr 镜像：
 
 ```text

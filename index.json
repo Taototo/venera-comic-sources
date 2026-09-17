@@ -1,28 +1,28 @@
 [
   {
     "name": "包子漫画（HJ）",
-    "fileName": "sources/hj_baozi.js",
+    "url": "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_baozi.js",
     "key": "hj_baozi",
     "version": "1.1.6",
     "description": "从 hj.json 迁移的包子漫画 Venera 源。"
   },
   {
     "name": "18漫画（HJ）",
-    "fileName": "sources/hj_mh18.js",
+    "url": "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_mh18.js",
     "key": "hj_mh18",
     "version": "1.0.0",
     "description": "从 hj.json 的 18 真人图集条目迁移的 Venera 源。"
   },
   {
     "name": "紳士漫畫（HJ）",
-    "fileName": "sources/hj_wnacg.js",
+    "url": "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_wnacg.js",
     "key": "hj_wnacg",
     "version": "1.0.5",
     "description": "从 hj.json 迁移的紳士漫畫 Venera 源，支持自定义域名。"
   },
   {
     "name": "漫画1234（HJ）",
-    "fileName": "sources/hj_mh1234.js",
+    "url": "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_mh1234.js",
     "key": "hj_mh1234",
     "version": "1.0.0",
     "description": "从 hj.json 迁移的漫画1234 Venera 源。"
