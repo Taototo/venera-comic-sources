@@ -7,22 +7,22 @@
 在漫画源列表中填写下面的 JSON 地址：
 
 ```text
-https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/index.json
-```
-
-不要填写 `github.com/.../blob/...` 的网页地址。若你的 App 版本仍然无法加载清单，也可以逐条添加下面的 raw 源地址：
-
-```text
-https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_baozi.js
-https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_mh18.js
-https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_wnacg.js
-https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_mh1234.js
-```
-
-也可以使用 jsDelivr 镜像清单：
-
-```text
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/index.json
+```
+
+不要填写 `github.com/.../blob/...` 的网页地址。若你的网络无法访问 jsDelivr，再使用 GitHub raw 清单地址。也可以逐条添加下面的 jsDelivr 源地址：
+
+```text
+https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_baozi.js
+https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_mh18.js
+https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_wnacg.js
+https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_mh1234.js
+```
+
+备用清单地址（GitHub raw）：
+
+```text
+https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/index.json
 ```
 
 ## 目录说明

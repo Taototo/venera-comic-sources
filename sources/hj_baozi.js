@@ -6,12 +6,12 @@ class HJBaozi extends ComicSource {
   // 唯一标识符
   key = "hj_baozi";
 
-  version = "1.1.6";
+  version = "1.1.7";
 
   minAppVersion = "1.0.0";
 
   // 更新链接
-  url = "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_baozi.js";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_baozi.js";
 
   settings = {
     language: {

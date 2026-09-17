@@ -6,11 +6,11 @@ class HJMH18 extends ComicSource {
   // Keep the original key so existing hj_mh18 installations can update in place.
   key = "hj_mh18"
 
-  version = "1.1.0"
+  version = "1.1.1"
 
   minAppVersion = "1.4.0"
 
-  url = "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_mh18.js"
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_mh18.js"
 
   settings = {
     domains: {
@@ -66,16 +66,25 @@ class HJMH18 extends ComicSource {
     const comics = []
     const seen = []
     for (let item of document.querySelectorAll("article")) {
-      const link = item.querySelector("a[href^='/gallery/']")
+      let link = null
+      for (let candidate of item.querySelectorAll("a[href]")) {
+        const candidateHref = candidate.attributes["href"] || ""
+        if (candidateHref.indexOf("/gallery/") >= 0) {
+          link = candidate
+          break
+        }
+      }
       if (!link) continue
 
-      const id = link.attributes["href"]
+      const href = link.attributes["href"] || ""
+
+      const id = href
       if (!id || seen.indexOf(id) >= 0) continue
 
       const image = item.querySelector("img")
       const titleNode = item.querySelector("h2")
       const title = ((titleNode ? titleNode.text : (image ? image.attributes["alt"] : "")) || "").trim()
-      const cover = image ? this.absoluteUrl(image.attributes["src"]) : ""
+      const cover = image ? this.absoluteUrl(image.attributes["src"] || image.attributes["data-src"]) : ""
       if (!title || !cover) continue
 
       seen.push(id)
@@ -137,7 +146,7 @@ class HJMH18 extends ComicSource {
 
   comic = {
     link: {
-      domains: ["18gallery.com"],
+      domains: ["18gallery.com", "www.18gallery.com"],
       linkToId: (url) => {
         const match = url.match(/https?:\/\/(?:www\.)?18gallery\.com(\/gallery\/[^?#]+)/i)
         if (!match) return null
@@ -160,7 +169,9 @@ class HJMH18 extends ComicSource {
       const title = titleNode ? titleNode.text.trim() : "18GAL"
       const article = document.querySelector("#article") || document.querySelector("article.article-body")
       const imageNodes = article ? article.querySelectorAll("img") : []
-      const cover = imageNodes.length > 0 ? this.absoluteUrl(imageNodes[0].attributes["src"]) : ""
+      const cover = imageNodes.length > 0
+        ? this.absoluteUrl(imageNodes[0].attributes["src"] || imageNodes[0].attributes["data-src"])
+        : ""
       const descriptionNode = document.querySelector("meta[name=description]")
       const description = descriptionNode ? descriptionNode.attributes["content"] : ""
       const canonicalNode = document.querySelector("link[rel=canonical]")
@@ -205,7 +216,7 @@ class HJMH18 extends ComicSource {
       if (article) {
         for (let image of article.querySelectorAll("img")) {
           const imageUrl = this.absoluteUrl(image.attributes["src"] || image.attributes["data-src"])
-          if (imageUrl.indexOf("img.18gallery.com/") < 0) continue
+          if (!imageUrl.match(/\/g-mhcom_\d+\.(?:webp|jpe?g|png)(?:[?#].*)?$/i)) continue
           if (images.indexOf(imageUrl) < 0) images.push(imageUrl)
         }
       }

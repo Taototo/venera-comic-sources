@@ -6,12 +6,12 @@ class HJMH1234 extends ComicSource {
     // unique id of the source
     key = "hj_mh1234"
 
-    version = "1.0.0"
+    version = "1.0.1"
 
     minAppVersion = "1.4.0"
 
     // update url
-    url = "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_mh1234.js"
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_mh1234.js"
 
     settings = {
         domains: {

@@ -8,12 +8,12 @@ class HJWnacg extends ComicSource {
     // unique id of the source
     key = "hj_wnacg"
 
-    version = "1.0.5"
+    version = "1.0.6"
 
     minAppVersion = "1.0.0"
 
     // update url
-    url = "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_wnacg.js"
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_wnacg.js"
 
     static domains = [];
 
