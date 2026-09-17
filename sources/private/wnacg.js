@@ -1,11 +1,12 @@
 // Adapted from the Venera community configuration for the legacy hj.json entry.
-class HJWnacg extends ComicSource {
+class PrivateWnacg extends ComicSource {
     // Note: The fields which are marked as [Optional] should be removed if not used
 
     // name of the source
-    name = "紳士漫畫（HJ）"
+    name = "紳士漫畫（私人）"
 
     // unique id of the source
+    // 保留历史 key，已安装的私人源可直接更新。
     key = "hj_wnacg"
 
     version = "1.0.7"
@@ -13,7 +14,7 @@ class HJWnacg extends ComicSource {
     minAppVersion = "1.0.0"
 
     // update url
-    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_wnacg.js"
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/wnacg.js"
 
     static domains = [];
 
@@ -32,15 +33,15 @@ class HJWnacg extends ComicSource {
         } else {
             // 选择获取的域名 (Domain 1-3)
             let index = selection - 1
-            if (index >= HJWnacg.domains.length) {
+            if (index >= PrivateWnacg.domains.length) {
                 throw 'Selected domain is unavailable'
             }
-            return `https://${HJWnacg.domains[index]}`
+            return `https://${PrivateWnacg.domains[index]}`
         }
     }
 
     overwriteDomains(domains) {
-        if (domains.length != 0) HJWnacg.domains = domains
+        if (domains.length != 0) PrivateWnacg.domains = domains
     }
 
     // [Optional] account related
@@ -137,7 +138,7 @@ class HJWnacg extends ComicSource {
         if (domains.length == 0) {
             title = "Update Failed"
             message = "Using Custom: \n\n"
-            domains = HJWnacg.domains
+            domains = PrivateWnacg.domains
         }
 
         for (let i = 0; i < domains.length; i++) {
@@ -725,12 +726,12 @@ class HJWnacg extends ComicSource {
     }
 
     get settings() {
-        // 动态生成选项，总是保留 Custom Domain (0)，然后根据 HJWnacg.domains 数量添加选项
+        // 动态生成选项，总是保留 Custom Domain (0)，然后根据可用域名数量添加选项
         let domainOptions = [{ value: '0', text: 'Custom Domain' }]
-        for (let i = 0; i < HJWnacg.domains.length; i++) {
+        for (let i = 0; i < PrivateWnacg.domains.length; i++) {
             domainOptions.push({
                 value: String(i + 1),
-                text: HJWnacg.domains[i]
+                text: PrivateWnacg.domains[i]
             })
         }
 

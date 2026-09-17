@@ -1,16 +1,17 @@
 /** @type {import('./_venera_.js')} */
 // Adapted from the hj.json 18真人图集 entry for Venera.
-class HJMH18 extends ComicSource {
-  name = "18真人图集（HJ）"
+class PrivateMH18 extends ComicSource {
+  name = "18真人图集（私人）"
 
-  // Keep the original key so existing hj_mh18 installations can update in place.
+  // Keep this source independent from the Ven source list.
+  // 保留历史 key，已安装的私人源可直接更新。
   key = "hj_mh18"
 
   version = "1.1.1"
 
   minAppVersion = "1.4.0"
 
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_mh18.js"
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/mh18.js"
 
   settings = {
     domains: {

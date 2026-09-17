@@ -1,10 +1,10 @@
 class MXS extends ComicSource {
     // 漫画源基本信息
-    name = "漫小肆";
+    name = "漫小肆（Ven）";
     key = "mxs";
     version = "1.0.0";
     minAppVersion = "1.5.0";
-    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/official/mxs.js";
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js";
 
     // 漫画源设置项
     settings = {
@@ -13,11 +13,13 @@ class MXS extends ComicSource {
             title: "选择域名",
             type: "select",
             options: [
+                { value: "https://www.mxshm.top", text: "mxshm.top（备用）" },
                 { value: "https://www.jjmhw1.top", text: "jjmhw1.top" },
                 { value: "https://www.jjmh.top", text: "jjmh.top" },
                 { value: "https://www.jjmh.cc", text: "jjmh.cc" },
                 { value: "https://www.wzd1.cc", text: "wzd1.cc" },
-                { value: "https://www.wzdhm1.cc", text: "wzdhm1.cc" }
+                { value: "https://www.wzdhm1.cc", text: "wzdhm1.cc" },
+                { value: "https://www.ikanwzd.cc", text: "ikanwzd.cc（备用）" }
             ],
             default: "https://www.jjmhw1.top"
         },

@@ -1,9 +1,10 @@
 // Adapted from the Venera community configuration for the legacy hj.json entry.
-class HJBaozi extends ComicSource {
+class PrivateBaozi extends ComicSource {
   // 此漫画源的名称
-  name = "包子漫画（HJ）";
+  name = "包子漫画（私人）";
 
   // 唯一标识符
+  // 保留历史 key，已安装的私人源可直接更新。
   key = "hj_baozi";
 
   version = "1.1.7";
@@ -11,7 +12,7 @@ class HJBaozi extends ComicSource {
   minAppVersion = "1.0.0";
 
   // 更新链接
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_baozi.js";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js";
 
   settings = {
     language: {

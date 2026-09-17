@@ -1,15 +1,27 @@
 # hj.json 迁移记录
 
-`legacy/hj.json` 是 Legado 的 `bookSource` 数组，不是 Venera 源文件。迁移时只把已经有对应 Venera 实现、且可以明确建立映射的条目放入 `index.json`。
+`legacy/hj.json` 是原始 Legado `bookSource` 数组。本次按 Venera JavaScript 规范逐站验证，只把列表、详情、章节和图片链路都能确认的条目转换为私人源。
 
-| 原始条目 | Venera 文件 | 状态 |
+## 已转换并保留
+
+| 原始条目 | Venera 文件 | 结果 |
 | --- | --- | --- |
-| 包子漫画 | `sources/hj_baozi.js` | 已迁移 |
-| 18 真人图集 | `sources/hj_mh18.js` | 已按 `18gallery.com` 图集结构迁移；保留原 key 以便旧安装更新 |
-| 紳士漫畫·国内直连 | `sources/hj_wnacg.js` | 已迁移，域名在源设置中填写 |
-| 漫画1234 | `sources/hj_mh1234.js` | 已迁移 |
-| 其余 15 个条目 | `legacy/hj.json` | 待逐站转换和验证 |
+| 包子漫画 | `sources/private/baozi.js` | 保留，显示为“私人” |
+| 18真人图集 | `sources/private/mh18.js` | 保留，按分页生成章节 |
+| 紳士漫畫·国内直连 | `sources/private/wnacg.js` | 保留，支持自定义域名 |
+| 中国人能飞 | `sources/private/mh250.js` | 新增 |
+| 魅影画廊 | `sources/private/myhl.js` | 新增 |
+| 歪歪漫画 | `sources/private/waimanhua.js` | 新增，使用公开 JSON 接口 |
+| 直连韩漫网 | `sources/private/ssmhw.js` | 新增 |
 
-## 官方配置筛选
+## 已验证但按请求移除
 
-从官方 `venera-configs` 提交 `d8a7116` 复制的源放在 `sources/official/`。本次只纳入当前中国大陆网络能访问默认入口的配置；包子漫画、漫小肆和 GoDa 的默认地址按实测结果做了小幅修正。Komga/Lanraragi 的公共入口可连接，但分别需要账号或自建服务配置。其余源及检测原因见 [`SOURCE_CHECK.md`](SOURCE_CHECK.md)。
+| 原始条目 | 处理 |
+| --- | --- |
+| 漫画1234 | 曾转换为私人源，现按请求移除 |
+
+## 未转换
+
+巴卡漫画（403）、漫画家（连接重置）、鸟鸟韩漫（超时）、武芊漫画（超时）、野蛮漫画（跳转百度）、4KHD 美图（原域名为跳转脚本且备用站不稳定）、CosplayTele（超时）、神奇漫画两站（正文规则为加密载荷，无法可靠转换）、肉漫屋（超时）。
+
+`Buondua图集` 曾在早期检查中可访问，但本次复检持续超时，因此没有放入当前清单。网络状态变化后可重新验证再添加。

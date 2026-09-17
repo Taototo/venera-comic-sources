@@ -1,6 +1,6 @@
 /** @type {import('../_venera_.js')} */
 class ManHuaRen extends ComicSource {
-    name = "漫画人"
+    name = "漫画人（Ven）"
 
     key = "manhuaren"
 
@@ -8,7 +8,7 @@ class ManHuaRen extends ComicSource {
 
     minAppVersion = "1.6.0"
 
-    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/official/manhuaren.js"
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/manhuaren.js"
 
 
     init() {
