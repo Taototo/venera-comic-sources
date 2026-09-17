@@ -52,7 +52,7 @@
     "name": "魅影画廊（私人）",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js",
     "key": "private_myhl",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "私人配置；WordPress 图集列表、搜索和原图链接均已验证。"
   }
 ]

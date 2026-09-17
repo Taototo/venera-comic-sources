@@ -3,7 +3,7 @@
 class PrivateMyhl extends ComicSource {
   name = "魅影画廊（私人）"
   key = "private_myhl"
-  version = "1.0.0"
+  version = "1.0.1"
   minAppVersion = "1.2.0"
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js"
 
@@ -150,8 +150,7 @@ class PrivateMyhl extends ComicSource {
       let updateTime = ""
       let metaItems = document.querySelectorAll(".article-meta .item")
       if (metaItems.length > 1) updateTime = (metaItems[1].text || "").trim()
-      document.dispose()
-      return new ComicDetails({
+      let details = new ComicDetails({
         title: titleNode ? titleNode.text.trim() : "魅影画廊",
         cover: imageUrls.length > 0 ? imageUrls[0] : "",
         description: descriptionNode ? descriptionNode.attributes["content"] : "",
@@ -160,6 +159,8 @@ class PrivateMyhl extends ComicSource {
         updateTime: updateTime,
         url: url
       })
+      document.dispose()
+      return details
     },
 
     loadEp: async (comicId, epId) => {
