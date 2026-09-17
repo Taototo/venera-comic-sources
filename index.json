@@ -1,10 +1,80 @@
 [
   {
+    "name": "拷贝漫画（官方）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/official/copy_manga.js",
+    "key": "copy_manga",
+    "version": "1.4.2",
+    "description": "官方配置副本；默认 API 已通过当前中国大陆网络检测，但响应较慢。"
+  },
+  {
+    "name": "包子漫画（官方）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/official/baozi.js",
+    "key": "baozi",
+    "version": "1.1.6",
+    "description": "官方配置副本；默认使用已检测可达的繁体站点 tw.bzmgcn.com。"
+  },
+  {
+    "name": "comick（官方）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/official/comick.js",
+    "key": "comick",
+    "version": "1.2.0",
+    "description": "官方配置副本；站点与搜索 API 已通过当前中国大陆网络检测。"
+  },
+  {
+    "name": "再漫画（官方）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/official/zaimanhua.js",
+    "key": "zaimanhua",
+    "version": "1.0.2",
+    "description": "官方配置副本；更新列表和分类 API 已通过当前中国大陆网络检测。"
+  },
+  {
+    "name": "GoDa漫画（官方）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/official/goda.js",
+    "key": "goda",
+    "version": "1.2.1",
+    "description": "官方配置副本；站点、漫画 API 和章节 API 已通过当前中国大陆网络检测。"
+  },
+  {
+    "name": "漫小肆（官方）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/official/mxs.js",
+    "key": "mxs",
+    "version": "1.0.0",
+    "description": "官方配置副本；默认使用 jjmhw1.top，仅保留已检测可达的域名。"
+  },
+  {
+    "name": "漫画人（官方）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/official/manhuaren.js",
+    "key": "manhuaren",
+    "version": "1.0.0",
+    "description": "官方配置副本；首页和搜索页已通过当前中国大陆网络检测。"
+  },
+  {
+    "name": "漫画1234（官方）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/official/mh1234.js",
+    "key": "mh1234",
+    "version": "1.0.0",
+    "description": "官方配置副本；默认 b.amh1234.com 已通过当前中国大陆网络检测。"
+  },
+  {
+    "name": "Lanraragi（官方）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/official/lanraragi.js",
+    "key": "lanraragi",
+    "version": "1.2.0",
+    "description": "官方配置副本；公共 API 已通过当前中国大陆网络检测，也支持替换为自建服务。"
+  },
+  {
+    "name": "Komga（官方）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/official/komga.js",
+    "key": "komga",
+    "version": "1.0.0",
+    "description": "官方配置副本；演示站可连接但 API 需要账号，建议填写自己的服务器。"
+  },
+  {
     "name": "包子漫画（HJ）",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_baozi.js",
     "key": "hj_baozi",
     "version": "1.1.7",
-    "description": "按 Venera 官方包子漫画配置同步，使用 HJ 独立 key。"
+    "description": "按 Venera 官方包子漫画配置同步，使用 HJ 独立 key。默认使用已检测可达的繁体站点。"
   },
   {
     "name": "18真人图集（HJ）",
