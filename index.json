@@ -54,5 +54,12 @@
     "key": "private_myhl",
     "version": "1.0.1",
     "description": "私人配置；WordPress 图集列表、搜索和原图链接均已验证。"
+  },
+  {
+    "name": "大人漫画（私人）",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js",
+    "key": "private_drmh3",
+    "version": "1.0.0",
+    "description": "私人配置；列表、搜索、章节和多 CDN 图片链路均已验证。"
   }
 ]

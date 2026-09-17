@@ -27,15 +27,16 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/copy_m
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/wnacg.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js
+https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js
 ```
 
 不要填写 GitHub 的 `blob/...` 网页地址；Venera 需要的是清单或 JavaScript 原始地址。
 
 ## 目录和分类
 
-- `index.json`：8 个可加载源的清单，包含 5 个 Ven 源和 3 个私人源。
+- `index.json`：9 个可加载源的清单，包含 5 个 Ven 源和 4 个私人源。
 - `sources/ven/`：从 Ven 配置整理并保留的再漫画、漫小肆、漫画人、禁漫天堂和拷贝漫画。
-- `sources/private/`：从原始 `hj.json` 转换并保留的包子漫画、紳士漫畫和魅影画廊。
+- `sources/private/`：从原始 `hj.json` 转换并保留的包子漫画、紳士漫畫和魅影画廊，以及新增的大人漫画。
 - `sources/_venera_.js`：Venera JavaScript API 类型提示文件，仅供编辑器使用。
 - `legacy/hj.json`：最初的 Legado 源文件备份，不可直接作为 Venera 清单导入。
 - `SOURCE_CHECK.md`：本次网络检测、搬运和排除结果。
