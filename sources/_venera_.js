@@ -1403,7 +1403,7 @@ let APP = {
  * Set clipboard text
  * @param text {string}
  * @returns {Promise<void>}
- * 
+ *
  * @since 1.3.4
  */
 function setClipboard(text) {
@@ -1416,7 +1416,7 @@ function setClipboard(text) {
 /**
  * Get clipboard text
  * @returns {Promise<string>}
- * 
+ *
  * @since 1.3.4
  */
 function getClipboard() {
