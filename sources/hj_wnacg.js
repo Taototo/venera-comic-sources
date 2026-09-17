@@ -8,7 +8,7 @@ class HJWnacg extends ComicSource {
     // unique id of the source
     key = "hj_wnacg"
 
-    version = "1.0.6"
+    version = "1.0.7"
 
     minAppVersion = "1.0.0"
 
@@ -756,7 +756,7 @@ class HJWnacg extends ComicSource {
                 title: "Custom Domain",
                 type: "input",
                 validator: String.raw`^(?!:\/\/)(?=.{1,253})([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$`,
-                default: 'wnacg.com',
+                default: 'www.wnacg.com',
             },
         }
     }

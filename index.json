@@ -17,7 +17,7 @@
     "name": "紳士漫畫（HJ）",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/hj_wnacg.js",
     "key": "hj_wnacg",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "按 Venera 官方紳士漫畫配置同步，使用 HJ 独立 key，支持自定义域名。"
   },
   {
