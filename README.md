@@ -1,6 +1,6 @@
 # Venera 漫画源（HJ）
 
-这是一个按 [Venera 漫画源规范](https://github.com/venera-app/venera/blob/master/doc/comic_source.md) 整理的漫画源项目。
+这是一个按 [Venera 漫画源规范](https://github.com/venera-app/venera/blob/master/doc/comic_source.md) 整理的漫画源项目，并参考 [venera-configs 官方配置](https://github.com/venera-app/venera-configs) 的最新实现。
 
 ## 在 Venera 中添加
 
@@ -19,7 +19,7 @@ https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_w
 https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_mh1234.js
 ```
 
-也可以使用 jsDelivr 镜像：
+也可以使用 jsDelivr 镜像清单：
 
 ```text
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/index.json
@@ -27,11 +27,12 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/index.json
 
 ## 目录说明
 
-- `index.json`：Venera 漫画源清单。
+- `index.json`：Venera 漫画源清单。每个条目使用完整 `url`，因此即使误把清单网页地址当成输入，也不会再拼出 `blob/...` 的错误源地址。
 - `sources/`：可被 Venera 直接加载的 JavaScript 源文件。
+- `sources/_venera_.js`：官方 JavaScript API 类型提示文件，仅供编辑器使用。
 - `legacy/hj.json`：原始 Legado 漫画源集合，仅作为迁移输入保存，不能直接作为 Venera 源加载。
 
-当前已迁移 4 个条目：包子漫画、18 漫画、紳士漫畫和漫画 1234。原始文件中的其他条目仍保留在 `legacy/hj.json`，因为它们使用旧版 Legado 规则（XPath、`@js`、`@JSon` 等），需要逐站验证后才能转换成 Venera JavaScript；它们没有被伪装成“已可用”的源。
+当前已迁移 4 个条目：包子漫画、18 真人图集、紳士漫畫和漫画 1234。三个漫画源与官方配置保持同步；18 真人图集则按 `hj.json` 中的 `18gallery.com` 站点单独实现，图集分页会转换为 Venera 章节。原始文件中的其他条目仍保留在 `legacy/hj.json`，因为它们使用旧版 Legado 规则（XPath、`@js`、`@JSon` 等），需要逐站验证后才能转换成 Venera JavaScript；它们没有被伪装成“已可用”的源。
 
 源文件中保留了对 Venera 官方配置的适配说明；每个源的 `url` 已改为本仓库地址，后续可以在 GitHub 上独立更新版本。
 
@@ -44,4 +45,5 @@ node --check sources/hj_baozi.js
 node --check sources/hj_mh18.js
 node --check sources/hj_wnacg.js
 node --check sources/hj_mh1234.js
+node --check sources/_venera_.js
 ```

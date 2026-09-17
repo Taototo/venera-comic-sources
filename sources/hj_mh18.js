@@ -1,317 +1,217 @@
 /** @type {import('./_venera_.js')} */
-// Adapted from the Venera community configuration for the legacy hj.json entry.
+// Adapted from the hj.json 18真人图集 entry for Venera.
 class HJMH18 extends ComicSource {
-  // Note: The fields which are marked as [Optional] should be removed if not used
+  name = "18真人图集（HJ）"
 
-  // name of the source
-  name = "18漫画（HJ）"
-
-  // unique id of the source
+  // Keep the original key so existing hj_mh18 installations can update in place.
   key = "hj_mh18"
 
-  version = "1.0.0"
+  version = "1.1.0"
 
   minAppVersion = "1.4.0"
 
-  // update url
   url = "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_mh18.js"
 
   settings = {
     domains: {
       title: "域名",
       type: "input",
-      default: "18mh.org"
+      default: "18gallery.com"
     }
   }
 
+  get domain() {
+    let value = this.loadSetting("domains") || this.settings.domains.default
+    return value.replace(/^https?:\/\//, "").replace(/\/+$/, "")
+  }
+
   get baseUrl() {
-    return `https://${this.loadSetting("domains")}`;
+    return `https://${this.domain}`
   }
 
   get headers() {
     return {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
-      "Referer": this.baseUrl
-    };
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      "Referer": `${this.baseUrl}/`
+    }
   }
 
-  parseComics(doc) {
-    console.warn(doc)
-    const result = [];
-    for (let item of doc.querySelectorAll(".pb-2")) {
-      result.push(new Comic({
-        id: item.querySelector("a").attributes["href"],
-        title: item.querySelector("h3").text,
-        cover: item.querySelector("img").attributes["src"]
+  absoluteUrl(url) {
+    if (!url) return ""
+    if (url.indexOf("https://") === 0 || url.indexOf("http://") === 0) return url
+    if (url.indexOf("//") === 0) return `https:${url}`
+    return `${this.baseUrl}${url.indexOf("/") === 0 ? "" : "/"}${url}`
+  }
+
+  pageUrl(path, page) {
+    page = Number(page) || 1
+    if (path === "/popular/" || path === "/latest/") {
+      return `${this.baseUrl}${path}?page=${page}`
+    }
+    return `${this.baseUrl}${path}page/${page}/`
+  }
+
+  parsePageCount(document) {
+    let maxPage = 1
+    for (let link of document.querySelectorAll("a[href]")) {
+      let href = link.attributes["href"] || ""
+      let match = href.match(/[?&]page=(\d+)/)
+      if (!match) match = href.match(/\/page\/(\d+)(?:\/|$)/)
+      if (match) maxPage = Math.max(maxPage, parseInt(match[1], 10))
+    }
+    return maxPage
+  }
+
+  parseComics(document) {
+    const comics = []
+    const seen = []
+    for (let item of document.querySelectorAll("article")) {
+      const link = item.querySelector("a[href^='/gallery/']")
+      if (!link) continue
+
+      const id = link.attributes["href"]
+      if (!id || seen.indexOf(id) >= 0) continue
+
+      const image = item.querySelector("img")
+      const titleNode = item.querySelector("h2")
+      const title = ((titleNode ? titleNode.text : (image ? image.attributes["alt"] : "")) || "").trim()
+      const cover = image ? this.absoluteUrl(image.attributes["src"]) : ""
+      if (!title || !cover) continue
+
+      seen.push(id)
+      comics.push(new Comic({
+        id: id,
+        title: title,
+        cover: cover
       }))
     }
-    return result;
+    return comics
   }
 
-  // explore page list
+  async loadList(path, page) {
+    const res = await Network.get(this.pageUrl(path, page), this.headers)
+    if (res.status !== 200) {
+      throw `Invalid status code: ${res.status}`
+    }
+    const document = new HtmlDocument(res.body)
+    const result = {
+      comics: this.parseComics(document),
+      maxPage: this.parsePageCount(document)
+    }
+    document.dispose()
+    return result
+  }
+
   explore = [
     {
-      // title of the page.
-      // title is used to identify the page, it should be unique
-      title: this.name,
-
-      /// multiPartPage or multiPageComicList or mixed
-      type: "multiPartPage",
-
-      load: async () => {
-        const res = await Network.get(this.baseUrl, this.headers);
-        const document = new HtmlDocument(res.body);
-        const result = [{ title: "近期更新", comics: [], viewMore: null }];
-        for (let item of document.querySelector(".pb-unit-md").querySelectorAll(".slicarda")) {
-          result[0].comics.push(new Comic({
-            id: item.attributes["href"],
-            title: item.querySelector("h3").text,
-            cover: item.querySelector("img").attributes["src"]
-          }))
-        }
-        const cardlists = document.querySelectorAll(".cardlist");
-        const hometitles = document.querySelectorAll(".hometitle");
-        for (let i = 0; i < hometitles.length; i++) {
-          result.push({
-            title: hometitles[i].querySelector("h2").text,
-            comics: this.parseComics(cardlists[i]),
-            viewMore: {
-              page: "category",
-              attributes: {
-                category: hometitles[i].querySelector("h2").text,
-                param: hometitles[i].attributes["href"]
-              },
-            }
-          });
-        }
-        return result;
-      }
+      title: "18GAL 最新",
+      type: "multiPageComicList",
+      load: async (page) => this.loadList("/latest/", page || 1)
     }
   ]
 
-  // categories
   category = {
-    /// title of the category page, used to identify the page, it should be unique
-    title: this.name,
+    title: "18GAL",
     parts: [
       {
-        name: "类型",
+        name: "分类",
         type: "fixed",
-        categories: [
-          "全部",
-          "韓漫",
-          "真人寫真",
-          "日漫",
-          "AI寫真",
-          "熱門漫畫"
-        ],
+        categories: ["最新", "热门", "Cosplay", "日本", "韩国"],
         itemType: "category",
         categoryParams: [
-          "/manga",
-          "/manga-genre/hanman",
-          "/manga-genre/zhenrenxiezhen",
-          "/manga-genre/riman",
-          "/manga-genre/aixiezhen",
-          "/manga-genre/hots"
-        ],
-      },
-      {
-        name: "标签",
-        type: "fixed",
-        categories: [
-          "多人",
-          "慾望",
-          "正妹",
-          "同居",
-          "女學生",
-          "劇情",
-          "偷情",
-          "校园",
-          "逆襲",
-          "办公室",
-          "誘惑",
-          "反转",
-          "熟女",
-          "人妻",
-          "初戀",
-          "少妇",
-          "刺激",
-          "女大学生",
-          "治疗",
-          "超能力",
-          "浪漫校园",
-          "戏剧",
-          "学姐",
-          "大学生",
-          "泳衣",
-          "暧昧",
-          "写真",
-          "女神",
-          "大尺度",
-          "纯情警察"
-        ],
-        itemType: "category",
-        categoryParams: [
-          "/manga-tag/duoren",
-          "/manga-tag/yuwang",
-          "/manga-tag/zhengmei",
-          "/manga-tag/tongju",
-          "/manga-tag/nxuesheng",
-          "/manga-tag/juqing",
-          "/manga-tag/touqing",
-          "/manga-tag/xiaoyuan",
-          "/manga-tag/nixi",
-          "/manga-tag/bangongshi",
-          "/manga-tag/youhuo",
-          "/manga-tag/fanzhuan",
-          "/manga-tag/shun",
-          "/manga-tag/renqi",
-          "/manga-tag/chulian",
-          "/manga-tag/shaofu",
-          "/manga-tag/ciji",
-          "/manga-tag/ndaxuesheng",
-          "/manga-tag/zhiliao",
-          "/manga-tag/chaonengli",
-          "/manga-tag/langmanxiaoyuan",
-          "/manga-tag/xiju",
-          "/manga-tag/xuejie",
-          "/manga-tag/daxuesheng",
-          "/manga-tag/yongyi",
-          "/manga-tag/aimei",
-          "/manga-tag/xiezhen",
-          "/manga-tag/nshen",
-          "/manga-tag/dachidu",
-          "/manga-tag/chunqingjingcha"
-        ],
+          "/latest/",
+          "/popular/",
+          "/cat/cosplay/",
+          "/cat/japan/",
+          "/cat/korean/"
+        ]
       }
     ],
-    // enable ranking page
-    enableRankingPage: false,
+    enableRankingPage: false
   }
 
-  /// category comic loading related
   categoryComics = {
-    load: async (category, params, options, page) => {
-      const res = await Network.get(`${this.baseUrl}${params}/page/${page}`, this.headers);
-      if (res.status !== 200) {
-        throw `Invalid status code: ${res.status}`;
-      }
-      const document = new HtmlDocument(res.body);
-      let maxPage = null;
-      try {
-        maxPage = parseInt(document.querySelectorAll("button.text-small").pop().text.replaceAll("\n", "").replaceAll(" ", ""));
-      } catch (_) {
-        maxPage = 1;
-      }
-      return {
-        comics: this.parseComics(document),
-        maxPage: maxPage
-      };
-    }
+    load: async (category, param, options, page) => this.loadList(param, page || 1),
+    optionList: []
   }
 
-  /// search related
-  search = {
-    load: async (keyword, options, page) => {
-      const res = await Network.get(`${this.baseUrl}/s/${keyword}?page=${page}`);
-      if (res.status !== 200) {
-        throw `Invalid status code: ${res.status}`;
-      }
-      const document = new HtmlDocument(res.body);
-      let maxPage = null;
-      try {
-        maxPage = parseInt(document.querySelectorAll("button.text-small").pop().text.replaceAll("\n", "").replaceAll(" ", ""));
-      } catch (_) {
-        maxPage = 1;
-      }
-      return {
-        comics: this.parseComics(document),
-        maxPage: maxPage
-      };
-    },
-    // enable tags suggestions
-    enableTagsSuggestions: false,
-  }
-
-  /// single comic related
   comic = {
-    onThumbnailLoad: (url) => {
-      return {
-        headers: this.headers
+    link: {
+      domains: ["18gallery.com"],
+      linkToId: (url) => {
+        const match = url.match(/https?:\/\/(?:www\.)?18gallery\.com(\/gallery\/[^?#]+)/i)
+        if (!match) return null
+        return match[1].replace(/\/page\/\d+\/?$/, "/")
       }
     },
+
+    onImageLoad: (url, comicId, epId) => ({ headers: this.headers }),
+
+    onThumbnailLoad: (url) => ({ headers: this.headers }),
+
     loadInfo: async (id) => {
-      if (!id.startsWith("http")) {
-        id = this.baseUrl + id;
-      }
-      const res = await Network.get(id);
+      const res = await Network.get(this.absoluteUrl(id), this.headers)
       if (res.status !== 200) {
-        throw `Invalid status code: ${res.status}`;
+        throw `Invalid status code: ${res.status}`
       }
-      const document = new HtmlDocument(res.body);
-      const title = document.querySelector(".text-xl").text.trim().split("   ")[0]
-      const cover = document.querySelector(".object-cover").attributes["src"];
-      const description = document.querySelector("p.text-medium").text;
-      const infos = document.querySelectorAll("div.py-1");
-      const tags = { "作者": [], "类型": [], "标签": [] };
-      for (let author of infos[0].querySelectorAll("a > span")) {
-        let author_name = author.text.trim();
-        if (author_name.endsWith(",")) {
-          author_name = author_name.slice(0, -1).trim();
-        }
-        tags["作者"].push(author_name);
+
+      const document = new HtmlDocument(res.body)
+      const titleNode = document.querySelector("h1.article-title")
+      const title = titleNode ? titleNode.text.trim() : "18GAL"
+      const article = document.querySelector("#article") || document.querySelector("article.article-body")
+      const imageNodes = article ? article.querySelectorAll("img") : []
+      const cover = imageNodes.length > 0 ? this.absoluteUrl(imageNodes[0].attributes["src"]) : ""
+      const descriptionNode = document.querySelector("meta[name=description]")
+      const description = descriptionNode ? descriptionNode.attributes["content"] : ""
+      const canonicalNode = document.querySelector("link[rel=canonical]")
+      const canonical = canonicalNode ? canonicalNode.attributes["href"] : this.absoluteUrl(id)
+      const base = canonical.replace(/\/page\/\d+\/?$/, "").replace(/\/+$/, "")
+      const maxPage = this.parsePageCount(document)
+      const chapters = {}
+      for (let page = 1; page <= maxPage; page++) {
+        chapters[`${base}/page/${page}/`] = `第${page}页`
       }
-      for (let category of infos[1].querySelectorAll("a > span")) {
-        let category_name = category.text.trim();
-        if (category_name.endsWith(",")) {
-          category_name = category_name.slice(0, -1).trim();
-        }
-        tags["类型"].push(category_name);
+
+      const updateNodes = document.querySelectorAll("ul.post-meta > li")
+      const updateTime = updateNodes.length > 0 ? updateNodes[0].text.trim() : ""
+      const parsedRecommendations = this.parseComics(document)
+      const recommend = []
+      for (let comic of parsedRecommendations) {
+        if (this.absoluteUrl(comic.id) !== this.absoluteUrl(id)) recommend.push(comic)
       }
-      for (let tag of infos[2].querySelectorAll("a")) {
-        tags["标签"].push(tag.text.replace("\n", "").replaceAll(" ", "").replace("#", ""));
-      }
-      const mangaId = document.querySelector("#mangachapters").attributes["data-mid"];
-      const chapterRes = await Network.get(`${this.baseUrl}/manga/get?mid=${mangaId}&mode=all&t=${Date.now()}`, this.headers);
-      const chapterDoc = new HtmlDocument(chapterRes.body);
-      const chapters = {};
-      for (let ch of chapterDoc.querySelectorAll(".chapteritem")) {
-        const info = ch.querySelector("a");
-        chapters[`${info.attributes["data-ms"]}@${info.attributes["data-cs"]}`] = ch.querySelector(".chaptertitle").text;
-      }
-      const recommend = [];
-      for (let item of document.querySelectorAll("div.cardlist > div.pb-2")) {
-        recommend.push(new Comic({
-          id: item.querySelector("a").attributes["href"],
-          title: item.querySelector("h3").text,
-          cover: item.querySelector("img").attributes["src"]
-        }));
-      }
+      document.dispose()
+
       return new ComicDetails({
         title: title,
         cover: cover,
         description: description,
-        tags: tags,
+        tags: { "站点": ["18GAL"] },
         chapters: chapters,
         recommend: recommend,
-      });
+        updateTime: updateTime
+      })
     },
 
     loadEp: async (comicId, epId) => {
-      const ids = epId.split("@");
-      const res = await Network.get(`${this.baseUrl}/chapter/getcontent?m=${ids[0]}&c=${ids[1]}`, this.headers);
+      const url = epId && epId.indexOf("http") === 0 ? epId : this.absoluteUrl(epId || comicId)
+      const res = await Network.get(url, this.headers)
       if (res.status !== 200) {
-        throw `Invalid status code: ${res.status}`;
+        throw `Invalid status code: ${res.status}`
       }
-      const document = new HtmlDocument(res.body);
-      const images = [];
-      for (let i of document.querySelector("#chapcontent").querySelectorAll("img")) {
-        images.push(i.attributes["data-src"] ? i.attributes["data-src"] : i.attributes["src"]);
-      }
-      return { images };
-    },
 
-    // enable tags translate
-    enableTagsTranslate: false,
+      const document = new HtmlDocument(res.body)
+      const article = document.querySelector("#article") || document.querySelector("article.article-body")
+      const images = []
+      if (article) {
+        for (let image of article.querySelectorAll("img")) {
+          const imageUrl = this.absoluteUrl(image.attributes["src"] || image.attributes["data-src"])
+          if (imageUrl.indexOf("img.18gallery.com/") < 0) continue
+          if (images.indexOf(imageUrl) < 0) images.push(imageUrl)
+        }
+      }
+      document.dispose()
+      if (images.length === 0) throw "No gallery images found"
+      return { images: images }
+    }
   }
 }

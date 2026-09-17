@@ -4,27 +4,27 @@
     "url": "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_baozi.js",
     "key": "hj_baozi",
     "version": "1.1.6",
-    "description": "从 hj.json 迁移的包子漫画 Venera 源。"
+    "description": "按 Venera 官方包子漫画配置同步，保留 hj.json 的独立 key。"
   },
   {
-    "name": "18漫画（HJ）",
+    "name": "18真人图集（HJ）",
     "url": "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_mh18.js",
     "key": "hj_mh18",
-    "version": "1.0.0",
-    "description": "从 hj.json 的 18 真人图集条目迁移的 Venera 源。"
+    "version": "1.1.0",
+    "description": "对应 hj.json 的 18gallery.com 图集；按图集分页生成章节，图片请求带站点 Referer。"
   },
   {
     "name": "紳士漫畫（HJ）",
     "url": "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_wnacg.js",
     "key": "hj_wnacg",
     "version": "1.0.5",
-    "description": "从 hj.json 迁移的紳士漫畫 Venera 源，支持自定义域名。"
+    "description": "按 Venera 官方紳士漫畫配置同步，支持自定义域名。"
   },
   {
     "name": "漫画1234（HJ）",
     "url": "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/hj_mh1234.js",
     "key": "hj_mh1234",
     "version": "1.0.0",
-    "description": "从 hj.json 迁移的漫画1234 Venera 源。"
+    "description": "按 Venera 官方漫画1234配置同步，保留 hj.json 的独立 key。"
   }
 ]
