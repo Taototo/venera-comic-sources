@@ -1,8 +1,9 @@
 /** @type {import('../_venera_.js')} */
 class PrivateZip0Video extends ComicSource {
+  type = "video";
   name = "ZIP0影视（私人）";
   key = "private_zip0_video";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/zip0_video.js";
 

@@ -66,28 +66,32 @@
     "name": "黄果短剧（私人）",
     "fileName": "sources/private/huangguo_video.js",
     "key": "private_huangguo_video",
-    "version": "1.0.0",
+    "version": "1.0.1",
+    "type": "video",
     "description": "私人配置；解析黄果短剧列表、搜索、多集信息和带临时签名的 HLS 播放地址。"
   },
   {
     "name": "ZIP0影视（私人）",
     "fileName": "sources/private/zip0_video.js",
     "key": "private_zip0_video",
-    "version": "1.0.0",
+    "version": "1.0.1",
+    "type": "video",
     "description": "私人视频配置；通过 ZIP0 公共搜索接口检索影片，并从播放页解析 HLS/MP4 地址。"
   },
   {
     "name": "4K厂长影视（私人）",
     "fileName": "sources/private/4kcz_video.js",
     "key": "private_4kcz_video",
-    "version": "1.0.0",
+    "version": "1.0.1",
+    "type": "video",
     "description": "私人视频配置；支持 4K厂长影视分类、搜索、选集，并解析播放页中的 HLS/MP4 地址。"
   },
   {
     "name": "91短视频（私人）",
     "fileName": "sources/private/91short_video.js",
     "key": "private_91short_video",
-    "version": "1.0.0",
+    "version": "1.0.1",
+    "type": "video",
     "description": "私人视频配置；默认使用 cn8.91short.com，支持手动替换镜像域名；当前网络无法稳定验证该站点。"
   }
 ]

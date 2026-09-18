@@ -1,8 +1,9 @@
 /** @type {import('../_venera_.js')} */
 class Private91ShortVideo extends ComicSource {
+  type = "video";
   name = "91短视频（私人）";
   key = "private_91short_video";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/91short_video.js";
 

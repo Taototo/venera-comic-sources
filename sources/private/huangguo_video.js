@@ -1,8 +1,9 @@
 /** @type {import('../_venera_.js')} */
 class PrivateHuangguoVideo extends ComicSource {
+  type = "video";
   name = "黄果短剧（私人）";
   key = "private_huangguo_video";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/huangguo_video.js";
 
