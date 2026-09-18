@@ -61,5 +61,12 @@
     "key": "private_drmh3",
     "version": "1.0.0",
     "description": "私人配置；列表、搜索、章节和多 CDN 图片链路均已验证。"
+  },
+  {
+    "name": "黄果短剧（私人）",
+    "fileName": "sources/private/huangguo_video.js",
+    "key": "private_huangguo_video",
+    "version": "1.0.0",
+    "description": "私人配置；解析黄果短剧列表、搜索、多集信息和带临时签名的 HLS 播放地址。"
   }
 ]
