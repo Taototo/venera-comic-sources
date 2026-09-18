@@ -3,7 +3,7 @@ class PrivateZip0Video extends ComicSource {
   type = "video";
   name = "ZIP0影视（私人）";
   key = "private_zip0_video";
-  version = "1.0.1";
+  version = "1.0.2";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/zip0_video.js";
 
@@ -42,17 +42,33 @@ class PrivateZip0Video extends ComicSource {
   cleanText(value) {
     return String(value || "")
       .replace(/&amp;/g, "&")
+      .replace(/&quot;/g, '"')
+      .replace(/&#x2F;/gi, "/")
+      .replace(/&#39;/g, "'")
       .replace(/\\u0026/g, "&")
+      .replace(/\\u003d/gi, "=")
+      .replace(/\\u002F/gi, "/")
       .replace(/\\\//g, "/")
       .trim();
   }
 
   safeDecode(value) {
-    try {
-      return decodeURIComponent(value);
-    } catch (_) {
-      return value;
+    let result = String(value || "");
+    for (let i = 0; i < 2; i++) {
+      try {
+        let decoded = decodeURIComponent(result);
+        if (decoded === result) break;
+        result = decoded;
+      } catch (_) {
+        break;
+      }
     }
+    return result
+      .replace(/\\u0026/gi, "&")
+      .replace(/\\u003d/gi, "=")
+      .replace(/\\u002F/gi, "/")
+      .replace(/\\\//g, "/")
+      .replace(/[),;]+$/g, "");
   }
 
   metaValue(body, name) {
@@ -113,11 +129,39 @@ class PrivateZip0Video extends ComicSource {
 
   parseStream(body) {
     let text = this.cleanText(body);
-    let matches = text.match(
-      /https?:\/\/[^"'<>\\\s]+?\.(?:m3u8|mp4)(?:\?[^"'<>\\\s]*)?/gi
+    // ZIP0 is a Next.js page. The player URL is normally stored in an
+    // inline serialized object (url:"..."), but older pages used a
+    // playUrl/videoUrl field. Try those explicit fields first so that an
+    // unrelated URL in the page cannot win.
+    let explicit = text.match(
+      /(?:playUrl|videoUrl|m3u8|mp4|source|url)\s*[:=]\s*["']([^"']+\.(?:m3u8|mp4)(?:\?[^"']*)?)["']/i
     );
-    if (!matches || matches.length === 0) return "";
-    return this.safeDecode(matches[0]);
+    if (explicit && explicit[1]) return this.safeDecode(explicit[1]);
+
+    // Keep this fallback deliberately permissive. Some responses escape the
+    // slash as \/ or put punctuation immediately after the URL.
+    let matches = text.match(
+      /https?:\/\/[^"'<>\s]+?\.(?:m3u8|mp4)(?:\?[^"'<>\s]*)?/gi
+    ) || [];
+    for (let value of matches) {
+      let candidate = this.safeDecode(value);
+      if (/\.(?:m3u8|mp4)(?:\?|$)/i.test(candidate)) return candidate;
+    }
+    return "";
+  }
+
+  async coverForItem(item) {
+    let direct = item.poster || item.cover || item.pic || item.image || item.thumb;
+    if (direct) return this.absoluteUrl(direct);
+    try {
+      let res = await this.request(item.url);
+      if (res.status === 200) {
+        let cover = this.metaValue(res.body, "og:image") ||
+          this.metaValue(res.body, "twitter:image");
+        if (cover) return this.absoluteUrl(cover);
+      }
+    } catch (_) {}
+    return this.absoluteUrl("/og.png");
   }
 
   async request(url) {
@@ -166,20 +210,21 @@ class PrivateZip0Video extends ComicSource {
       }
       let list = Array.isArray(json.data) ? json.data : [];
       let comics = [];
-      for (let item of list) {
-        if (!item || !item.url || !item.title) continue;
+      let items = await Promise.all(list.map(async (item) => {
+        if (!item || !item.url || !item.title) return null;
         let subtitle = [item.year, item.category, item.remarks]
           .filter((v) => v && String(v).trim())
           .join(" · ");
-        comics.push(
-          new Comic({
-            id: item.url,
-            title: String(item.title),
-            subTitle: subtitle,
-            cover: this.absoluteUrl("/og.png"),
-            description: subtitle,
-          })
-        );
+        return {
+          id: item.url,
+          title: String(item.title),
+          subTitle: subtitle,
+          cover: await this.coverForItem(item),
+          description: subtitle,
+        };
+      }));
+      for (let item of items) {
+        if (item) comics.push(new Comic(item));
       }
       let pages = json.pagination && parseInt(json.pagination.pages, 10);
       return { comics: comics, maxPage: pages > 0 ? pages : 1 };

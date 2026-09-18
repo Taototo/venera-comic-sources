@@ -74,9 +74,9 @@
     "name": "ZIP0影视（私人）",
     "fileName": "sources/private/zip0_video.js",
     "key": "private_zip0_video",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "type": "video",
-    "description": "私人视频配置；通过 ZIP0 公共搜索接口检索影片，并从播放页解析 HLS/MP4 地址。"
+    "description": "私人视频配置；搜索结果读取播放页海报，并从 Next.js 播放页解析 HLS/MP4 地址。"
   },
   {
     "name": "4K厂长影视（私人）",
