@@ -1,63 +1,63 @@
 [
   {
     "name": "再漫画（Ven）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/zaimanhua.js",
+    "fileName": "sources/ven/zaimanhua.js",
     "key": "zaimanhua",
     "version": "1.0.2",
     "description": "Ven 配置；更新列表和分类接口已通过当前网络检测。"
   },
   {
     "name": "漫小肆（Ven）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js",
+    "fileName": "sources/ven/mxs.js",
     "key": "mxs",
     "version": "1.0.0",
     "description": "Ven 配置；保留当前可达域名，并补回 mxshm.top、ikanwzd.cc 作为备用选项。"
   },
   {
     "name": "漫画人（Ven）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/manhuaren.js",
+    "fileName": "sources/ven/manhuaren.js",
     "key": "manhuaren",
     "version": "1.0.0",
     "description": "Ven 配置；首页、搜索和正文接口已通过当前网络检测。"
   },
   {
     "name": "禁漫天堂（Ven）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/jm.js",
+    "fileName": "sources/ven/jm.js",
     "key": "jm",
     "version": "1.4.0",
     "description": "Ven 配置；动态线路和图片链路已通过当前网络检测。"
   },
   {
     "name": "拷贝漫画（Ven）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/copy_manga.js",
+    "fileName": "sources/ven/copy_manga.js",
     "key": "copy_manga",
     "version": "1.4.2",
     "description": "Ven 配置；使用已检测可达的 API 地址，支持手动切换线路。"
   },
   {
     "name": "包子漫画（私人）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js",
+    "fileName": "sources/private/baozi.js",
     "key": "hj_baozi",
     "version": "1.1.7",
     "description": "私人配置；保留可用的简繁站点和图片 CDN 选项。"
   },
   {
     "name": "紳士漫畫（私人）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/wnacg.js",
+    "fileName": "sources/private/wnacg.js",
     "key": "hj_wnacg",
     "version": "1.0.7",
     "description": "私人配置；支持自定义域名，当前网络需自行选择可达线路。"
   },
   {
     "name": "魅影画廊（私人）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js",
+    "fileName": "sources/private/myhl.js",
     "key": "private_myhl",
     "version": "1.0.1",
     "description": "私人配置；WordPress 图集列表、搜索和原图链接均已验证。"
   },
   {
     "name": "大人漫画（私人）",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js",
+    "fileName": "sources/private/drmh3.js",
     "key": "private_drmh3",
     "version": "1.0.0",
     "description": "私人配置；列表、搜索、章节和多 CDN 图片链路均已验证。"

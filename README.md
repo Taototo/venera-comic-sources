@@ -4,7 +4,7 @@
 
 ## 在 Venera 中添加
 
-在漫画源列表中添加清单地址：
+在漫画源列表中添加清单地址（清单使用官方兼容的相对 `fileName` 格式）：
 
 ```text
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/index.json
