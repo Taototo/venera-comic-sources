@@ -43,10 +43,6 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/dr
 
 私人源中的包子漫画和紳士漫畫保留历史 key，已安装的源可以直接更新；清单中的显示名称已经统一为“（私人）”。
 
-## 已按请求移除
-
-GoDa 漫画、comick、漫画1234、Lanraragi、Komga 和 Ven 版包子不在当前清单中；18真人图集、中国人能飞、歪歪漫画、直连韩漫网及私人版漫画1234也已移除。
-
 ## 检查
 
 ```powershell
