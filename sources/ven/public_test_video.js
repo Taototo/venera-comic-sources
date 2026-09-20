@@ -14,7 +14,7 @@ class PublicTestVideo extends ComicSource {
   version = "1.0.0";
   minAppVersion = "1.0.0";
   url =
-    "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/public_test_video.js";
+    "https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/sources/ven/public_test_video.js";
 
   items = [
     {
