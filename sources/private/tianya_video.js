@@ -3,7 +3,7 @@ class PrivateTianyaVideo extends ComicSource {
   type = "video";
   name = "天涯资源（私人）";
   key = "private_tianya_video";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/tianya_video.js";
 
@@ -122,7 +122,7 @@ class PrivateTianyaVideo extends ComicSource {
         let sections = [
           ["最新更新", ""],
           ["国产剧", "13"],
-          ["电影", "6"],
+          ["电影", "1"],
           ["动漫", "29"],
           ["综艺", "25"],
         ];
@@ -152,18 +152,75 @@ class PrivateTianyaVideo extends ComicSource {
         type: "fixed",
         categories: [
           "最新更新",
+          "电影",
+          "电视剧",
+          "综艺",
+          "动漫",
           "动作片",
+          "喜剧片",
+          "爱情片",
+          "科幻片",
+          "恐怖片",
+          "剧情片",
+          "战争片",
           "国产剧",
           "欧美剧",
           "韩国剧",
           "日本剧",
+          "港台剧",
+          "台湾剧",
           "泰国剧",
           "纪录片",
+          "海外剧",
           "大陆综艺",
+          "日韩综艺",
+          "港台综艺",
+          "欧美综艺",
           "国产动漫",
+          "日韩动漫",
+          "欧美动漫",
+          "动画片",
+          "港台动漫",
+          "海外动漫",
+          "演唱会",
+          "体育赛事",
+          "篮球",
+          "足球",
+          "预告片",
+          "斯诺克",
+          "影视解说",
+          "短剧",
+          "伦理",
+          "港台三级",
+          "韩国伦理",
+          "西方伦理",
+          "日本伦理",
+          "两性课堂",
+          "写真热舞",
+          "4K电影",
+          "有声动漫",
+          "女频恋爱",
+          "反转爽剧",
+          "古装仙侠",
+          "年代穿越",
+          "脑洞悬疑",
+          "现代都市",
+          "邵氏电影",
+          "Netflix电影",
+          "Netflix自制剧",
+          "擦边短剧",
+          "预告解说",
+          "科普学习",
         ],
         itemType: "category",
-        categoryParams: ["", "6", "13", "14", "15", "16", "19", "20", "25", "29"],
+        categoryParams: [
+          "", "1", "2", "3", "4", "6", "7", "8", "9", "10", "11", "12",
+          "13", "14", "15", "16", "17", "18", "19", "20", "23", "25", "26",
+          "27", "28", "29", "30", "31", "39", "44", "45", "47", "48", "49",
+          "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60",
+          "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71",
+          "72", "73", "74", "75",
+        ],
       },
     ],
     enableRankingPage: false,
@@ -186,6 +243,11 @@ class PrivateTianyaVideo extends ComicSource {
   };
 
   comic = {
+    onThumbnailLoad: (url) => ({
+      url: url,
+      headers: this.headers,
+    }),
+
     loadInfo: async (id) => {
       let data = await this.request({ ac: "detail", ids: String(id) });
       let item = Array.isArray(data.list) ? data.list[0] : null;
