@@ -3,7 +3,7 @@ class PrivateZip0Video extends ComicSource {
   type = "video";
   name = "ZIP0影视（私人）";
   key = "private_zip0_video";
-  version = "1.0.2";
+  version = "1.0.3";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/zip0_video.js";
 
@@ -45,9 +45,14 @@ class PrivateZip0Video extends ComicSource {
       .replace(/&quot;/g, '"')
       .replace(/&#x2F;/gi, "/")
       .replace(/&#39;/g, "'")
+      .replace(/\\u0022/gi, '"')
+      .replace(/\\u003c/gi, "<")
+      .replace(/\\u003e/gi, ">")
       .replace(/\\u0026/g, "&")
       .replace(/\\u003d/gi, "=")
       .replace(/\\u002F/gi, "/")
+      .replace(/\\"/g, '"')
+      .replace(/\\\\/g, "\\")
       .replace(/\\\//g, "/")
       .trim();
   }
@@ -64,9 +69,12 @@ class PrivateZip0Video extends ComicSource {
       }
     }
     return result
+      .replace(/\\u0022/gi, '"')
       .replace(/\\u0026/gi, "&")
       .replace(/\\u003d/gi, "=")
       .replace(/\\u002F/gi, "/")
+      .replace(/\\"/g, '"')
+      .replace(/\\\\/g, "\\")
       .replace(/\\\//g, "/")
       .replace(/[),;]+$/g, "");
   }
@@ -150,6 +158,89 @@ class PrivateZip0Video extends ComicSource {
     return "";
   }
 
+  attribute(node, name) {
+    if (!node) return "";
+    return (node.attributes && node.attributes[name]) || "";
+  }
+
+  textOf(node) {
+    return node && node.text ? String(node.text).replace(/\s+/g, " ").trim() : "";
+  }
+
+  parseCategoryCard(item) {
+    let link = item.querySelector("a.video-card__poster-link[href]") ||
+      item.querySelector("a[href*='/watch']");
+    if (!link) return null;
+    let href = this.attribute(link, "href");
+    let titleNode = item.querySelector("a.video-card__title") ||
+      item.querySelector(".video-card__title");
+    let title = this.textOf(titleNode) || this.attribute(link, "title");
+    let image = item.querySelector("img.video-card__poster") || item.querySelector("img");
+    let cover = this.attribute(image, "src") ||
+      this.attribute(image, "data-src") ||
+      this.attribute(image, "data-original");
+    let subtitle = this.textOf(item.querySelector(".video-card__meta"));
+    if (!href || !title) return null;
+    return new Comic({
+      id: this.absoluteUrl(href),
+      title: title,
+      subTitle: subtitle,
+      cover: this.absoluteUrl(cover),
+      description: subtitle,
+    });
+  }
+
+  parseCategoryComics(document) {
+    let comics = [];
+    let seen = {};
+    for (let item of document.querySelectorAll("article.video-card")) {
+      let comic = this.parseCategoryCard(item);
+      if (!comic || seen[comic.id]) continue;
+      seen[comic.id] = true;
+      comics.push(comic);
+    }
+    return comics;
+  }
+
+  pageCount(document) {
+    let maxPage = 1;
+    for (let node of document.querySelectorAll("a[href]")) {
+      let href = this.attribute(node, "href");
+      let match = href.match(/[?&]page=(\d+)/i);
+      if (match) maxPage = Math.max(maxPage, parseInt(match[1], 10));
+    }
+    return maxPage;
+  }
+
+  async loadCategory(path, options, page) {
+    let current = Number(page) || 1;
+    let url = this.absoluteUrl(path);
+    let keys = ["area", "year", "sort"];
+    let params = [];
+    for (let i = 0; i < keys.length; i++) {
+      let value = options && options[i] ? String(options[i]) : "all";
+      if (keys[i] === "area" && value === "hong_kong") value = "hong-kong";
+      if (value && value !== "all") {
+        params.push(keys[i] + "=" + encodeURIComponent(value));
+      }
+    }
+    if (current > 1) {
+      params.push("page=" + current);
+    }
+    if (params.length > 0) {
+      url += (url.indexOf("?") >= 0 ? "&" : "?") + params.join("&");
+    }
+    let res = await this.request(url);
+    if (res.status !== 200) throw `Invalid status code: ${res.status}`;
+    let document = new HtmlDocument(res.body);
+    let result = {
+      comics: this.parseCategoryComics(document),
+      maxPage: this.pageCount(document),
+    };
+    document.dispose();
+    return result;
+  }
+
   async coverForItem(item) {
     let direct = item.poster || item.cover || item.pic || item.image || item.thumb;
     if (direct) return this.absoluteUrl(direct);
@@ -191,6 +282,67 @@ class PrivateZip0Video extends ComicSource {
   }
 
   explore = [];
+
+  category = {
+    title: "ZIP0影视",
+    parts: [
+      {
+        name: "频道",
+        type: "fixed",
+        categories: ["电影", "短剧", "电视剧", "综艺", "纪录片", "体育"],
+        itemType: "category",
+        categoryParams: [
+          "/category/movie",
+          "/category/short",
+          "/category/tv",
+          "/category/variety",
+          "/category/documentary",
+          "/category/sports",
+        ],
+      },
+    ],
+    enableRankingPage: false,
+  };
+
+  categoryComics = {
+    load: async (category, param, options, page) => {
+      return this.loadCategory(param || "/category/movie", options, page || 1);
+    },
+    optionList: [
+      {
+        label: "地区",
+        options: [
+          "all-全部地区",
+          "mainland-大陆",
+          "hong_kong-香港",
+          "taiwan-台湾",
+          "japan-日本",
+          "korea-韩国",
+          "western-欧美",
+          "thailand-泰国",
+          "india-印度",
+          "other-其他",
+        ],
+      },
+      {
+        label: "年份",
+        options: [
+          "all-全部年份",
+          "current-今年",
+          "last-去年",
+          "recent-近年",
+          "2010s-2010年代",
+          "2000s-2000年代",
+          "1990s-90年代",
+          "older-更早",
+        ],
+      },
+      {
+        label: "排序",
+        options: ["updated-最近更新", "score-评分最高"],
+      },
+    ],
+  };
 
   search = {
     load: async (keyword, options, page) => {
