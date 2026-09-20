@@ -101,5 +101,29 @@
     "version": "1.0.1",
     "type": "video",
     "description": "私人视频配置；默认使用 cn8.91short.com，支持手动替换镜像域名；当前网络无法稳定验证该站点。"
+  },
+  {
+    "name": "牛马影院（私人）",
+    "fileName": "sources/private/niuma_video.js",
+    "key": "private_niuma_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人配置；牛马影院网页列表、分类、搜索、详情、选集和播放页 m3u8 已通过当前网络检测。"
+  },
+  {
+    "name": "天涯资源（私人）",
+    "fileName": "sources/private/tianya_video.js",
+    "key": "private_tianya_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人配置；使用 tyyszyapi.com JSON 接口，支持分类、详情、多集和直接 m3u8 地址；接口搜索功能未开放。"
+  },
+  {
+    "name": "巨量资源（私人）",
+    "fileName": "sources/private/juliang_video.js",
+    "key": "private_juliang_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人配置；使用 api.juliang.live JSON 接口，保留大整数视频 ID 并支持分类、搜索、多线路选集和 m3u8。"
   }
 ]
