@@ -1,169 +1,169 @@
 [
   {
     "name": "再漫画（Ven）",
-    "fileName": "sources/ven/zaimanhua.js",
     "key": "zaimanhua",
     "version": "1.0.2",
-    "description": "Ven 配置；更新列表和分类接口已通过当前网络检测。"
+    "description": "Ven 配置；更新列表和分类接口已通过当前网络检测。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/zaimanhua.js"
   },
   {
     "name": "漫小肆（Ven）",
-    "fileName": "sources/ven/mxs.js",
     "key": "mxs",
     "version": "1.0.0",
-    "description": "Ven 配置；保留当前可达域名，并补回 mxshm.top、ikanwzd.cc 作为备用选项。"
+    "description": "Ven 配置；保留当前可达域名，并补回 mxshm.top、ikanwzd.cc 作为备用选项。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js"
   },
   {
     "name": "漫画人（Ven）",
-    "fileName": "sources/ven/manhuaren.js",
     "key": "manhuaren",
     "version": "1.0.0",
-    "description": "Ven 配置；首页、搜索和正文接口已通过当前网络检测。"
+    "description": "Ven 配置；首页、搜索和正文接口已通过当前网络检测。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/manhuaren.js"
   },
   {
     "name": "禁漫天堂（Ven）",
-    "fileName": "sources/ven/jm.js",
     "key": "jm",
     "version": "1.4.0",
-    "description": "Ven 配置；动态线路和图片链路已通过当前网络检测。"
+    "description": "Ven 配置；动态线路和图片链路已通过当前网络检测。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/jm.js"
   },
   {
     "name": "拷贝漫画（Ven）",
-    "fileName": "sources/ven/copy_manga.js",
     "key": "copy_manga",
     "version": "1.4.2",
-    "description": "Ven 配置；使用已检测可达的 API 地址，支持手动切换线路。"
+    "description": "Ven 配置；使用已检测可达的 API 地址，支持手动切换线路。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/copy_manga.js"
   },
   {
     "name": "公开测试视频（Ven）",
-    "fileName": "sources/ven/public_test_video.js",
     "key": "public_test_video",
     "version": "1.0.1",
     "type": "video",
-    "description": "公开版权测试源；W3C、Mozilla 和 Mux 测试媒体，用于验证视频首页、分类、详情和播放器。"
+    "description": "公开版权测试源；W3C、Mozilla 和 Mux 测试媒体，用于验证视频首页、分类、详情和播放器。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/public_test_video.js"
   },
   {
     "name": "包子漫画（私人）",
-    "fileName": "sources/private/baozi.js",
     "key": "hj_baozi",
     "version": "1.1.7",
-    "description": "私人配置；保留可用的简繁站点和图片 CDN 选项。"
+    "description": "私人配置；保留可用的简繁站点和图片 CDN 选项。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js"
   },
   {
     "name": "紳士漫畫（私人）",
-    "fileName": "sources/private/wnacg.js",
     "key": "hj_wnacg",
     "version": "1.0.7",
-    "description": "私人配置；支持自定义域名，当前网络需自行选择可达线路。"
+    "description": "私人配置；支持自定义域名，当前网络需自行选择可达线路。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/wnacg.js"
   },
   {
     "name": "魅影画廊（私人）",
-    "fileName": "sources/private/myhl.js",
     "key": "private_myhl",
     "version": "1.0.1",
-    "description": "私人配置；WordPress 图集列表、搜索和原图链接均已验证。"
+    "description": "私人配置；WordPress 图集列表、搜索和原图链接均已验证。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js"
   },
   {
     "name": "大人漫画（私人）",
-    "fileName": "sources/private/drmh3.js",
     "key": "private_drmh3",
     "version": "1.0.0",
-    "description": "私人配置；列表、搜索、章节和多 CDN 图片链路均已验证。"
+    "description": "私人配置；列表、搜索、章节和多 CDN 图片链路均已验证。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js"
   },
   {
     "name": "黄果短剧（私人）",
-    "fileName": "sources/private/huangguo_video.js",
     "key": "private_huangguo_video",
     "version": "1.0.1",
     "type": "video",
-    "description": "私人配置；解析黄果短剧列表、搜索、多集信息和带临时签名的 HLS 播放地址。"
+    "description": "私人配置；解析黄果短剧列表、搜索、多集信息和带临时签名的 HLS 播放地址。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/huangguo_video.js"
   },
   {
     "name": "ZIP0影视（私人）",
-    "fileName": "sources/private/zip0_video.js",
     "key": "private_zip0_video",
     "version": "1.0.4",
     "type": "video",
-    "description": "私人视频配置；按 ZIP0 首页、频道和地区/年份/排序筛选，兼容 Next.js 播放页的多种 HLS/MP4 地址格式。"
+    "description": "私人视频配置；按 ZIP0 首页、频道和地区/年份/排序筛选，兼容 Next.js 播放页的多种 HLS/MP4 地址格式。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/zip0_video.js"
   },
   {
     "name": "4K厂长影视（私人）",
-    "fileName": "sources/private/4kcz_video.js",
     "key": "private_4kcz_video",
     "version": "1.0.1",
     "type": "video",
-    "description": "私人视频配置；支持 4K厂长影视分类、搜索、选集，并解析播放页中的 HLS/MP4 地址。"
+    "description": "私人视频配置；支持 4K厂长影视分类、搜索、选集，并解析播放页中的 HLS/MP4 地址。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/4kcz_video.js"
   },
   {
     "name": "91短视频（私人）",
-    "fileName": "sources/private/91short_video.js",
     "key": "private_91short_video",
     "version": "1.0.1",
     "type": "video",
-    "description": "私人视频配置；默认使用 cn8.91short.com，支持手动替换镜像域名；当前网络无法稳定验证该站点。"
+    "description": "私人视频配置；默认使用 cn8.91short.com，支持手动替换镜像域名；当前网络无法稳定验证该站点。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/91short_video.js"
   },
   {
     "name": "牛马影院（私人）",
-    "fileName": "sources/private/niuma_video.js",
     "key": "private_niuma_video",
     "version": "1.0.0",
     "type": "video",
-    "description": "私人配置；牛马影院网页列表、分类、搜索、详情、选集和播放页 m3u8 已通过当前网络检测。"
+    "description": "私人配置；牛马影院网页列表、分类、搜索、详情、选集和播放页 m3u8 已通过当前网络检测。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/niuma_video.js"
   },
   {
     "name": "天涯资源（私人）",
-    "fileName": "sources/private/tianya_video.js",
     "key": "private_tianya_video",
     "version": "1.0.1",
     "type": "video",
-    "description": "私人配置；使用 tyyszyapi.com JSON 接口，补齐接口返回的全部分类，支持详情、多集和直接 m3u8 地址；接口搜索功能未开放。"
+    "description": "私人配置；使用 tyyszyapi.com JSON 接口，补齐接口返回的全部分类，支持详情、多集和直接 m3u8 地址；接口搜索功能未开放。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/tianya_video.js"
   },
   {
     "name": "巨量资源（私人）",
-    "fileName": "sources/private/juliang_video.js",
     "key": "private_juliang_video",
     "version": "1.0.0",
     "type": "video",
-    "description": "私人配置；使用 api.juliang.live JSON 接口，保留大整数视频 ID 并支持分类、搜索、多线路选集和 m3u8。"
+    "description": "私人配置；使用 api.juliang.live JSON 接口，保留大整数视频 ID 并支持分类、搜索、多线路选集和 m3u8。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/juliang_video.js"
   },
   {
     "name": "HLZY资源（私人）",
-    "fileName": "sources/private/hlzy_video.js",
     "key": "private_hlzy_video",
     "version": "1.0.0",
     "type": "video",
-    "description": "私人视频配置；使用 www.hlzyapi.vip JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。"
+    "description": "私人视频配置；使用 www.hlzyapi.vip JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js"
   },
   {
     "name": "星巴资源（私人）",
-    "fileName": "sources/private/xingba222_video.js",
     "key": "private_xingba222_video",
     "version": "1.0.0",
     "type": "video",
-    "description": "私人视频配置；使用 json.xingba222.com JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。"
+    "description": "私人视频配置；使用 json.xingba222.com JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/xingba222_video.js"
   },
   {
     "name": "XGBBK8资源（私人）",
-    "fileName": "sources/private/xgbbk8_video.js",
     "key": "private_xgbbk8_video",
     "version": "1.0.0",
     "type": "video",
-    "description": "私人视频配置；使用 json.xgbbk8.com JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。"
+    "description": "私人视频配置；使用 json.xgbbk8.com JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/xgbbk8_video.js"
   },
   {
     "name": "黑 API资源（私人）",
-    "fileName": "sources/private/heiapi_video.js",
     "key": "private_heiapi_video",
     "version": "1.0.0",
     "type": "video",
-    "description": "私人视频配置；使用 api.heiapi.cc JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。"
+    "description": "私人视频配置；使用 api.heiapi.cc JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/heiapi_video.js"
   },
   {
     "name": "极品资源1（私人）",
-    "fileName": "sources/private/jipinvip1_video.js",
     "key": "private_jipinvip1_video",
     "version": "1.0.0",
     "type": "video",
-    "description": "私人视频配置；使用 jipinvip1.com JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。"
+    "description": "私人视频配置；使用 jipinvip1.com JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jipinvip1_video.js"
   }
 ]
