@@ -125,5 +125,45 @@
     "version": "1.0.0",
     "type": "video",
     "description": "私人配置；使用 api.juliang.live JSON 接口，保留大整数视频 ID 并支持分类、搜索、多线路选集和 m3u8。"
+  },
+  {
+    "name": "HLZY资源（私人）",
+    "fileName": "sources/private/hlzy_video.js",
+    "key": "private_hlzy_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人视频配置；使用 www.hlzyapi.vip JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。"
+  },
+  {
+    "name": "星巴资源（私人）",
+    "fileName": "sources/private/xingba222_video.js",
+    "key": "private_xingba222_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人视频配置；使用 json.xingba222.com JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。"
+  },
+  {
+    "name": "XGBBK8资源（私人）",
+    "fileName": "sources/private/xgbbk8_video.js",
+    "key": "private_xgbbk8_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人视频配置；使用 json.xgbbk8.com JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。"
+  },
+  {
+    "name": "黑 API资源（私人）",
+    "fileName": "sources/private/heiapi_video.js",
+    "key": "private_heiapi_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人视频配置；使用 api.heiapi.cc JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。"
+  },
+  {
+    "name": "极品资源1（私人）",
+    "fileName": "sources/private/jipinvip1_video.js",
+    "key": "private_jipinvip1_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人视频配置；使用 jipinvip1.com JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。"
   }
 ]
