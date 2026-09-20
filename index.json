@@ -35,6 +35,14 @@
     "description": "Ven 配置；使用已检测可达的 API 地址，支持手动切换线路。"
   },
   {
+    "name": "公开测试视频（Ven）",
+    "fileName": "sources/ven/public_test_video.js",
+    "key": "public_test_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "公开版权测试源；W3C、Mozilla 和 Mux 测试媒体，用于验证视频首页、分类、详情和播放器。"
+  },
+  {
     "name": "包子漫画（私人）",
     "fileName": "sources/private/baozi.js",
     "key": "hj_baozi",

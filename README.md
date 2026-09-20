@@ -24,6 +24,7 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/manhuaren.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/jm.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/copy_manga.js
+https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/public_test_video.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/wnacg.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js
@@ -38,9 +39,10 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/91
 
 ## 目录和分类
 
-- `index.json`：13 个可加载源的清单，包含 5 个 Ven 源和 8 个私人源。
+- `index.json`：14 个可加载源的清单，包含 6 个 Ven 源和 8 个私人源。
 - `sources/ven/`：从 Ven 配置整理并保留的再漫画、漫小肆、漫画人、禁漫天堂和拷贝漫画。
 - `sources/private/`：从原始 `hj.json` 转换并保留的包子漫画、紳士漫畫和魅影画廊，以及新增的大人漫画、黄果短剧和视频源。
+- `sources/ven/public_test_video.js`：使用 W3C、Mozilla 和 Mux 公开测试媒体的播放器链路测试源，不依赖第三方影视站点。
 - `sources/_venera_.js`：Venera JavaScript API 类型提示文件，仅供编辑器使用。
 - `legacy/hj.json`：最初的 Legado 源文件备份，不可直接作为 Venera 清单导入。
 - `SOURCE_CHECK.md`：本次网络检测、搬运和排除结果。
