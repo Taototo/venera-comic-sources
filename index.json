@@ -114,9 +114,9 @@
     "name": "天涯资源（私人）",
     "fileName": "sources/private/tianya_video.js",
     "key": "private_tianya_video",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "video",
-    "description": "私人配置；使用 tyyszyapi.com JSON 接口，支持分类、详情、多集和直接 m3u8 地址；接口搜索功能未开放。"
+    "description": "私人配置；使用 tyyszyapi.com JSON 接口，补齐接口返回的全部分类，支持详情、多集和直接 m3u8 地址；接口搜索功能未开放。"
   },
   {
     "name": "巨量资源（私人）",
