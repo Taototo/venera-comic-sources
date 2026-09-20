@@ -3,7 +3,7 @@ class PrivateZip0Video extends ComicSource {
   type = "video";
   name = "ZIP0影视（私人）";
   key = "private_zip0_video";
-  version = "1.0.3";
+  version = "1.0.4";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/zip0_video.js";
 
@@ -137,22 +137,28 @@ class PrivateZip0Video extends ComicSource {
 
   parseStream(body) {
     let text = this.cleanText(body);
-    // ZIP0 is a Next.js page. The player URL is normally stored in an
-    // inline serialized object (url:"..."), but older pages used a
-    // playUrl/videoUrl field. Try those explicit fields first so that an
-    // unrelated URL in the page cannot win.
-    let explicit = text.match(
-      /(?:playUrl|videoUrl|m3u8|mp4|source|url)\s*[:=]\s*["']([^"']+\.(?:m3u8|mp4)(?:\?[^"']*)?)["']/i
-    );
-    if (explicit && explicit[1]) return this.safeDecode(explicit[1]);
+    // ZIP0 is a Next.js page and the player URL has appeared under several
+    // serialized field names over time. Prefer explicit media fields so an
+    // image/CDN URL elsewhere on the page cannot win.
+    let fields = text.match(
+      /(?:playUrl|videoUrl|m3u8|mp4|source|src|file|url)\s*[:=]\s*["']([^"']+)["']/gi
+    ) || [];
+    let candidates = [];
+    for (let field of fields) {
+      let separator = field.indexOf(":");
+      let value = separator >= 0 ? field.substring(separator + 1) : field;
+      value = value.replace(/^[\s"'=:\\]+/, "").replace(/["']+$/, "");
+      candidates.push(value);
+    }
 
     // Keep this fallback deliberately permissive. Some responses escape the
-    // slash as \/ or put punctuation immediately after the URL.
-    let matches = text.match(
-      /https?:\/\/[^"'<>\s]+?\.(?:m3u8|mp4)(?:\?[^"'<>\s]*)?/gi
-    ) || [];
-    for (let value of matches) {
-      let candidate = this.safeDecode(value);
+    // slash as \/, omit the extension before a query string, or put the URL in
+    // a <source> element rather than a JSON field.
+    candidates = candidates.concat(
+      text.match(/https?:\\?\/\\?\/[^"'<>\s]+/gi) || []
+    );
+    for (let value of candidates) {
+      let candidate = this.safeDecode(value).replace(/[),;]+$/g, "");
       if (/\.(?:m3u8|mp4)(?:\?|$)/i.test(candidate)) return candidate;
     }
     return "";
@@ -281,7 +287,36 @@ class PrivateZip0Video extends ComicSource {
     });
   }
 
-  explore = [];
+  // The website home is a set of video sections rather than a single list.
+  // Expose the same sections to the app so its video home page follows the
+  // source configuration instead of showing a fixed local layout.
+  explore = [
+    {
+      title: "首页",
+      type: "multiPartPage",
+      load: async () => {
+        let sections = [
+          ["最新电影", "/category/movie"],
+          ["最新电视剧", "/category/tv"],
+          ["最新综艺", "/category/variety"],
+        ];
+        let result = [];
+        for (let section of sections) {
+          try {
+            let page = await this.loadCategory(section[1], [], 1);
+            if (page.comics.length > 0) {
+              result.push({
+                title: section[0],
+                comics: page.comics,
+                viewMore: `category:${section[0]}@${section[1]}`,
+              });
+            }
+          } catch (_) {}
+        }
+        return result;
+      },
+    },
+  ];
 
   category = {
     title: "ZIP0影视",
