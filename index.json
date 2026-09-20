@@ -38,7 +38,7 @@
     "name": "公开测试视频（Ven）",
     "fileName": "sources/ven/public_test_video.js",
     "key": "public_test_video",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "video",
     "description": "公开版权测试源；W3C、Mozilla 和 Mux 测试媒体，用于验证视频首页、分类、详情和播放器。"
   },
