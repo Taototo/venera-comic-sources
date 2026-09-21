@@ -26,7 +26,7 @@
   {
     "name": "巨量资源（私人）",
     "key": "private_juliang_video",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "type": "video",
     "description": "私人配置；使用 api.juliang.live JSON 接口，保留大整数视频 ID 并支持分类、搜索、多线路选集和 m3u8。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/juliang_video.js"
@@ -34,7 +34,7 @@
   {
     "name": "HLZY资源（私人）",
     "key": "private_hlzy_video",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "video",
     "description": "私人视频配置；使用 www.hlzyapi.vip JSON 接口，带短时缓存、并发去重，支持分类、搜索、详情、多集选集和 HLS 播放。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js"
@@ -42,7 +42,7 @@
   {
     "name": "黑 API资源（私人）",
     "key": "private_heiapi_video",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "type": "video",
     "description": "私人视频配置；使用 api.heiapi.cc JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/heiapi_video.js"
@@ -50,7 +50,7 @@
   {
     "name": "极品资源1（私人）",
     "key": "private_jipinvip1_video",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "video",
     "description": "私人视频配置；使用 jipinvip1.com JSON 接口，带短时缓存、并发去重，并直连 HLS 子清单，支持分类、搜索、详情、多集选集和 HLS 播放。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jipinvip1_video.js"
