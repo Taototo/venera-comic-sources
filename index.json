@@ -9,7 +9,7 @@
   {
     "name": "漫小肆（Ven）",
     "key": "mxs",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Ven 配置；保留当前可达域名，并补回 mxshm.top、ikanwzd.cc 作为备用选项。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js"
   },
@@ -99,13 +99,13 @@
     "key": "private_hlzy_video",
     "version": "1.0.0",
     "type": "video",
-    "description": "私人视频配置；使用 www.hlzyapi.vip JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。",
+    "description": "私人视频配置；使用 www.hlzyapi.vip JSON 接口，带短时缓存、并发去重，支持分类、搜索、详情、多集选集和 HLS 播放。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js"
   },
   {
     "name": "黑 API资源（私人）",
     "key": "private_heiapi_video",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "video",
     "description": "私人视频配置；使用 api.heiapi.cc JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/heiapi_video.js"
@@ -115,7 +115,7 @@
     "key": "private_jipinvip1_video",
     "version": "1.0.0",
     "type": "video",
-    "description": "私人视频配置；使用 jipinvip1.com JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。",
+    "description": "私人视频配置；使用 jipinvip1.com JSON 接口，带短时缓存、并发去重，并直连 HLS 子清单，支持分类、搜索、详情、多集选集和 HLS 播放。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jipinvip1_video.js"
   }
 ]

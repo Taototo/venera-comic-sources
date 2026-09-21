@@ -3,9 +3,12 @@ class PrivateJipinVip1Video extends ComicSource {
   type = "video";
   name = "极品资源1（私人）";
   key = "private_jipinvip1_video";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jipinvip1_video.js";
+
+  _requestCache = new Map();
+  _requestPending = new Map();
 
   settings = {
     api: {
@@ -39,21 +42,37 @@ class PrivateJipinVip1Video extends ComicSource {
   }
 
   async request(params) {
-    let res = await Network.get(this.requestUrl(params), this.headers);
-    if (res.status !== 200) throw `极品资源1接口状态异常: ${res.status}`;
-    let text = String(res.body || "").trim();
-    if (!text || text[0] !== "{") throw "极品资源1返回了无法解析的数据";
-    text = text.replace(/("vod_id"\s*:\s*)(\d+)/g, '$1"$2"');
-    let data;
+    let url = this.requestUrl(params);
+    let now = Date.now();
+    let cached = this._requestCache.get(url);
+    let ttl = /[?&]ac=detail(?:&|$)/i.test(url) ? 30000 : 4000;
+    if (cached && now - cached.time < ttl) return cached.data;
+    let pending = this._requestPending.get(url);
+    if (pending) return pending;
+    let task = (async () => {
+      let res = await Network.get(url, this.headers);
+      if (res.status !== 200) throw `极品资源1接口状态异常: ${res.status}`;
+      let text = String(res.body || "").trim();
+      if (!text || text[0] !== "{") throw "极品资源1返回了无法解析的数据";
+      text = text.replace(/("vod_id"\s*:\s*)(\d+)/g, '$1"$2"');
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (_) {
+        throw "极品资源1返回了无效 JSON";
+      }
+      if (data.code !== undefined && Number(data.code) !== 1) {
+        throw data.msg || "极品资源1接口返回错误";
+      }
+      this._requestCache.set(url, { time: Date.now(), data: data });
+      return data;
+    })();
+    this._requestPending.set(url, task);
     try {
-      data = JSON.parse(text);
-    } catch (_) {
-      throw "极品资源1返回了无效 JSON";
+      return await task;
+    } finally {
+      this._requestPending.delete(url);
     }
-    if (data.code !== undefined && Number(data.code) !== 1) {
-      throw data.msg || "极品资源1接口返回错误";
-    }
-    return data;
   }
 
   clean(value) {
@@ -108,6 +127,17 @@ class PrivateJipinVip1Video extends ComicSource {
     return match ? match[0].replace(/[),;]+$/, "") : "";
   }
 
+  normalizeStreamUrl(value) {
+    let url = this.extractStream(value);
+    // The first URL is a small master playlist. The /hls/ child playlist is
+    // the actual VOD media list and avoids one extra network round trip.
+    if (!url || /\/hls\/index\.m3u8(?:[?#]|$)/i.test(url)) return url;
+    if (/jipinvipplay\.com/i.test(url)) {
+      return url.replace(/\/index\.m3u8(?=[?#]|$)/i, "/hls/index.m3u8");
+    }
+    return url;
+  }
+
   extractEntries(item) {
     let chapters = new Map();
     let groups = String(item && item.vod_play_url || "").split("$$$");
@@ -118,7 +148,7 @@ class PrivateJipinVip1Video extends ComicSource {
         let separator = value.indexOf("$");
         let label = separator >= 0 ? value.substring(0, separator).trim() : "播放";
         let url = separator >= 0 ? value.substring(separator + 1).trim() : value;
-        url = this.extractStream(url);
+        url = this.normalizeStreamUrl(url);
         if (!url) continue;
         chapters.set(url, label || "播放");
       }
@@ -147,14 +177,19 @@ class PrivateJipinVip1Video extends ComicSource {
           ["视频二区", "69"],
           ["视频四区", "79"],
         ];
-        let result = [];
-        for (let section of sections) {
-          try {
-            let page = await this.loadList(section[1], 1);
-            if (page.comics.length > 0) result.push({ title: section[0], comics: page.comics });
-          } catch (_) {}
-        }
-        return result;
+        let result = await Promise.all(
+          sections.map(async (section) => {
+            try {
+              let page = await this.loadList(section[1], 1);
+              return page.comics.length > 0
+                ? { title: section[0], comics: page.comics }
+                : null;
+            } catch (_) {
+              return null;
+            }
+          })
+        );
+        return result.filter((section) => section != null);
       },
     },
   ];
@@ -208,7 +243,7 @@ class PrivateJipinVip1Video extends ComicSource {
     },
 
     loadEp: async (comicId, epId) => {
-      let videoUrl = this.extractStream(epId);
+      let videoUrl = this.normalizeStreamUrl(epId);
       if (!videoUrl) {
         let data = await this.request({ ac: "detail", ids: String(comicId) });
         let item = Array.isArray(data.list) ? data.list[0] : null;

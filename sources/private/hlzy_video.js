@@ -3,9 +3,12 @@ class PrivateHlzyVideo extends ComicSource {
   type = "video";
   name = "HLZY资源（私人）";
   key = "private_hlzy_video";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js";
+
+  _requestCache = new Map();
+  _requestPending = new Map();
 
   settings = {
     api: {
@@ -39,21 +42,37 @@ class PrivateHlzyVideo extends ComicSource {
   }
 
   async request(params) {
-    let res = await Network.get(this.requestUrl(params), this.headers);
-    if (res.status !== 200) throw `HLZY接口状态异常: ${res.status}`;
-    let text = String(res.body || "").trim();
-    if (!text || text[0] !== "{") throw "HLZY返回了无法解析的数据";
-    text = text.replace(/("vod_id"\s*:\s*)(\d+)/g, '$1"$2"');
-    let data;
+    let url = this.requestUrl(params);
+    let now = Date.now();
+    let cached = this._requestCache.get(url);
+    let ttl = /[?&]ac=detail(?:&|$)/i.test(url) ? 30000 : 4000;
+    if (cached && now - cached.time < ttl) return cached.data;
+    let pending = this._requestPending.get(url);
+    if (pending) return pending;
+    let task = (async () => {
+      let res = await Network.get(url, this.headers);
+      if (res.status !== 200) throw `HLZY接口状态异常: ${res.status}`;
+      let text = String(res.body || "").trim();
+      if (!text || text[0] !== "{") throw "HLZY返回了无法解析的数据";
+      text = text.replace(/("vod_id"\s*:\s*)(\d+)/g, '$1"$2"');
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (_) {
+        throw "HLZY返回了无效 JSON";
+      }
+      if (data.code !== undefined && Number(data.code) !== 1) {
+        throw data.msg || "HLZY接口返回错误";
+      }
+      this._requestCache.set(url, { time: Date.now(), data: data });
+      return data;
+    })();
+    this._requestPending.set(url, task);
     try {
-      data = JSON.parse(text);
-    } catch (_) {
-      throw "HLZY返回了无效 JSON";
+      return await task;
+    } finally {
+      this._requestPending.delete(url);
     }
-    if (data.code !== undefined && Number(data.code) !== 1) {
-      throw data.msg || "HLZY接口返回错误";
-    }
-    return data;
   }
 
   clean(value) {
@@ -150,16 +169,19 @@ class PrivateHlzyVideo extends ComicSource {
           ["日韩专区", "30"],
           ["精品专区", "31"],
         ];
-        let result = [];
-        for (let section of sections) {
-          try {
-            let page = await this.loadList(section[1], 1);
-            if (page.comics.length > 0) {
-              result.push({ title: section[0], comics: page.comics });
+        let result = await Promise.all(
+          sections.map(async (section) => {
+            try {
+              let page = await this.loadList(section[1], 1);
+              return page.comics.length > 0
+                ? { title: section[0], comics: page.comics }
+                : null;
+            } catch (_) {
+              return null;
             }
-          } catch (_) {}
-        }
-        return result;
+          })
+        );
+        return result.filter((section) => section != null);
       },
     },
   ];
