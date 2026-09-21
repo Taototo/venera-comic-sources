@@ -3,7 +3,7 @@ class PrivateHlzyVideo extends ComicSource {
   type = "video";
   name = "HLZY资源（私人）";
   key = "private_hlzy_video";
-  version = "1.0.1";
+  version = "1.0.2";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js";
 
@@ -15,6 +15,15 @@ class PrivateHlzyVideo extends ComicSource {
       title: "JSON 接口",
       type: "input",
       default: "https://www.hlzyapi.vip/api.php/provide/vod/",
+    },
+    playbackDomain: {
+      title: "播放线路",
+      type: "select",
+      options: [
+        { value: "https://hlzy2.net", text: "hlzy2.net（备用线路）" },
+        { value: "https://svip.hlzy2.net", text: "svip.hlzy2.net（原始线路）" },
+      ],
+      default: "https://hlzy2.net",
     },
   };
 
@@ -32,6 +41,14 @@ class PrivateHlzyVideo extends ComicSource {
       Accept: "application/json,text/plain,*/*",
       Referer: "https://www.hlzyapi.vip/",
     };
+  }
+
+  get playbackDomain() {
+    let value =
+      this.loadSetting("playbackDomain") || this.settings.playbackDomain.default;
+    value = String(value).trim();
+    if (!/^https?:\/\//i.test(value)) value = `https://${value}`;
+    return value.replace(/\/+$/, "");
   }
 
   requestUrl(params) {
@@ -130,6 +147,15 @@ class PrivateHlzyVideo extends ComicSource {
     return match ? match[0].replace(/[),;]+$/, "") : "";
   }
 
+  normalizeStreamUrl(value) {
+    let url = this.extractStream(value);
+    if (!url) return url;
+    return url.replace(
+      /^https?:\/\/svip\.hlzy2\.net/i,
+      this.playbackDomain
+    );
+  }
+
   extractEntries(item) {
     let chapters = new Map();
     let groups = String(item && item.vod_play_url || "").split("$$$");
@@ -140,7 +166,7 @@ class PrivateHlzyVideo extends ComicSource {
         let separator = value.indexOf("$");
         let label = separator >= 0 ? value.substring(0, separator).trim() : "播放";
         let url = separator >= 0 ? value.substring(separator + 1).trim() : value;
-        url = this.extractStream(url);
+        url = this.normalizeStreamUrl(url);
         if (!url) continue;
         chapters.set(url, label || "播放");
       }
@@ -238,7 +264,7 @@ class PrivateHlzyVideo extends ComicSource {
     },
 
     loadEp: async (comicId, epId) => {
-      let videoUrl = this.extractStream(epId);
+      let videoUrl = this.normalizeStreamUrl(epId);
       if (!videoUrl) {
         let data = await this.request({ ac: "detail", ids: String(comicId) });
         let item = Array.isArray(data.list) ? data.list[0] : null;
