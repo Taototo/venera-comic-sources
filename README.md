@@ -42,17 +42,9 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/dr
 视频源逐条地址：
 
 ```text
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/public_test_video.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/91short_video.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/tianya_video.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/juliang_video.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/360zy_video.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/zuidapi_video.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hongniu_video.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/maoyan_video.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/xingba111_video.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/heiapi_video.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jipinvip1_video.js
 ```
 
@@ -61,11 +53,10 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/ji
 ## 目录和分类
 
 - `comic_index.json`：9 个漫画源的清单。
-- `video_index.json`：12 个视频源的清单。
-- `index.json`：兼容旧版本的混合清单，已同步移除本轮弃用的视频源。
+- `video_index.json`：4 个视频源的清单。
+- `index.json`：兼容旧版本的混合清单，仅保留这 4 个视频源。
 - `sources/ven/`：从 Ven 配置整理并保留的再漫画、漫小肆、漫画人、禁漫天堂和拷贝漫画。
-- `sources/private/`：从原始 `hj.json` 转换并保留的包子漫画、紳士漫畫和魅影画廊，以及新增的大人漫画、天涯资源、巨量资源和其他视频源。
-- `sources/ven/public_test_video.js`：使用 W3C、Mozilla 和 Mux 公开测试媒体的播放器链路测试源，不依赖第三方影视站点。
+- `sources/private/`：从原始 `hj.json` 转换并保留的包子漫画、紳士漫畫和魅影画廊，以及新增的大人漫画和四个视频源（天涯、巨量、HLZY、极品资源1）。
 - `sources/_venera_.js`：Venera JavaScript API 类型提示文件，仅供编辑器使用。
 - `legacy/hj.json`：最初的 Legado 源文件备份，不可直接作为 Venera 清单导入。
 - `SOURCE_CHECK.md`：本次网络检测、搬运和排除结果。

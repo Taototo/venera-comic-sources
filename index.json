@@ -35,14 +35,6 @@
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/copy_manga.js"
   },
   {
-    "name": "公开测试视频（Ven）",
-    "key": "public_test_video",
-    "version": "1.0.1",
-    "type": "video",
-    "description": "公开版权测试源；W3C、Mozilla 和 Mux 测试媒体，用于验证视频首页、分类、详情和播放器。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/public_test_video.js"
-  },
-  {
     "name": "包子漫画（私人）",
     "key": "hj_baozi",
     "version": "1.1.7",
@@ -71,14 +63,6 @@
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js"
   },
   {
-    "name": "91短视频（私人）",
-    "key": "private_91short_video",
-    "version": "1.0.1",
-    "type": "video",
-    "description": "私人视频配置；默认使用 cn8.91short.com，支持手动替换镜像域名；当前网络无法稳定验证该站点。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/91short_video.js"
-  },
-  {
     "name": "天涯资源（私人）",
     "key": "private_tianya_video",
     "version": "1.0.2",
@@ -95,60 +79,12 @@
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/juliang_video.js"
   },
   {
-    "name": "360资源（私人）",
-    "key": "private_360zy_video",
-    "version": "1.0.0",
-    "type": "video",
-    "description": "私人配置；支持 360 标准 JSON 和 360 m3u8 JSON 线路，列表、分类、搜索、详情和多集播放均使用采集接口。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/360zy_video.js"
-  },
-  {
-    "name": "最大资源（私人）",
-    "key": "private_zuidapi_video",
-    "version": "1.0.0",
-    "type": "video",
-    "description": "私人配置；默认使用最大 m3u8 JSON 接口，支持标准 JSON 线路切换和直接 m3u8 选集。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/zuidapi_video.js"
-  },
-  {
-    "name": "红牛资源（私人）",
-    "key": "private_hongniu_video",
-    "version": "1.0.0",
-    "type": "video",
-    "description": "私人配置；默认使用红牛 m3u8 JSON 接口，优先返回直接 m3u8 播放地址。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hongniu_video.js"
-  },
-  {
-    "name": "猫眼资源（私人）",
-    "key": "private_maoyan_video",
-    "version": "1.0.0",
-    "type": "video",
-    "description": "私人配置；默认使用猫眼 m3u8 JSON 接口，支持标准 JSON 线路、分类、搜索和多集播放。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/maoyan_video.js"
-  },
-  {
-    "name": "杏吧 X 站（私人）",
-    "key": "private_xingba111_video",
-    "version": "1.0.0",
-    "type": "video",
-    "description": "私人配置；使用 xingba111.com JSON 采集接口，列表、分类、搜索、详情和 m3u8 选集均由接口提供。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/xingba111_video.js"
-  },
-  {
     "name": "HLZY资源（私人）",
     "key": "private_hlzy_video",
     "version": "1.0.2",
     "type": "video",
     "description": "私人视频配置；使用 www.hlzyapi.vip JSON 接口，支持 hlzy2.net 与 svip.hlzy2.net 播放线路切换，并带短时缓存、并发去重。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js"
-  },
-  {
-    "name": "黑 API资源（私人）",
-    "key": "private_heiapi_video",
-    "version": "1.0.0",
-    "type": "video",
-    "description": "私人视频配置；使用 api.heiapi.cc JSON 接口，支持分类、搜索、详情、多集选集和 HLS 播放。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/heiapi_video.js"
   },
   {
     "name": "极品资源1（私人）",
