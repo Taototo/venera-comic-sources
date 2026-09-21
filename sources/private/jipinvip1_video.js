@@ -3,7 +3,7 @@ class PrivateJipinVip1Video extends ComicSource {
   type = "video";
   name = "极品资源1（私人）";
   key = "private_jipinvip1_video";
-  version = "1.0.1";
+  version = "1.0.2";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jipinvip1_video.js";
 
@@ -15,6 +15,21 @@ class PrivateJipinVip1Video extends ComicSource {
       title: "JSON 接口",
       type: "input",
       default: "https://jipinvip1.com/api.php/provide/vod/",
+    },
+    playbackDomain: {
+      title: "播放线路",
+      type: "select",
+      options: [
+        {
+          value: "https://m2.jipinvipplay.com",
+          text: "m2.jipinvipplay.com（原始线路）",
+        },
+        {
+          value: "https://jipinvipplay.com",
+          text: "jipinvipplay.com（备用线路）",
+        },
+      ],
+      default: "https://m2.jipinvipplay.com",
     },
   };
 
@@ -32,6 +47,23 @@ class PrivateJipinVip1Video extends ComicSource {
       Accept: "application/json,text/plain,*/*",
       Referer: "https://jipinvip1.com/",
     };
+  }
+
+  get playbackDomain() {
+    let value =
+      this.loadSetting("playbackDomain") || this.settings.playbackDomain.default;
+    value = String(value).trim();
+    if (!/^https?:\/\//i.test(value)) value = `https://${value}`;
+    return value.replace(/\/+$/, "");
+  }
+
+  get playbackHeaders() {
+    let headers = Object.assign({}, this.headers);
+    // The apex fallback is routed by the original virtual-host header.
+    if (this.playbackDomain === "https://jipinvipplay.com") {
+      headers.Host = "m2.jipinvipplay.com";
+    }
+    return headers;
   }
 
   requestUrl(params) {
@@ -131,8 +163,13 @@ class PrivateJipinVip1Video extends ComicSource {
     let url = this.extractStream(value);
     // The first URL is a small master playlist. The /hls/ child playlist is
     // the actual VOD media list and avoids one extra network round trip.
-    if (!url || /\/hls\/index\.m3u8(?:[?#]|$)/i.test(url)) return url;
+    if (!url) return url;
     if (/jipinvipplay\.com/i.test(url)) {
+      url = url.replace(
+        /^https?:\/\/m2\.jipinvipplay\.com/i,
+        this.playbackDomain
+      );
+      if (/\/hls\/index\.m3u8(?:[?#]|$)/i.test(url)) return url;
       return url.replace(/\/index\.m3u8(?=[?#]|$)/i, "/hls/index.m3u8");
     }
     return url;
@@ -258,7 +295,7 @@ class PrivateJipinVip1Video extends ComicSource {
       if (!videoUrl) throw "极品资源1当前集数没有可用的视频地址";
       return {
         images: [
-          `venera-video:${JSON.stringify({ url: videoUrl, title: "极品资源1", headers: this.headers })}`,
+            `venera-video:${JSON.stringify({ url: videoUrl, title: "极品资源1", headers: this.playbackHeaders })}`,
         ],
       };
     },

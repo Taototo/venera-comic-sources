@@ -50,9 +50,9 @@
   {
     "name": "极品资源1（私人）",
     "key": "private_jipinvip1_video",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "type": "video",
-    "description": "私人视频配置；使用 jipinvip1.com JSON 接口，带短时缓存、并发去重，并直连 HLS 子清单，支持分类、搜索、详情、多集选集和 HLS 播放。",
+    "description": "私人视频配置；使用 jipinvip1.com JSON 接口，支持 m2.jipinvipplay.com 与备用 Host 线路切换，并带短时缓存、并发去重。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jipinvip1_video.js"
   }
 ]
