@@ -3,7 +3,7 @@ class PrivateTianyaVideo extends ComicSource {
   type = "video";
   name = "天涯资源（私人）";
   key = "private_tianya_video";
-  version = "1.1.0";
+  version = "1.2.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/tianya_video.js";
 
@@ -23,6 +23,11 @@ class PrivateTianyaVideo extends ComicSource {
       ],
       default: "https://ty.tyyszy5.com/api.php/provide/vod/",
     },
+    web: {
+      title: "网页筛选地址",
+      type: "input",
+      default: "https://tyyszy.com",
+    },
   };
 
   get apiUrl() {
@@ -30,6 +35,13 @@ class PrivateTianyaVideo extends ComicSource {
     value = String(value).trim();
     if (!/^https?:\/\//i.test(value)) value = `https://${value}`;
     return value.replace(/[?&]+$/, "");
+  }
+
+  get webUrl() {
+    let value = this.loadSetting("web") || this.settings.web.default;
+    value = String(value).trim();
+    if (!/^https?:\/\//i.test(value)) value = `https://${value}`;
+    return value.replace(/\/+$/, "");
   }
 
   get headers() {
@@ -63,6 +75,185 @@ class PrivateTianyaVideo extends ComicSource {
       throw data.msg || "天涯资源接口返回错误";
     }
     return data;
+  }
+
+  htmlDecode(value) {
+    return String(value || "")
+      .replace(/&nbsp;|&#160;/gi, " ")
+      .replace(/&amp;/gi, "&")
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;|&apos;/gi, "'")
+      .replace(/&lt;/gi, "<")
+      .replace(/&gt;/gi, ">")
+      .replace(/&#(x[0-9a-f]+|[0-9]+);/gi, (_, code) => {
+        let value = String(code);
+        let radix = value[0].toLowerCase() === "x" ? 16 : 10;
+        let number = parseInt(value.replace(/^x/i, ""), radix);
+        return Number.isFinite(number) ? String.fromCharCode(number) : "";
+      });
+  }
+
+  text(value) {
+    return this.htmlDecode(String(value || "").replace(/<[^>]*>/g, " "))
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  attr(block, name) {
+    let match = String(block || "").match(
+      new RegExp(`${name}\\s*=\\s*["']([^"']*)["']`, "i")
+    );
+    return match ? this.htmlDecode(match[1]) : "";
+  }
+
+  innerText(block, className) {
+    let match = String(block || "").match(
+      new RegExp(`<[^>]*class=["'][^"']*${className}[^"']*["'][^>]*>([\\s\\S]*?)<\\/[^>]+>`, "i")
+    );
+    return match ? this.text(match[1]) : "";
+  }
+
+  parseWebList(html) {
+    let cards = [];
+    let blocks = String(html || "").match(
+      /<a\b[^>]*class=["'][^"']*movie-card[^"']*["'][^>]*>[\s\S]*?<\/a>/gi
+    ) || [];
+    for (let block of blocks) {
+      let idMatch = block.match(/\/vod\/detail\/id\/(\d+)\.html/i);
+      if (!idMatch) continue;
+      let title = this.attr(block, "data-name") || this.innerText(block, "movie-name");
+      let cover = this.attr(block, "data-src") || this.attr(block, "src");
+      let category = this.innerText(block, "movie-category");
+      let status = this.innerText(block, "episode-status");
+      let update = this.innerText(block, "update-time");
+      if (!title) continue;
+      let subtitle = [category, status, update].filter((value) => value).join(" · ");
+      cards.push({
+        id: String(idMatch[1]),
+        title: title,
+        cover: cover,
+        subtitle: subtitle,
+        update: update,
+      });
+    }
+    let maxPage = 1;
+    let pages = String(html || "").match(/(?:\/page\/|page\/)(\d+)(?:\/|\.)/gi) || [];
+    for (let page of pages) {
+      let match = page.match(/(\d+)/);
+      if (match) maxPage = Math.max(maxPage, Number(match[1]));
+    }
+    return {
+      comics: cards.map((item) => new Comic({
+        id: item.id,
+        title: item.title,
+        subTitle: item.subtitle,
+        cover: item.cover,
+        description: item.update,
+      })),
+      records: cards,
+      maxPage: maxPage,
+    };
+  }
+
+  webRegion(value) {
+    return {
+      "中国大陆": "大陆",
+      "中国香港": "香港",
+      "中国台湾": "台湾",
+    }[String(value)] || String(value);
+  }
+
+  webOptions(options) {
+    let values = Array.isArray(options) ? options : [];
+    let valueAt = (index) => {
+      let value = values[index];
+      return value && String(value) !== "all" ? String(value) : "";
+    };
+    return {
+      year: valueAt(0),
+      rating: valueAt(1),
+      sort: valueAt(2),
+      genre: valueAt(3),
+      region: valueAt(4),
+    };
+  }
+
+  webShowPath(typeId, page, options) {
+    let filters = this.webOptions(options);
+    let parts = [];
+    let sort = String(filters.sort || "").match(/^(time|year|score)\.(desc|asc)$/);
+    if (sort) parts.push(`by/${sort[1]}/order/${sort[2]}`);
+    if (filters.region) parts.push(`area/${encodeURIComponent(this.webRegion(filters.region))}`);
+    if (filters.genre) parts.push(`class/${encodeURIComponent(filters.genre)}`);
+    parts.push(`id/${encodeURIComponent(String(typeId))}`);
+    // The public page supports exact years. Decade choices remain visible in
+    // the app, but are not converted into a misleading single-year request.
+    if (/^\d{4}$/.test(filters.year)) parts.push(`year/${filters.year}`);
+    if (Number(page) > 1) parts.push(`page/${Number(page)}`);
+    return `/index.php/vod/show/${parts.join("/")}.html`;
+  }
+
+  async enrichWebRecords(records) {
+    let result = await Promise.all((records || []).map(async (record) => {
+      try {
+        let data = await this.request({ ac: "detail", ids: record.id });
+        let item = Array.isArray(data.list) ? data.list[0] : null;
+        return Object.assign({}, record, {
+          year: Number(item && item.vod_year) || 0,
+          score: Number(item && (item.vod_score || item.vod_douban_score)) || 0,
+        });
+      } catch (_) {
+        return Object.assign({}, record, { year: 0, score: 0 });
+      }
+    }));
+    return result;
+  }
+
+  async loadWebList(typeId, page, options) {
+    let url = `${this.webUrl}${this.webShowPath(typeId, page, options)}`;
+    let res = await Network.get(url, Object.assign({}, this.headers, {
+      Accept: "text/html,application/xhtml+xml",
+      Referer: `${this.webUrl}/`,
+    }));
+    if (res.status !== 200) throw `天涯网页筛选状态异常: ${res.status}`;
+    let result = this.parseWebList(res.body);
+    let filters = this.webOptions(options);
+    let records = result.records || [];
+    let needsDetails = Boolean(filters.rating) || /s$/i.test(filters.year || "") ||
+      /^(year|score)\.(?:desc|asc)$/.test(filters.sort || "");
+    if (needsDetails) records = await this.enrichWebRecords(records);
+    if (/^\d{4}s$/i.test(filters.year || "")) {
+      let start = Number(String(filters.year).substring(0, 4));
+      records = records.filter((record) => record.year >= start && record.year <= start + 9);
+    }
+    if (filters.rating) {
+      let minimum = Number(filters.rating);
+      records = records.filter((record) => record.score >= minimum);
+    }
+    if (filters.sort === "year.asc") records.sort((a, b) => a.year - b.year);
+    if (filters.sort === "year.desc") records.sort((a, b) => b.year - a.year);
+    if (filters.sort === "score.asc") records.sort((a, b) => a.score - b.score);
+    if (filters.sort === "score.desc") records.sort((a, b) => b.score - a.score);
+    result.comics = records.map((item) => new Comic({
+      id: item.id,
+      title: item.title,
+      subTitle: item.subtitle,
+      cover: item.cover,
+      description: item.update,
+    }));
+    return result;
+  }
+
+  async loadWebSearch(keyword, page) {
+    let encoded = encodeURIComponent(String(keyword || "").trim());
+    let pageNumber = Math.max(1, Number(page) || 1);
+    let path = `/index.php/vod/search/page/${pageNumber}/wd/${encoded}.html`;
+    let res = await Network.get(`${this.webUrl}${path}`, Object.assign({}, this.headers, {
+      Accept: "text/html,application/xhtml+xml",
+      Referer: `${this.webUrl}/`,
+    }));
+    if (res.status !== 200) throw `天涯网页搜索状态异常: ${res.status}`;
+    return this.parseWebList(res.body);
   }
 
   toComic(item) {
@@ -114,6 +305,17 @@ class PrivateTianyaVideo extends ComicSource {
   }
 
   async loadList(typeId, page, keyword, options) {
+    if (keyword) {
+      return this.loadWebSearch(keyword, page);
+    }
+    if (typeId && typeId !== "__latest") {
+      try {
+        return await this.loadWebList(typeId, page, options);
+      } catch (_) {
+        // Keep the JSON endpoint as a fallback when the public web template
+        // is temporarily unavailable.
+      }
+    }
     let params = { ac: "list", pg: Number(page) || 1 };
     if (typeId) params.t = typeId;
     if (keyword) params.wd = keyword;
@@ -171,11 +373,11 @@ class PrivateTianyaVideo extends ComicSource {
       type: "multiPartPage",
       load: async () => {
         let sections = [
-          ["最新更新", ""],
-          ["国产剧", "13"],
+          ["最新更新", "__latest"],
           ["电影", "1"],
-          ["动漫", "29"],
-          ["综艺", "25"],
+          ["电视剧", "2"],
+          ["综艺", "3"],
+          ["动漫", "4"],
         ];
         let result = [];
         for (let section of sections) {
@@ -248,7 +450,7 @@ class PrivateTianyaVideo extends ComicSource {
         ],
         itemType: "category",
         categoryParams: [
-          "", "1", "2", "3", "4", "6", "7", "8", "9", "10", "11", "12",
+          "__latest", "1", "2", "3", "4", "6", "7", "8", "9", "10", "11", "12",
           "13", "14", "15", "16", "17", "18", "19", "20", "23", "25", "26",
           "27", "28", "29", "30", "31", "39", "44", "45", "47",
           "54", "55", "63", "64", "65", "66", "67", "68", "69", "72", "73",
@@ -306,10 +508,9 @@ class PrivateTianyaVideo extends ComicSource {
 
   search = {
     load: async (keyword, options, page) => {
-      // The published Tianya API explicitly returns "暂不支持搜索" for wd.
-      // Keep the source usable without turning that expected limitation into
-      // a network error in the app.
-      return { comics: [], maxPage: 1 };
+      // The published JSON API does not implement wd search; use the site's
+      // HTML search endpoint instead.
+      return this.loadWebSearch(keyword, page || 1);
     },
     optionList: [],
   };

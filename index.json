@@ -65,9 +65,9 @@
   {
     "name": "天涯资源（私人）",
     "key": "private_tianya_video",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "type": "video",
-    "description": "私人配置；使用 tyyszyapi.com JSON 接口，补齐接口返回的全部分类，支持详情、多集和直接 m3u8 地址；接口搜索功能未开放。",
+    "description": "私人配置；使用天涯网页端真实分类、年份、地区、体裁和搜索筛选，JSON 接口负责详情、多集和 m3u8 播放地址。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/tianya_video.js"
   },
   {
