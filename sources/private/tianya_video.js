@@ -3,15 +3,25 @@ class PrivateTianyaVideo extends ComicSource {
   type = "video";
   name = "天涯资源（私人）";
   key = "private_tianya_video";
-  version = "1.0.1";
+  version = "1.0.2";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/tianya_video.js";
 
   settings = {
     api: {
       title: "JSON 接口",
-      type: "input",
-      default: "https://tyyszyapi.com/api.php/provide/vod/",
+      type: "select",
+      options: [
+        {
+          value: "https://ty.tyyszy5.com/api.php/provide/vod/",
+          text: "大陆优先线路",
+        },
+        {
+          value: "https://tyyszyapi.com/api.php/provide/vod/",
+          text: "天涯主线路",
+        },
+      ],
+      default: "https://ty.tyyszy5.com/api.php/provide/vod/",
     },
   };
 

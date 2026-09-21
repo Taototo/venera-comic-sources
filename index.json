@@ -81,7 +81,7 @@
   {
     "name": "天涯资源（私人）",
     "key": "private_tianya_video",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "type": "video",
     "description": "私人配置；使用 tyyszyapi.com JSON 接口，补齐接口返回的全部分类，支持详情、多集和直接 m3u8 地址；接口搜索功能未开放。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/tianya_video.js"
@@ -93,6 +93,46 @@
     "type": "video",
     "description": "私人配置；使用 api.juliang.live JSON 接口，保留大整数视频 ID 并支持分类、搜索、多线路选集和 m3u8。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/juliang_video.js"
+  },
+  {
+    "name": "360资源（私人）",
+    "key": "private_360zy_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人配置；支持 360 标准 JSON 和 360 m3u8 JSON 线路，列表、分类、搜索、详情和多集播放均使用采集接口。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/360zy_video.js"
+  },
+  {
+    "name": "最大资源（私人）",
+    "key": "private_zuidapi_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人配置；默认使用最大 m3u8 JSON 接口，支持标准 JSON 线路切换和直接 m3u8 选集。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/zuidapi_video.js"
+  },
+  {
+    "name": "红牛资源（私人）",
+    "key": "private_hongniu_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人配置；默认使用红牛 m3u8 JSON 接口，优先返回直接 m3u8 播放地址。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hongniu_video.js"
+  },
+  {
+    "name": "猫眼资源（私人）",
+    "key": "private_maoyan_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人配置；默认使用猫眼 m3u8 JSON 接口，支持标准 JSON 线路、分类、搜索和多集播放。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/maoyan_video.js"
+  },
+  {
+    "name": "杏吧 X 站（私人）",
+    "key": "private_xingba111_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人配置；使用 xingba111.com JSON 采集接口，列表、分类、搜索、详情和 m3u8 选集均由接口提供。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/xingba111_video.js"
   },
   {
     "name": "HLZY资源（私人）",
