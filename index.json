@@ -89,9 +89,9 @@
   {
     "name": "巨量资源（私人）",
     "key": "private_juliang_video",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "type": "video",
-    "description": "私人配置；使用 api.juliang.live JSON 接口，保留大整数视频 ID 并支持分类、搜索、多线路选集和 m3u8。",
+    "description": "私人配置；接入 juliang.app 网页端真实筛选接口，支持分类、年份、评分、排序、体裁、地区、语言、搜索、多线路选集和 m3u8。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/juliang_video.js"
   },
   {
