@@ -3,7 +3,7 @@ class PrivateTianyaVideo extends ComicSource {
   type = "video";
   name = "天涯资源（私人）";
   key = "private_tianya_video";
-  version = "1.0.2";
+  version = "1.1.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/tianya_video.js";
 
@@ -89,17 +89,47 @@ class PrivateTianyaVideo extends ComicSource {
     return { comics: comics, maxPage: maxPage };
   }
 
-  async loadList(typeId, page, keyword) {
+  parseFilterOptions(options) {
+    let values = Array.isArray(options) ? options : [];
+    let valueAt = (index) => {
+      let value = values[index];
+      return value && String(value) !== "all" ? String(value) : "";
+    };
+    let params = {};
+    let year = valueAt(0);
+    if (year) {
+      params.year = /^\d{4}s$/i.test(year)
+        ? `${year.substring(0, 4)}-${Number(year.substring(0, 4)) + 9}`
+        : year;
+    }
+    let rating = valueAt(1);
+    if (rating) params.vod_score = rating;
+    let sort = valueAt(2);
+    if (sort) params.order = sort;
+    let genre = valueAt(3);
+    if (genre) params.class = genre;
+    let region = valueAt(4);
+    if (region) params.area = region;
+    return params;
+  }
+
+  async loadList(typeId, page, keyword, options) {
     let params = { ac: "list", pg: Number(page) || 1 };
     if (typeId) params.t = typeId;
     if (keyword) params.wd = keyword;
+    Object.assign(params, this.parseFilterOptions(options));
     return this.parseList(await this.request(params));
   }
 
   extractEntries(item) {
-    let chapters = new Map();
     let groups = String(item && item.vod_play_url || "").split("$$$");
-    for (let group of groups) {
+    let playFrom = String(item && item.vod_play_from || "").split("$$$");
+    let grouped = {};
+    for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
+      let group = groups[groupIndex];
+      let route = (playFrom[groupIndex] || "").trim() ||
+        (groups.length > 1 ? `线路${groupIndex + 1}` : "默认线路");
+      let chapters = grouped[route] || {};
       for (let entry of group.split("#")) {
         let separator = entry.indexOf("$");
         if (separator < 0) continue;
@@ -107,10 +137,21 @@ class PrivateTianyaVideo extends ComicSource {
         let url = entry.substring(separator + 1).trim();
         if (!/^https?:\/\//i.test(url)) continue;
         if (!/\.(?:m3u8|mp4)(?:[?#]|$)/i.test(url)) continue;
-        if (!chapters.has(url)) chapters.set(url, label);
+        if (!chapters[url]) chapters[url] = label;
       }
+      if (Object.keys(chapters).length > 0) grouped[route] = chapters;
     }
-    return chapters;
+    if (Object.keys(grouped).length === 1) return grouped[Object.keys(grouped)[0]];
+    return grouped;
+  }
+
+  chapterCount(chapters) {
+    let count = 0;
+    for (let key of Object.keys(chapters || {})) {
+      let value = chapters[key];
+      count += value && typeof value === "object" ? Object.keys(value).length : 1;
+    }
+    return count;
   }
 
   extractStream(value) {
@@ -219,8 +260,48 @@ class PrivateTianyaVideo extends ComicSource {
 
   categoryComics = {
     load: async (category, param, options, page) =>
-      this.loadList(String(param || ""), page || 1),
-    optionList: [],
+      this.loadList(String(param || ""), page || 1, "", options),
+    optionList: [
+      {
+        label: "年份",
+        options: [
+          "all-全部", "2026-2026", "2025-2025", "2024-2024", "2023-2023",
+          "2022-2022", "2021-2021", "2020-2020", "2020s-2020年代",
+          "2010s-2010年代", "2000s-2000年代", "1990s-90年代", "1980s-80年代",
+          "1970s-70年代", "1960s-60年代",
+        ],
+      },
+      {
+        label: "评分",
+        options: ["all-全部", "6-6 分以上", "7-7 分以上", "8-8 分以上", "9-9 分以上"],
+      },
+      {
+        label: "排序",
+        options: [
+          "time.desc-最新入库", "time.asc-最早入库", "year.desc-年份从新到旧",
+          "year.asc-年份从旧到新", "score.desc-评分从高到低", "score.asc-评分从低到高",
+        ],
+      },
+      {
+        label: "体裁",
+        options: [
+          "all-全部", "动作-动作", "冒险-冒险", "动画-动画", "传记-传记", "喜剧-喜剧",
+          "犯罪-犯罪", "纪录-纪录", "剧情-剧情", "家庭-家庭", "奇幻-奇幻", "历史-历史",
+          "恐怖-恐怖", "同性-同性", "武侠-武侠", "音乐-音乐", "悬疑-悬疑", "真人秀-真人秀",
+          "爱情-爱情", "科幻-科幻", "短片-短片", "运动-运动", "惊悚-惊悚", "战争-战争", "西部-西部",
+        ],
+      },
+      {
+        label: "地区",
+        options: [
+          "all-全部", "中国大陆-中国大陆", "中国香港-中国香港", "中国台湾-中国台湾",
+          "美国-美国", "日本-日本", "韩国-韩国", "英国-英国", "法国-法国", "泰国-泰国",
+          "加拿大-加拿大", "德国-德国", "印度-印度", "西班牙-西班牙", "意大利-意大利",
+          "澳大利亚-澳大利亚", "俄罗斯-俄罗斯", "新加坡-新加坡", "马来西亚-马来西亚",
+          "菲律宾-菲律宾", "印度尼西亚-印度尼西亚", "越南-越南",
+        ],
+      },
+    ],
   };
 
   search = {
@@ -254,7 +335,7 @@ class PrivateTianyaVideo extends ComicSource {
         tags: { 类型: tags },
         chapters: chapters,
         url: this.requestUrl({ ac: "detail", ids: String(id) }),
-        maxPage: chapters.size,
+        maxPage: this.chapterCount(chapters),
       });
     },
 

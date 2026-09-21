@@ -3,7 +3,7 @@ class PrivateJipinVip1Video extends ComicSource {
   type = "video";
   name = "极品资源1（私人）";
   key = "private_jipinvip1_video";
-  version = "1.0.2";
+  version = "1.1.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jipinvip1_video.js";
 
@@ -176,9 +176,14 @@ class PrivateJipinVip1Video extends ComicSource {
   }
 
   extractEntries(item) {
-    let chapters = new Map();
     let groups = String(item && item.vod_play_url || "").split("$$$");
-    for (let group of groups) {
+    let playFrom = String(item && item.vod_play_from || "").split("$$$");
+    let grouped = {};
+    for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
+      let group = groups[groupIndex];
+      let route = (playFrom[groupIndex] || "").trim() ||
+        (groups.length > 1 ? `线路${groupIndex + 1}` : "默认线路");
+      let chapters = grouped[route] || {};
       for (let entry of group.split("#")) {
         let value = this.clean(entry).trim();
         if (!value) continue;
@@ -187,10 +192,34 @@ class PrivateJipinVip1Video extends ComicSource {
         let url = separator >= 0 ? value.substring(separator + 1).trim() : value;
         url = this.normalizeStreamUrl(url);
         if (!url) continue;
-        chapters.set(url, label || "播放");
+        if (!chapters[url]) chapters[url] = label || "播放";
+      }
+      if (Object.keys(chapters).length > 0) grouped[route] = chapters;
+    }
+    if (Object.keys(grouped).length === 1) return grouped[Object.keys(grouped)[0]];
+    return grouped;
+  }
+
+  chapterCount(chapters) {
+    let count = 0;
+    for (let key of Object.keys(chapters || {})) {
+      let value = chapters[key];
+      count += value && typeof value === "object" ? Object.keys(value).length : 1;
+    }
+    return count;
+  }
+
+  firstChapterId(chapters) {
+    for (let key of Object.keys(chapters || {})) {
+      let value = chapters[key];
+      if (value && typeof value === "object") {
+        let nested = this.firstChapterId(value);
+        if (nested) return nested;
+      } else {
+        return key;
       }
     }
-    return chapters;
+    return "";
   }
 
   categoryPart(name, entries) {
@@ -275,7 +304,7 @@ class PrivateJipinVip1Video extends ComicSource {
         tags: { 类型: tags },
         chapters: chapters,
         url: this.requestUrl({ ac: "detail", ids: String(id) }),
-        maxPage: chapters.size,
+        maxPage: this.chapterCount(chapters),
       });
     },
 
@@ -286,10 +315,7 @@ class PrivateJipinVip1Video extends ComicSource {
         let item = Array.isArray(data.list) ? data.list[0] : null;
         if (item) {
           let chapters = this.extractEntries(item);
-          for (let url of chapters.keys()) {
-            videoUrl = url;
-            break;
-          }
+          videoUrl = this.normalizeStreamUrl(this.firstChapterId(chapters));
         }
       }
       if (!videoUrl) throw "极品资源1当前集数没有可用的视频地址";

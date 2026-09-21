@@ -65,7 +65,7 @@
   {
     "name": "天涯资源（私人）",
     "key": "private_tianya_video",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "type": "video",
     "description": "私人配置；使用 tyyszyapi.com JSON 接口，补齐接口返回的全部分类，支持详情、多集和直接 m3u8 地址；接口搜索功能未开放。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/tianya_video.js"
@@ -73,15 +73,15 @@
   {
     "name": "巨量资源（私人）",
     "key": "private_juliang_video",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "type": "video",
-    "description": "私人配置；接入 juliang.app 网页端真实筛选接口，支持分类、年份、评分、排序、体裁、地区、语言、搜索、多线路选集和 m3u8。",
+    "description": "私人配置；接入 juliang.app 网页端真实筛选接口，支持分类、年份、评分、排序、体裁、地区、搜索、多线路选集和 m3u8。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/juliang_video.js"
   },
   {
     "name": "HLZY资源（私人）",
     "key": "private_hlzy_video",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "type": "video",
     "description": "私人视频配置；使用 www.hlzyapi.vip JSON 接口，支持 hlzy2.net 与 svip.hlzy2.net 播放线路切换，并带短时缓存、并发去重。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js"
@@ -89,7 +89,7 @@
   {
     "name": "极品资源1（私人）",
     "key": "private_jipinvip1_video",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "type": "video",
     "description": "私人视频配置；使用 jipinvip1.com JSON 接口，支持 m2.jipinvipplay.com 与备用 Host 线路切换，并带短时缓存、并发去重。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jipinvip1_video.js"

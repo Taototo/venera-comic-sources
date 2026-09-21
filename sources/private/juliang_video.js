@@ -3,7 +3,7 @@ class PrivateJuliangVideo extends ComicSource {
   type = "video";
   name = "巨量资源（私人）";
   key = "private_juliang_video";
-  version = "1.1.0";
+  version = "1.2.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/juliang_video.js";
 
@@ -221,17 +221,21 @@ class PrivateJuliangVideo extends ComicSource {
 
   async loadFilterOptions() {
     let data = await this.portalRequest("categories", {});
-    let options = (items, emptyLabel) => {
-      let result = [`all-${emptyLabel}`];
+    let options = (items, names, emptyLabel) => {
+      let byName = {};
       for (let item of Array.isArray(items) ? items : []) {
         if (!item || !item.code || !item.name) continue;
-        result.push(`${item.code}-${item.name}`);
+        byName[String(item.name)] = String(item.code);
+      }
+      let result = [`all-${emptyLabel}`];
+      for (let name of names) {
+        if (byName[name]) result.push(`${byName[name]}-${name}`);
       }
       return result;
     };
     let currentYear = new Date().getFullYear();
     let years = [`all-全部`];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 7; i++) {
       let year = currentYear - i;
       years.push(`${year}-${year}`);
     }
@@ -247,24 +251,50 @@ class PrivateJuliangVideo extends ComicSource {
       {
         label: "排序",
         options: [
+          "activated_at.desc-最新入库",
+          "activated_at.asc-最早入库",
+          "release_year.desc-年份从新到旧",
+          "release_year.asc-年份从旧到新",
           "vote_average.desc-评分从高到低",
-          "activated_at.desc-最近更新",
-          "activated_at.asc-最早更新",
-          "release_year.desc-上映年份从新到旧",
-          "release_year.asc-上映年份从旧到新",
           "vote_average.asc-评分从低到高",
         ],
       },
-      { label: "体裁", options: options(data.genreOptions, "全部") },
-      { label: "地区", options: options(data.regionOptions, "全部") },
-      { label: "语言", options: options(data.languageOptions, "全部") },
+      {
+        label: "体裁",
+        options: options(
+          data.genreOptions,
+          [
+            "动作", "冒险", "动画", "传记", "喜剧", "犯罪", "纪录", "剧情",
+            "家庭", "奇幻", "历史", "恐怖", "同性", "武侠", "音乐", "悬疑",
+            "真人秀", "爱情", "科幻", "短片", "运动", "惊悚", "战争", "西部",
+          ],
+          "全部",
+        ),
+      },
+      {
+        label: "地区",
+        options: options(
+          data.regionOptions,
+          [
+            "中国大陆", "中国香港", "中国台湾", "美国", "日本", "韩国", "英国",
+            "法国", "泰国", "加拿大", "德国", "印度", "西班牙", "意大利",
+            "澳大利亚", "俄罗斯", "新加坡", "马来西亚", "菲律宾", "印度尼西亚", "越南",
+          ],
+          "全部",
+        ),
+      },
     ];
   }
 
   extractEntries(item) {
-    let chapters = new Map();
     let groups = String(item && item.vod_play_url || "").split("$$$");
-    for (let group of groups) {
+    let playFrom = String(item && item.vod_play_from || "").split("$$$");
+    let grouped = {};
+    for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
+      let group = groups[groupIndex];
+      let route = (playFrom[groupIndex] || "").trim() ||
+        (groups.length > 1 ? `线路${groupIndex + 1}` : "默认线路");
+      let chapters = grouped[route] || {};
       for (let entry of group.split("#")) {
         let separator = entry.indexOf("$");
         if (separator < 0) continue;
@@ -272,10 +302,12 @@ class PrivateJuliangVideo extends ComicSource {
         let url = entry.substring(separator + 1).trim();
         if (!/^https?:\/\//i.test(url)) continue;
         if (!/\.(?:m3u8|mp4)(?:[?#]|$)/i.test(url)) continue;
-        if (!chapters.has(url)) chapters.set(url, label);
+        if (!chapters[url]) chapters[url] = label;
       }
+      if (Object.keys(chapters).length > 0) grouped[route] = chapters;
     }
-    return chapters;
+    if (Object.keys(grouped).length === 1) return grouped[Object.keys(grouped)[0]];
+    return grouped;
   }
 
   extractStream(value) {
@@ -321,7 +353,12 @@ class PrivateJuliangVideo extends ComicSource {
   chapterCount(chapters) {
     let count = 0;
     for (let key of Object.keys(chapters || {})) {
-      count += Object.keys(chapters[key] || {}).length;
+      let value = chapters[key];
+      if (value && typeof value === "object") {
+        count += Object.keys(value).length;
+      } else {
+        count += 1;
+      }
     }
     return count;
   }
@@ -489,7 +526,7 @@ class PrivateJuliangVideo extends ComicSource {
           tags: { 类型: tags },
           chapters: chapters,
           url: this.requestUrl({ ac: "detail", ids: String(id) }),
-          maxPage: chapters.size,
+          maxPage: this.chapterCount(chapters),
         });
       }
     },
