@@ -17,18 +17,26 @@
   },
   {
     "name": "黄果漫剧（私人）",
-    "key": "private_hguotv_video",
-    "version": "1.0.0",
+    "key": "private_huangguo_video",
+    "version": "1.1.0",
     "type": "video",
-    "description": "私人视频配置；可解析 hguotv.com 的短剧目录和详情。该站播放按钮跳转官方 App，网页未公开直接视频地址。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hguotv_video.js"
+    "description": "私人视频配置；使用黄果最新地址 kvl1.zlgncitla.cc，解析短剧列表、详情、选集和 videoInitialData 中的 m3u8 地址；最新地址获取页为 huangguoai.ai。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/huangguo_video.js"
   },
   {
     "name": "51吃瓜（私人）",
-    "key": "private_vfvyqtmj_video",
+    "key": "private_51_video",
+    "version": "1.1.0",
+    "type": "video",
+    "description": "私人视频配置；解析 analyst.gcmzmnli.cc 的文章列表、分类、详情和 dplayer data-config 中的标准/H265 播放线路。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/51_video.js"
+  },
+  {
+    "name": "91porna（私人）",
+    "key": "private_91porna_video",
     "version": "1.0.0",
     "type": "video",
-    "description": "私人视频配置；当前地址为 51 吃瓜入口/跳转页，未发现可供 Venera 直接播放的视频列表。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/vfvyqtmj_video.js"
+    "description": "私人视频配置；使用 abf79e.qbxscriyf.cc，解析视频首页、分类、搜索和详情。播放地址由站点动态接口提供，未返回真实地址时不会伪造播放链接。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/91porna_video.js"
   }
 ]
