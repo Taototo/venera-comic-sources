@@ -1,6 +1,6 @@
 # 源清单维护说明
 
-仓库只发布 `index.json`、`comic_index.json` 和 `video_index.json` 中列出的源文件。漫画源分为“Ven”和“私人”两类，视频源仅维护 HLZY 和极品资源1。
+仓库只发布 `index.json`、`comic_index.json` 和 `video_index.json` 中列出的源文件。漫画源分为“Ven”和“私人”两类，视频源仅维护 HLZY 和极品资源。
 
 ## 当前发布文件
 

@@ -44,7 +44,7 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/ji
 ## 目录和分类
 
 - `comic_index.json`：9 个漫画源的清单。
-- `video_index.json`：2 个视频源的清单，仅包含 HLZY 和极品资源1。
+- `video_index.json`：2 个视频源的清单，仅包含 HLZY 和极品资源。
 - `index.json`：兼容旧版本的混合清单，包含上述 11 个源。
 - `sources/ven/`：再漫画、漫小肆、漫画人、禁漫天堂和拷贝漫画。
 - `sources/private/`：包子漫画、紳士漫畫、魅影画廊、大人漫画、HLZY 视频和极品资源视频。

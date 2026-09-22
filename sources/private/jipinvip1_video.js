@@ -1,9 +1,9 @@
 /** @type {import('../_venera_.js')} */
 class PrivateJipinVip1Video extends ComicSource {
   type = "video";
-  name = "极品资源1（私人）";
+  name = "极品资源（私人）";
   key = "private_jipinvip1_video";
-  version = "1.1.0";
+  version = "1.1.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jipinvip1_video.js";
 
@@ -83,18 +83,18 @@ class PrivateJipinVip1Video extends ComicSource {
     if (pending) return pending;
     let task = (async () => {
       let res = await Network.get(url, this.headers);
-      if (res.status !== 200) throw `极品资源1接口状态异常: ${res.status}`;
+      if (res.status !== 200) throw `极品资源接口状态异常: ${res.status}`;
       let text = String(res.body || "").trim();
-      if (!text || text[0] !== "{") throw "极品资源1返回了无法解析的数据";
+      if (!text || text[0] !== "{") throw "极品资源返回了无法解析的数据";
       text = text.replace(/("vod_id"\s*:\s*)(\d+)/g, '$1"$2"');
       let data;
       try {
         data = JSON.parse(text);
       } catch (_) {
-        throw "极品资源1返回了无效 JSON";
+        throw "极品资源返回了无效 JSON";
       }
       if (data.code !== undefined && Number(data.code) !== 1) {
-        throw data.msg || "极品资源1接口返回错误";
+        throw data.msg || "极品资源接口返回错误";
       }
       this._requestCache.set(url, { time: Date.now(), data: data });
       return data;
@@ -234,7 +234,7 @@ class PrivateJipinVip1Video extends ComicSource {
 
   explore = [
     {
-      title: "极品资源1",
+      title: "极品资源",
       type: "multiPartPage",
       load: async () => {
         let sections = [
@@ -261,7 +261,7 @@ class PrivateJipinVip1Video extends ComicSource {
   ];
 
   category = {
-    title: "极品资源1",
+    title: "极品资源",
     parts: [
       this.categoryPart("视频一区", [["全部", 1], ["日韩无码", 54], ["国产精品", 55]]),
       this.categoryPart("视频二区", [["全部", 69], ["巨乳系列", 70], ["颜射系列", 71], ["口交视频", 72], ["自慰系列", 73], ["教师学生", 74], ["大秀视频", 75], ["明星换脸", 76]]),
@@ -292,12 +292,12 @@ class PrivateJipinVip1Video extends ComicSource {
     loadInfo: async (id) => {
       let data = await this.request({ ac: "detail", ids: String(id) });
       let item = Array.isArray(data.list) ? data.list[0] : null;
-      if (!item) throw "极品资源1没有找到该视频";
+      if (!item) throw "极品资源没有找到该视频";
       let chapters = this.extractEntries(item);
       let tags = [item.type_name, item.vod_area, item.vod_year]
         .filter((value) => value && String(value).trim());
       return new ComicDetails({
-        title: String(item.vod_name || "极品资源1"),
+        title: String(item.vod_name || "极品资源"),
         subTitle: String(item.vod_remarks || ""),
         cover: this.cover(item.vod_pic || item.vod_pic_thumb, id),
         description: String(item.vod_content || item.vod_blurb || ""),
@@ -318,10 +318,10 @@ class PrivateJipinVip1Video extends ComicSource {
           videoUrl = this.normalizeStreamUrl(this.firstChapterId(chapters));
         }
       }
-      if (!videoUrl) throw "极品资源1当前集数没有可用的视频地址";
+      if (!videoUrl) throw "极品资源当前集数没有可用的视频地址";
       return {
         images: [
-            `venera-video:${JSON.stringify({ url: videoUrl, title: "极品资源1", headers: this.playbackHeaders })}`,
+            `venera-video:${JSON.stringify({ url: videoUrl, title: "极品资源", headers: this.playbackHeaders })}`,
         ],
       };
     },
