@@ -81,7 +81,7 @@
   {
     "name": "黄果漫剧（私人）",
     "key": "private_huangguo_video",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "type": "video",
     "description": "私人视频配置；使用黄果最新地址 kvl1.zlgncitla.cc，解析短剧列表、详情、选集和 videoInitialData 中的 m3u8 地址；最新地址获取页为 huangguoai.ai。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/huangguo_video.js"

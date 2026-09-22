@@ -3,7 +3,9 @@ class PrivateHuangguoVideo extends ComicSource {
   type = "video";
   name = "黄果漫剧（私人）";
   key = "private_huangguo_video";
-  version = "1.1.0";
+  // The site rotates its playback domain frequently.  Bump this whenever the
+  // configured domain changes so installed apps invalidate the cached source.
+  version = "1.2.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/huangguo_video.js";
 
