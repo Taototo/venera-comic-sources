@@ -63,22 +63,6 @@
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js"
   },
   {
-    "name": "天涯资源（私人）",
-    "key": "private_tianya_video",
-    "version": "1.4.0",
-    "type": "video",
-    "description": "私人配置；使用天涯网页端真实分类、年份、地区、体裁和搜索筛选，JSON 接口负责详情、多集和 m3u8 播放地址。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/tianya_video.js"
-  },
-  {
-    "name": "巨量资源（私人）",
-    "key": "private_juliang_video",
-    "version": "1.4.0",
-    "type": "video",
-    "description": "私人配置；接入 juliang.app 网页端真实筛选接口，支持分类、年份、评分、排序、体裁、地区、搜索、多线路选集和 m3u8。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/juliang_video.js"
-  },
-  {
     "name": "HLZY资源（私人）",
     "key": "private_hlzy_video",
     "version": "1.1.0",

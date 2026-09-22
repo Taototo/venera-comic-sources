@@ -1,10 +1,8 @@
-# Venera 漫画源（Ven + 私人）
+# Venera 源集合（Ven + 私人）
 
-这是按 [Venera 漫画源规范](https://github.com/venera-app/venera/blob/master/doc/comic_source.md) 整理的源集合。清单只使用“Ven”和“私人”两种显示标识，不再用来源文件的历史名称区分。
+这是按 [Venera 漫画源规范](https://github.com/venera-app/venera/blob/master/doc/comic_source.md) 整理的源集合。清单只使用“Ven”和“私人”两种显示标识。
 
 ## 在 Venera 中添加
-
-在对应页面的源列表中添加清单地址。漫画和视频使用独立清单：
 
 漫画清单：
 
@@ -12,7 +10,7 @@
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/comic_index.json
 ```
 
-视频清单：
+视频清单（仅 HLZY、极品资源）：
 
 ```text
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/video_index.json
@@ -37,13 +35,6 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/ba
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/wnacg.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js
-```
-
-视频源逐条地址：
-
-```text
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/tianya_video.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/juliang_video.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jipinvip1_video.js
 ```
@@ -53,15 +44,14 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/ji
 ## 目录和分类
 
 - `comic_index.json`：9 个漫画源的清单。
-- `video_index.json`：4 个视频源的清单。
-- `index.json`：兼容旧版本的混合清单，仅保留这 4 个视频源。
-- `sources/ven/`：从 Ven 配置整理并保留的再漫画、漫小肆、漫画人、禁漫天堂和拷贝漫画。
-- `sources/private/`：从原始 `hj.json` 转换并保留的包子漫画、紳士漫畫和魅影画廊，以及新增的大人漫画和四个视频源（天涯、巨量、HLZY、极品资源1）。
+- `video_index.json`：2 个视频源的清单，仅包含 HLZY 和极品资源1。
+- `index.json`：兼容旧版本的混合清单，包含上述 11 个源。
+- `sources/ven/`：再漫画、漫小肆、漫画人、禁漫天堂和拷贝漫画。
+- `sources/private/`：包子漫画、紳士漫畫、魅影画廊、大人漫画、HLZY 视频和极品资源视频。
 - `sources/_venera_.js`：Venera JavaScript API 类型提示文件，仅供编辑器使用。
-- `legacy/hj.json`：最初的 Legado 源文件备份，不可直接作为 Venera 清单导入。
 - `SOURCE_CHECK.md`：本次网络检测、搬运和排除结果。
 
-私人源中的包子漫画和紳士漫畫保留历史 key，已安装的源可以直接更新；清单中的显示名称已经统一为“（私人）”。
+私人源中的包子漫画和紳士漫畫保留历史 key，已安装的源可以直接更新；清单中的显示名称统一为“（私人）”。
 
 ## 检查
 

@@ -1,4 +1,4 @@
-// Adapted from the Venera community configuration for the legacy hj.json entry.
+// Adapted from the Venera community configuration.
 class PrivateBaozi extends ComicSource {
   // 此漫画源的名称
   name = "包子漫画（私人）";

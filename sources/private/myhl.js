@@ -1,5 +1,5 @@
 /** @type {import('../_venera_.js')} */
-// Converted from the matching entry in the original hj.json.
+// Converted from the matching community source configuration.
 class PrivateMyhl extends ComicSource {
   name = "魅影画廊（私人）"
   key = "private_myhl"

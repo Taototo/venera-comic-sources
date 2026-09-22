@@ -1,4 +1,4 @@
-// Adapted from the Venera community configuration for the legacy hj.json entry.
+// Adapted from the Venera community configuration.
 class PrivateWnacg extends ComicSource {
     // Note: The fields which are marked as [Optional] should be removed if not used
 
