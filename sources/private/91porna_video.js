@@ -3,7 +3,9 @@ class Private91PornaVideo extends ComicSource {
   type = "video";
   name = "91porna（私人）";
   key = "private_91porna_video";
-  version = "1.0.0";
+  // The site moved playback into a generated embed_play.js response.  Bump
+  // the source version so installed apps refresh the old resolver.
+  version = "1.1.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/91porna_video.js";
 
@@ -160,6 +162,27 @@ class Private91PornaVideo extends ComicSource {
     return match ? match[0].replace(/[),;]+$/, "") : "";
   }
 
+  async resolveGeneratedEmbed(embedUrl) {
+    let embed = await Network.get(embedUrl, this.headers);
+    if (embed.status !== 200) return null;
+    let body = String(embed.body || "");
+
+    // The inline loader is packed, but its only per-video value is a long
+    // hexadecimal token.  Passing that token to embed_play.js is enough; the
+    // endpoint returns a small HTML fragment containing the real HLS source.
+    let tokens = body.match(/[a-f0-9]{100,}/gi) || [];
+    if (tokens.length === 0) return this.extractStream(body);
+    tokens.sort((left, right) => right.length - left.length);
+    let playUrl = this.absoluteUrl(`/index/embed_play.js?u=${encodeURIComponent(tokens[0])}`);
+    let play = await Network.get(playUrl, {
+      ...this.headers,
+      Referer: embedUrl,
+      Accept: "application/javascript,text/javascript,*/*;q=0.8",
+    });
+    if (play.status !== 200) return null;
+    return this.extractStream(play.body);
+  }
+
   videoKey(id) {
     let match = String(id || "").match(/[?&]video_key=([^&#]+)/i);
     return match ? decodeURIComponent(match[1]) : String(id || "").replace(/\D/g, "");
@@ -167,15 +190,23 @@ class Private91PornaVideo extends ComicSource {
 
   async resolveStream(id, initialUrl) {
     let key = this.videoKey(id);
-    let urls = [];
-    if (initialUrl) urls.push(initialUrl);
-    urls.push(
-      this.absoluteUrl(`/comic/index/embed?id=${encodeURIComponent(key)}`),
+    let embedUrl = initialUrl && /\/embed\b/i.test(initialUrl)
+      ? initialUrl
+      : this.absoluteUrl(`/comic/index/embed?id=${encodeURIComponent(key)}`);
+    try {
+      let stream = await this.resolveGeneratedEmbed(embedUrl);
+      if (stream) return { url: stream, referer: embedUrl };
+    } catch (_) {}
+
+    // Keep a few legacy fallbacks for older mirrors that still expose the
+    // address through a JSON endpoint or directly in the HTML.
+    let urls = [
+      initialUrl,
       this.absoluteUrl(`/api.php/api/video/detail?video_id=${encodeURIComponent(key)}`),
       this.absoluteUrl(`/api.php/api/video/play?video_id=${encodeURIComponent(key)}`),
       this.absoluteUrl(`/api.php/api/video/url?video_id=${encodeURIComponent(key)}`),
       this.absoluteUrl(`/comic/index/video?video_key=${encodeURIComponent(key)}`),
-    );
+    ];
     let seen = {};
     for (let url of urls) {
       if (!url || seen[url]) continue;

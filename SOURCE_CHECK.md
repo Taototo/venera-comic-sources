@@ -19,7 +19,7 @@
 | 私人 | 91短视频 | `cn8.91short.com` 当前多次返回 502，保留旧适配以便站点恢复 |
 | 私人 | 黄果漫剧 | `kvl1.zlgncitla.cc` 首页、详情、选集和 `videoInitialData` 中的 m3u8 地址已解析；最新地址获取页为 `huangguoai.ai` |
 | 私人 | 51吃瓜 | `analyst.gcmzmnli.cc` 文章列表、分类、详情和 dplayer 标准/H265 m3u8 地址已解析 |
-| 私人 | 91porna | `abf79e.qbxscriyf.cc` 首页、分类、搜索和详情可解析；当前播放地址由动态脚本接口提供，HTML/API 未返回可直接使用的 m3u8，适配器会明确报错而不伪造地址 |
+| 私人 | 91porna | `abf79e.qbxscriyf.cc` 首页、分类、搜索和详情可解析；适配器会继续请求 `/index/embed_play.js`，从动态响应中提取真实 m3u8 |
 
 ## 未加入清单
 
@@ -27,6 +27,6 @@
 
 ## 说明
 
-视频清单保留 HLZY，并维护 91 短视频、黄果漫剧、51 吃瓜和 91porna；App 端统一使用通用视频详情、线路、选集和播放器模块。91porna 在站点没有返回真实播放地址时不会生成假的 `venera-video:` 链接。
+视频清单保留 HLZY，并维护 91 短视频、黄果漫剧、51 吃瓜和 91porna；App 端统一使用通用视频详情、线路、选集和播放器模块。91porna 只有在动态接口返回真实 m3u8/mp4 后才生成 `venera-video:` 链接。
 
 拷贝漫画的网络发现接口当前返回 `t66y.com`，该域名在本次网络中不可达；本仓库固定使用已验证的 `api.copy-manga.com`，仍可在源设置中手动更换 API 地址。
