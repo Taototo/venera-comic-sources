@@ -71,11 +71,27 @@
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js"
   },
   {
-    "name": "极品资源（私人）",
-    "key": "private_jipinvip1_video",
-    "version": "1.1.1",
+    "name": "91短视频（私人）",
+    "key": "private_91short_video",
+    "version": "1.0.0",
     "type": "video",
-    "description": "私人视频配置；使用 jipinvip1.com JSON 接口，支持 m2.jipinvipplay.com 与备用 Host 线路切换，并带短时缓存、并发去重。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jipinvip1_video.js"
+    "description": "私人视频配置；解析 cn8.91short.com 的列表、分类、详情、缩略图和 m3u8 播放地址。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/short91_video.js"
+  },
+  {
+    "name": "黄果漫剧（私人）",
+    "key": "private_hguotv_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人视频配置；可解析 hguotv.com 的短剧目录和详情。该站播放按钮跳转官方 App，网页未公开直接视频地址。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hguotv_video.js"
+  },
+  {
+    "name": "51吃瓜（私人）",
+    "key": "private_vfvyqtmj_video",
+    "version": "1.0.0",
+    "type": "video",
+    "description": "私人视频配置；当前地址为 51 吃瓜入口/跳转页，未发现可供 Venera 直接播放的视频列表。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/vfvyqtmj_video.js"
   }
 ]
