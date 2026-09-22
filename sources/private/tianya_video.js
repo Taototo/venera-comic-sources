@@ -3,7 +3,7 @@ class PrivateTianyaVideo extends ComicSource {
   type = "video";
   name = "天涯资源（私人）";
   key = "private_tianya_video";
-  version = "1.3.0";
+  version = "1.4.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/tianya_video.js";
 
@@ -51,6 +51,22 @@ class PrivateTianyaVideo extends ComicSource {
       Accept: "application/json,text/plain,*/*",
       Referer: "https://tyyszy.com/",
     };
+  }
+
+  isSportsText(value) {
+    return /体育赛事|体育|赛事直播|足球|篮球|斯诺克|网球|台球|排球|棒球|冰球|乒乓|羽毛球|电竞赛事/i.test(
+      String(value || "")
+    );
+  }
+
+  isSportsTypeId(value) {
+    return ["48", "49", "50", "52"].includes(String(value || "").trim());
+  }
+
+  isSportsItem(item) {
+    return this.isSportsTypeId(item && item.type_id) ||
+      this.isSportsTypeId(item && item.type_pid) ||
+      this.isSportsText(item && item.type_name);
   }
 
   requestUrl(params) {
@@ -126,7 +142,7 @@ class PrivateTianyaVideo extends ComicSource {
       let category = this.innerText(block, "movie-category");
       let status = this.innerText(block, "episode-status");
       let update = this.innerText(block, "update-time");
-      if (!title) continue;
+      if (!title || this.isSportsText(`${category} ${title}`)) continue;
       let subtitle = [category, status, update].filter((value) => value).join(" · ");
       cards.push({
         id: String(idMatch[1]),
@@ -257,7 +273,7 @@ class PrivateTianyaVideo extends ComicSource {
   }
 
   toComic(item) {
-    if (!item || item.vod_id === undefined || !item.vod_name) return null;
+    if (this.isSportsItem(item) || !item || item.vod_id === undefined || !item.vod_name) return null;
     let subtitle = [item.type_name, item.vod_year, item.vod_remarks]
       .filter((value) => value && String(value).trim())
       .join(" · ");
@@ -305,6 +321,7 @@ class PrivateTianyaVideo extends ComicSource {
   }
 
   async loadList(typeId, page, keyword, options) {
+    if (this.isSportsTypeId(typeId)) return { comics: [], maxPage: 1 };
     if (keyword) {
       return this.loadWebSearch(keyword, page);
     }
@@ -404,9 +421,9 @@ class PrivateTianyaVideo extends ComicSource {
     parts: [{
       name: "主要大分类",
       type: "fixed",
-      categories: ["最新更新", "电影", "电视剧", "动漫", "综艺", "短剧", "体育赛事"],
+      categories: ["最新更新", "电影", "电视剧", "动漫", "综艺", "短剧"],
       itemType: "category",
-      categoryParams: ["__latest", "1", "2", "4", "3", "54", "48"],
+      categoryParams: ["__latest", "1", "2", "4", "3", "54"],
     }],
     enableRankingPage: false,
   };
@@ -435,6 +452,7 @@ class PrivateTianyaVideo extends ComicSource {
       let data = await this.request({ ac: "detail", ids: String(id) });
       let item = Array.isArray(data.list) ? data.list[0] : null;
       if (!item) throw "天涯资源没有找到该视频";
+      if (this.isSportsItem(item)) throw "该视频属于已屏蔽的体育赛事分类";
       let chapters = this.extractEntries(item);
       let tags = [item.type_name, item.vod_area, item.vod_year]
         .filter((value) => value && String(value).trim());

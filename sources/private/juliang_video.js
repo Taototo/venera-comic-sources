@@ -3,7 +3,7 @@ class PrivateJuliangVideo extends ComicSource {
   type = "video";
   name = "巨量资源（私人）";
   key = "private_juliang_video";
-  version = "1.3.0";
+  version = "1.4.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/juliang_video.js";
 
@@ -41,6 +41,29 @@ class PrivateJuliangVideo extends ComicSource {
       Accept: "application/json,text/plain,*/*",
       Referer: "https://juliang.app/library",
     };
+  }
+
+  isSportsText(value) {
+    return /sports|体育赛事|体育|赛事直播|足球|篮球|斯诺克|网球|台球|排球|棒球|冰球|乒乓|羽毛球|电竞赛事/i.test(
+      String(value || "")
+    );
+  }
+
+  isSportsTypeId(value) {
+    return ["6", "601", "602", "603", "604", "605"].includes(
+      String(value || "").trim()
+    );
+  }
+
+  isSportsPortalItem(item) {
+    return this.isSportsText(item && item.categoryName) ||
+      this.isSportsText(item && item.contentTypeCode);
+  }
+
+  isSportsJsonItem(item) {
+    return this.isSportsTypeId(item && item.type_id) ||
+      this.isSportsTypeId(item && item.type_pid) ||
+      this.isSportsText(item && item.type_name);
   }
 
   queryUrl(base, params) {
@@ -103,7 +126,7 @@ class PrivateJuliangVideo extends ComicSource {
   }
 
   toPortalComic(item) {
-    if (!item || item.contentId === undefined || !item.title) return null;
+    if (this.isSportsPortalItem(item) || !item || item.contentId === undefined || !item.title) return null;
     let details = [
       item.categoryName,
       item.releaseYear,
@@ -123,7 +146,7 @@ class PrivateJuliangVideo extends ComicSource {
   }
 
   toJsonComic(item) {
-    if (!item || item.vod_id === undefined || !item.vod_name) return null;
+    if (this.isSportsJsonItem(item) || !item || item.vod_id === undefined || !item.vod_name) return null;
     let subtitle = [item.type_name, item.vod_year, item.vod_remarks]
       .filter((value) => value && String(value).trim())
       .join(" · ");
@@ -208,6 +231,7 @@ class PrivateJuliangVideo extends ComicSource {
   }
 
   async loadList(typeId, page, keyword, options) {
+    if (this.isSportsTypeId(typeId)) return { comics: [], maxPage: 1 };
     try {
       return await this.loadPortalList(String(typeId || ""), page, keyword, options);
     } catch (portalError) {
@@ -380,7 +404,6 @@ class PrivateJuliangVideo extends ComicSource {
           ["综艺", "4"],
           ["短剧", "5"],
           ["AI制作", "7"],
-          ["体育赛事", "6"],
         ];
         let result = [];
         for (let section of sections) {
@@ -406,9 +429,9 @@ class PrivateJuliangVideo extends ComicSource {
     parts: [{
       name: "主要大分类",
       type: "fixed",
-      categories: ["今日更新", "电影", "电视剧", "动漫", "综艺", "短剧", "AI制作", "体育赛事"],
+      categories: ["今日更新", "电影", "电视剧", "动漫", "综艺", "短剧", "AI制作"],
       itemType: "category",
-      categoryParams: ["__today", "1", "2", "3", "4", "5", "7", "6"],
+      categoryParams: ["__today", "1", "2", "3", "4", "5", "7"],
     }],
     enableRankingPage: false,
   };
@@ -436,6 +459,7 @@ class PrivateJuliangVideo extends ComicSource {
     loadInfo: async (id) => {
       try {
         let item = await this.loadPortalInfo(id);
+        if (this.isSportsPortalItem(item)) throw "该视频属于已屏蔽的体育赛事分类";
         let chapters = this.portalChapters(item);
         let tags = [];
         for (let value of [
@@ -464,6 +488,7 @@ class PrivateJuliangVideo extends ComicSource {
         let data = await this.request({ ac: "detail", ids: String(id) });
         let item = Array.isArray(data.list) ? data.list[0] : null;
         if (!item) throw "巨量资源没有找到该视频";
+        if (this.isSportsJsonItem(item)) throw "该视频属于已屏蔽的体育赛事分类";
         let chapters = this.extractEntries(item);
         let tags = [item.type_name, item.vod_area, item.vod_year]
           .filter((value) => value && String(value).trim());
