@@ -174,11 +174,10 @@ class Private91PornaVideo extends ComicSource {
     if (tokens.length === 0) return this.extractStream(body);
     tokens.sort((left, right) => right.length - left.length);
     let playUrl = this.absoluteUrl(`/index/embed_play.js?u=${encodeURIComponent(tokens[0])}`);
-    let play = await Network.get(playUrl, {
-      ...this.headers,
-      Referer: embedUrl,
-      Accept: "application/javascript,text/javascript,*/*;q=0.8",
-    });
+    let playHeaders = this.headers;
+    playHeaders.Referer = embedUrl;
+    playHeaders.Accept = "application/javascript,text/javascript,*/*;q=0.8";
+    let play = await Network.get(playUrl, playHeaders);
     if (play.status !== 200) return null;
     return this.extractStream(play.body);
   }
