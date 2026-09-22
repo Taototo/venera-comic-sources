@@ -23,7 +23,7 @@ https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/comic_index.
 https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/video_index.json
 ```
 
-也可以逐条添加源文件：
+漫画源文件：
 
 ```text
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/zaimanhua.js
@@ -35,6 +35,10 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/ba
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/wnacg.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js
+```
+视频源文件：
+
+```text
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/short91_video.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/huangguo_video.js
