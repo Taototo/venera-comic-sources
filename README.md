@@ -10,7 +10,7 @@
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/comic_index.json
 ```
 
-视频清单（HLZY、91短视频、黄果漫剧、51吃瓜、91porna）：
+视频清单：
 
 ```text
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/video_index.json
