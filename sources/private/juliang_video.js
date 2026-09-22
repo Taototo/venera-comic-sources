@@ -3,7 +3,7 @@ class PrivateJuliangVideo extends ComicSource {
   type = "video";
   name = "巨量资源（私人）";
   key = "private_juliang_video";
-  version = "1.2.0";
+  version = "1.3.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/juliang_video.js";
 
@@ -402,71 +402,20 @@ class PrivateJuliangVideo extends ComicSource {
 
   category = {
     title: "巨量资源",
-    parts: [
-      {
-        name: "今日更新",
-        type: "fixed",
-        categories: ["今日更新"],
-        itemType: "category",
-        categoryParams: ["__today"],
-      },
-      {
-        name: "电影",
-        type: "fixed",
-        categories: ["电影", "动作片", "喜剧片", "爱情片", "科幻片", "恐怖片", "剧情片", "悬疑片", "惊悚片", "犯罪片", "奇幻片", "冒险片", "战争片", "历史片", "灾难片", "纪录片", "动画片", "家庭片", "音乐片", "西部片", "电视电影", "影视解说", "预告片", "伦理片", "写真热舞", "4K电影", "其他电影"],
-        itemType: "category",
-        categoryParams: ["1", "101", "102", "103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", "114", "115", "116", "117", "118", "119", "120", "121", "122", "190", "191", "192", "199"],
-      },
-      {
-        name: "电视剧",
-        type: "fixed",
-        categories: ["电视剧", "内地剧", "香港剧", "台湾剧", "韩剧", "日剧", "欧美剧", "东南亚剧", "纪录剧集", "其他剧集"],
-        itemType: "category",
-        categoryParams: ["2", "201", "202", "203", "204", "205", "206", "207", "208", "299"],
-      },
-      {
-        name: "动漫",
-        type: "fixed",
-        categories: ["动漫", "中国动漫", "日本动漫", "欧美动漫", "韩国动漫", "少儿动漫", "动画电影", "漫剧", "其他动漫"],
-        itemType: "category",
-        categoryParams: ["3", "301", "302", "303", "304", "305", "306", "307", "399"],
-      },
-      {
-        name: "综艺",
-        type: "fixed",
-        categories: ["综艺", "大陆综艺", "香港综艺", "台湾综艺", "韩国综艺", "日本综艺", "欧美综艺", "演唱会", "其他综艺"],
-        itemType: "category",
-        categoryParams: ["4", "401", "402", "403", "404", "405", "406", "407", "499"],
-      },
-      {
-        name: "短剧",
-        type: "fixed",
-        categories: ["短剧", "古装仙侠短剧", "年代穿越短剧", "脑洞悬疑短剧", "现代都市短剧", "女频恋爱短剧", "反转爽剧", "其他短剧"],
-        itemType: "category",
-        categoryParams: ["5", "501", "502", "503", "504", "505", "506", "599"],
-      },
-      {
-        name: "体育赛事",
-        type: "fixed",
-        categories: ["体育赛事", "足球", "篮球", "台球", "其他赛事", "网球"],
-        itemType: "category",
-        categoryParams: ["6", "601", "602", "603", "604", "605"],
-      },
-      {
-        name: "AI制作",
-        type: "fixed",
-        categories: ["AI制作", "AI漫剧"],
-        itemType: "category",
-        categoryParams: ["7", "701"],
-      },
-    ],
+    // 二级类型由视频页的高级筛选接管，源这里只声明顶部分类。
+    parts: [{
+      name: "主要大分类",
+      type: "fixed",
+      categories: ["今日更新", "电影", "电视剧", "动漫", "综艺", "短剧", "AI制作", "体育赛事"],
+      itemType: "category",
+      categoryParams: ["__today", "1", "2", "3", "4", "5", "7", "6"],
+    }],
     enableRankingPage: false,
   };
 
   categoryComics = {
     load: async (category, param, options, page) =>
       this.loadList(String(param || ""), page || 1, "", options),
-    optionLoader: async () => this.loadFilterOptions(),
   };
 
   search = {
