@@ -1,9 +1,10 @@
+javascript
 /** @type {import('../_venera_.js')} */
 class PrivateHlzyVideo extends ComicSource {
   type = "video";
   name = "HLZY资源（私人）";
   key = "private_hlzy_video";
-  version = "1.1.0";
+  version = "1.2.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js";
 
@@ -139,12 +140,15 @@ class PrivateHlzyVideo extends ComicSource {
     return this.parseList(await this.request(params));
   }
 
+  // ==== 改动 1：优先提取 mp4，没有才退回 m3u8 ====
   extractStream(value) {
     let text = this.clean(value);
-    let match = text.match(
-      /https?:\/\/[^"'<>\\\s]+?(?:\.m3u8|\.mp4)(?:\?[^"'<>\\\s]*)?/i
-    );
-    return match ? match[0].replace(/[),;]+$/, "") : "";
+    // 优先 mp4：mp4 的 seek 是瞬时生效的，不会出现长视频回弹
+    let mp4 = text.match(/https?:\/\/[^"'<>\\\s]+?\.mp4(?:\?[^"'<>\\\s]*)?/i);
+    if (mp4) return mp4[0].replace(/[),;]+$/, "");
+    // 没有 mp4 再退回 m3u8
+    let m3u8 = text.match(/https?:\/\/[^"'<>\\\s]+?\.m3u8(?:\?[^"'<>\\\s]*)?/i);
+    return m3u8 ? m3u8[0].replace(/[),;]+$/, "") : "";
   }
 
   normalizeStreamUrl(value) {
@@ -154,6 +158,39 @@ class PrivateHlzyVideo extends ComicSource {
       /^https?:\/\/svip\.hlzy2\.net/i,
       this.playbackDomain
     );
+  }
+
+  // ==== 改动 2：如果最终是 m3u8 主列表，解析出固定码率的子列表 ====
+  async resolveM3U8(url) {
+    // 非 m3u8 原样返回
+    if (!/\.m3u8/i.test(url)) return url;
+    try {
+      let res = await Network.get(url, this.headers);
+      if (res.status !== 200) return url;
+      let text = String(res.body || "");
+      // 不是 master playlist（没有 #EXT-X-STREAM-INF），原样返回
+      if (text.indexOf("#EXT-X-STREAM-INF") < 0) return url;
+      // 找第一条 #EXT-X-STREAM-INF 下面的 URL，取固定码率
+      let lines = text.split("\n");
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].startsWith("#EXT-X-STREAM-INF")) {
+          let next = (lines[i + 1] || "").trim();
+          if (next && next[0] !== "#") {
+            // 相对路径转绝对路径
+            if (/^https?:\/\//i.test(next)) return next;
+            try {
+              return new URL(next, url).toString();
+            } catch (_) {
+              return url;
+            }
+          }
+        }
+      }
+      return url;
+    } catch (_) {
+      // 解析失败，原样返回，交给播放器兜底
+      return url;
+    }
   }
 
   extractEntries(item) {
@@ -292,6 +329,7 @@ class PrivateHlzyVideo extends ComicSource {
       });
     },
 
+    // ==== 改动 3：loadEp 里对 m3u8 主列表做解析，拿到固定码率子列表 ====
     loadEp: async (comicId, epId) => {
       let videoUrl = this.normalizeStreamUrl(epId);
       if (!videoUrl) {
@@ -303,6 +341,10 @@ class PrivateHlzyVideo extends ComicSource {
         }
       }
       if (!videoUrl) throw "HLZY当前集数没有可用的视频地址";
+
+      // 如果是 m3u8 主列表，解析出固定码率的子列表，避免多码率切换导致 seek 混乱
+      videoUrl = await this.resolveM3U8(videoUrl);
+
       return {
         images: [
           `venera-video:${JSON.stringify({
