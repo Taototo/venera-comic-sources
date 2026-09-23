@@ -3,7 +3,7 @@ class Private51Video extends ComicSource {
   type = "video";
   name = "51吃瓜（私人）";
   key = "private_51_video";
-  version = "1.1.0";
+  version = "1.2.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/51_video.js";
 
@@ -11,7 +11,7 @@ class Private51Video extends ComicSource {
     domain: {
       title: "站点地址",
       type: "input",
-      default: "https://analyst.gcmzmnli.cc",
+      default: "https://51cg1.com",
     },
   };
 
@@ -19,7 +19,14 @@ class Private51Video extends ComicSource {
     let value = this.loadSetting("domain") || this.settings.domain.default;
     value = String(value).trim();
     if (!/^https?:\/\//i.test(value)) value = `https://${value}`;
-    return value.replace(/\/+$/, "");
+    value = value.replace(/\/+$/, "");
+    // The old analyst host now redirects through a rotating mirror.  Use the
+    // current canonical host directly so page and image Referer headers agree
+    // with the host that serves the HTML.
+    if (/^https?:\/\/analyst(?:\.[a-z0-9-]+)?\./i.test(value)) {
+      return "https://51cg1.com";
+    }
+    return value;
   }
 
   get headers() {
@@ -28,6 +35,19 @@ class Private51Video extends ComicSource {
         "Mozilla/5.0 (Linux; Android 12; K) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36",
       Accept: "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8",
       Referer: `${this.baseUrl}/`,
+    };
+  }
+
+  imageHeaders(imageUrl) {
+    let referer = `${this.baseUrl}/`;
+    try {
+      let origin = new URL(this.baseUrl).origin;
+      referer = `${origin}/`;
+    } catch (_) {}
+    return {
+      "User-Agent": this.headers["User-Agent"],
+      Referer: referer,
+      Accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
     };
   }
 
@@ -78,7 +98,7 @@ class Private51Video extends ComicSource {
     for (let script of item.querySelectorAll("script")) {
       let text = this.textOf(script);
       let match = text.match(/loadBannerDirect\s*\(\s*['"]([^'"]+)['"]/i);
-      if (match) return match[1];
+      if (match) return this.clean(match[1]);
     }
     let image = item.querySelector("img[data-src], img[data-original], img");
     return image
@@ -86,6 +106,39 @@ class Private51Video extends ComicSource {
           this.attribute(image, "data-original") ||
           this.attribute(image, "src")
       : "";
+  }
+
+  // 51 吃瓜的 /upload_01/ 图片不是普通 JPEG，而是 AES-CBC 加密后的
+  // base64 图片。网页端先把响应转成字节，再用下面固定的 key/iv 解密。
+  // Convert 使用 App 内置的 AES 实现，避免在源脚本中捆绑 CryptoJS。
+  decodeCoverResponse(bytes) {
+    try {
+      let key = Convert.encodeUtf8("f5d965df75336270");
+      let iv = Convert.encodeUtf8("97b60394abc2fbe1");
+      let decrypted = Convert.decryptAesCbc(bytes, key, iv);
+      let view = new Uint8Array(decrypted);
+      if (view.length === 0) return bytes;
+      let padding = view[view.length - 1];
+      if (padding > 0 && padding <= 16 && padding <= view.length) {
+        view = view.slice(0, view.length - padding);
+      }
+      let isImage = view.length >= 3 &&
+          ((view[0] === 0xff && view[1] === 0xd8 && view[2] === 0xff) ||
+           (view[0] === 0x89 && view[1] === 0x50 && view[2] === 0x4e) ||
+           (view[0] === 0x47 && view[1] === 0x49 && view[2] === 0x46) ||
+           (view.length >= 12 && view[0] === 0x52 && view[1] === 0x49 &&
+            view[2] === 0x46 && view[8] === 0x57 && view[9] === 0x45 &&
+            view[10] === 0x42 && view[11] === 0x50));
+      if (!isImage) return bytes;
+      // CryptoJS returns the decrypted bytes as a base64 string only for
+      // display in the browser; the underlying value is already the JPEG/
+      // GIF byte stream.  Return those bytes directly to the image decoder.
+      return view.buffer;
+    } catch (_) {
+      // Some mirrors still serve a normal image.  Returning the original
+      // response keeps those mirrors compatible with the same source.
+      return bytes;
+    }
   }
 
   parseComic(item) {
@@ -187,7 +240,10 @@ class Private51Video extends ComicSource {
   }
 
   comic = {
-    onThumbnailLoad: () => ({ headers: this.headers }),
+    onThumbnailLoad: (imageKey) => ({
+      headers: this.imageHeaders(imageKey),
+      onResponse: (bytes) => this.decodeCoverResponse(bytes),
+    }),
 
     loadInfo: async (id) => {
       let url = this.absoluteUrl(id);

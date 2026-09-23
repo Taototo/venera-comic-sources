@@ -5,7 +5,7 @@ class Private91PornaVideo extends ComicSource {
   key = "private_91porna_video";
   // The site moved playback into a generated embed_play.js response.  Bump
   // the source version so installed apps refresh the old resolver.
-  version = "1.1.0";
+  version = "1.2.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/91porna_video.js";
 
@@ -31,6 +31,42 @@ class Private91PornaVideo extends ComicSource {
       Accept: "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8",
       Referer: `${this.baseUrl}/`,
     };
+  }
+
+  imageHeaders(imageUrl) {
+    let referer = `${this.baseUrl}/`;
+    try {
+      referer = `${new URL(this.baseUrl).origin}/`;
+    } catch (_) {}
+    return {
+      "User-Agent": this.headers["User-Agent"],
+      Referer: referer,
+      Accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+    };
+  }
+
+  decodeCoverResponse(bytes) {
+    try {
+      let key = Convert.encodeUtf8("f5d965df75336270");
+      let iv = Convert.encodeUtf8("97b60394abc2fbe1");
+      let decrypted = Convert.decryptAesCbc(bytes, key, iv);
+      let view = new Uint8Array(decrypted);
+      if (view.length === 0) return bytes;
+      let padding = view[view.length - 1];
+      if (padding > 0 && padding <= 16 && padding <= view.length) {
+        view = view.slice(0, view.length - padding);
+      }
+      let isImage = view.length >= 3 &&
+          ((view[0] === 0xff && view[1] === 0xd8 && view[2] === 0xff) ||
+           (view[0] === 0x89 && view[1] === 0x50 && view[2] === 0x4e) ||
+           (view[0] === 0x47 && view[1] === 0x49 && view[2] === 0x46) ||
+           (view.length >= 12 && view[0] === 0x52 && view[1] === 0x49 &&
+            view[2] === 0x46 && view[8] === 0x57 && view[9] === 0x45 &&
+            view[10] === 0x42 && view[11] === 0x50));
+      return isImage ? view.buffer : bytes;
+    } catch (_) {
+      return bytes;
+    }
   }
 
   absoluteUrl(value) {
@@ -86,7 +122,10 @@ class Private91PornaVideo extends ComicSource {
     let image = item.querySelector("img[data-src], img[data-original], img");
     let cover = image
       ? this.attribute(image, "data-src") ||
+        this.attribute(image, "data-lazy-src") ||
         this.attribute(image, "data-original") ||
+        this.attribute(image, "data-cover") ||
+        this.attribute(image, "data-poster") ||
         this.attribute(image, "src")
       : "";
     let tags = [];
@@ -221,7 +260,10 @@ class Private91PornaVideo extends ComicSource {
   }
 
   comic = {
-    onThumbnailLoad: () => ({ headers: this.headers }),
+    onThumbnailLoad: (imageKey) => ({
+      headers: this.imageHeaders(imageKey),
+      onResponse: (bytes) => this.decodeCoverResponse(bytes),
+    }),
 
     loadInfo: async (id) => {
       let url = this.absoluteUrl(id);
