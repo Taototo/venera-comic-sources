@@ -1,8 +1,8 @@
 /** @type {import('../_venera_.js')} */
-class PrivateHlzyVideo extends ComicSource {
+class PrivateYuanlibVideo extends ComicSource {
   type = "video";
   name = "源力资源（私人）";
-  key = "private_hlzy_video";
+  key = "private_yuanlib_video";
   version = "1.3.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js";
