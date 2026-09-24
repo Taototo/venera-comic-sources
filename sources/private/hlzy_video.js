@@ -1,4 +1,4 @@
-javascript
+
 /** @type {import('../_venera_.js')} */
 class PrivateHlzyVideo extends ComicSource {
   type = "video";
