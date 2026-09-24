@@ -101,5 +101,11 @@
     "type": "video",
     "description": "私人视频配置；使用 abf79e.qbxscriyf.cc，解析视频首页、分类、搜索、详情及 embed_play.js 动态 HLS 播放地址。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/91porna_video.js"
-  }
+  },
+  {
+  "name": "源力资源（私人）",
+  "filename": "sources/private/yuanlib_video.js",
+  "version": "1.3.0",
+  "description": "源力资源视频源"
+}
 ]
