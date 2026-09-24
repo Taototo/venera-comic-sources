@@ -5,7 +5,7 @@ class PrivateYuanlibVideo extends ComicSource {
   key = "private_yuanlib_video";
   version = "1.3.0";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/yuanlib_video.js";
 
   _requestCache = new Map();
   _requestPending = new Map();
