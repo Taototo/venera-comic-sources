@@ -61,53 +61,5 @@
     "version": "1.0.0",
     "description": "私人配置；列表、搜索、章节和多 CDN 图片链路均已验证。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js"
-  },
-  {
-    "name": "HLZY资源（私人）",
-    "key": "private_hlzy_video",
-    "version": "1.1.0",
-    "type": "video",
-    "description": "私人视频配置；使用 www.hlzyapi.vip JSON 接口，支持 hlzy2.net 与 svip.hlzy2.net 播放线路切换，并带短时缓存、并发去重。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js"
-  },
-  {
-    "name": "91短视频（私人）",
-    "key": "private_91short_video",
-    "version": "1.0.1",
-    "type": "video",
-    "description": "私人视频配置；解析 cn8.91short.com 的列表、分类、详情、缩略图和 m3u8 播放地址。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/short91_video.js"
-  },
-  {
-    "name": "黄果漫剧（私人）",
-    "key": "private_huangguo_video",
-    "version": "1.2.1",
-    "type": "video",
-    "description": "私人视频配置；使用黄果最新地址 kvl1.zlgncitla.cc，解析短剧列表、详情、选集和 videoInitialData 中的 m3u8 地址；最新地址获取页为 huangguoai.ai。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/huangguo_video.js"
-  },
-  {
-    "name": "51吃瓜（私人）",
-    "key": "private_51_video",
-    "version": "1.2.0",
-    "type": "video",
-    "description": "私人视频配置；解析 51 吃瓜文章列表、分类、详情和 dplayer data-config 播放线路，并解码 CDN 缩略图。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/51_video.js"
-  },
-  {
-    "name": "91porna（私人）",
-    "key": "private_91porna_video",
-    "version": "1.2.0",
-    "type": "video",
-    "description": "私人视频配置；使用 abf79e.qbxscriyf.cc，解析视频首页、分类、搜索、详情及 embed_play.js 动态 HLS 播放地址。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/91porna_video.js"
-  },
-  {
-    "name": "源力资源（私人）",
-    "key": "private_yuanlib_video",
-    "version": "1.3.0",
-    "type": "video",
-    "description": "私人视频配置；使用 yuanlib.com JSON 接口，支持 yuanlib.com 与 svip.yuanlib.com 播放线路切换。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/yuanlib_video.js"
   }
 ]

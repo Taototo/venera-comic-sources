@@ -10,17 +10,10 @@
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/comic_index.json
 ```
 
-视频清单：
-
-```text
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/video_index.json
-```
-
 无法访问 jsDelivr 时可改用 GitHub Raw：
 
 ```text
 https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/comic_index.json
-https://raw.githubusercontent.com/Taototo/venera-comic-sources/main/video_index.json
 ```
 
 漫画源文件：
@@ -36,25 +29,14 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/wn
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js
 ```
-视频源文件：
-
-```text
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hlzy_video.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/short91_video.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/huangguo_video.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/51_video.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/91porna_video.js
-```
-
 不要填写 GitHub 的 `blob/...` 网页地址；Venera 需要的是清单或 JavaScript 原始地址。
 
 ## 目录和分类
 
 - `comic_index.json`：9 个漫画源的清单。
-- `video_index.json`：5 个视频源的清单，包含 HLZY、91短视频、黄果漫剧、51 吃瓜和 91porna。
-- `index.json`：兼容旧版本的混合清单，包含上述 14 个源。
+- `index.json`：兼容旧版本的漫画源清单。
 - `sources/ven/`：再漫画、漫小肆、漫画人、禁漫天堂和拷贝漫画。
-- `sources/private/`：包子漫画、紳士漫畫、魅影画廊、大人漫画、HLZY 和新增视频源。
+- `sources/private/`：包子漫画、紳士漫畫、魅影画廊和大人漫画。
 - `sources/_venera_.js`：Venera JavaScript API 类型提示文件，仅供编辑器使用。
 - `SOURCE_CHECK.md`：本次网络检测、搬运和排除结果。
 
