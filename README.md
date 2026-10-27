@@ -28,15 +28,20 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/ba
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/wnacg.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js
+https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/csmanhua.js
+https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kxmanhua.js
+https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js
+https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js
+https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/comics55.js
 ```
 不要填写 GitHub 的 `blob/...` 网页地址；Venera 需要的是清单或 JavaScript 原始地址。
 
 ## 目录和分类
 
-- `comic_index.json`：9 个漫画源的清单。
+- `comic_index.json`：14 个漫画源的清单。
 - `index.json`：兼容旧版本的漫画源清单。
 - `sources/ven/`：再漫画、漫小肆、漫画人、禁漫天堂和拷贝漫画。
-- `sources/private/`：包子漫画、紳士漫畫、魅影画廊和大人漫画。
+- `sources/private/`：包子漫画、紳士漫畫、魅影画廊、大人漫画、成色漫画、开心看漫画、鸟鸟韩漫、禁漫天堂网页端和 55 漫画。
 - `sources/_venera_.js`：Venera JavaScript API 类型提示文件，仅供编辑器使用。
 - `SOURCE_CHECK.md`：本次网络检测、搬运和排除结果。
 
