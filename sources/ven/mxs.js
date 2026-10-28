@@ -50,7 +50,7 @@ class MXS extends ComicSource {
                 }, 10000);
                 
                 // 测试网络连接
-                Network.get(currentDomain).then(res => {
+                Network.get(currentDomain, this.headers).then(res => {
                     if (isCompleted) return;
                     const delay = Date.now() - startTime;
                     UI.cancelLoading(loadingId);
