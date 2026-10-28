@@ -72,15 +72,15 @@
   {
     "name": "开心看漫画（私人）",
     "key": "private_kxmanhua",
-    "version": "1.0.0",
-    "description": "私人配置；支持漫画库、搜索、详情、章节和图片加载。",
+    "version": "1.0.1",
+    "description": "私人配置；支持备用域名自动切换、漫画库、搜索、详情、章节和图片加载。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kxmanhua.js"
   },
   {
     "name": "鸟鸟韩漫（私人）",
     "key": "private_nnhanman",
-    "version": "1.0.0",
-    "description": "私人配置；包含备用域名、更新列表、搜索、详情和章节图片。",
+    "version": "1.0.1",
+    "description": "私人配置；支持备用域名自动切换、更新列表、搜索、详情和章节图片。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js"
   },
   {

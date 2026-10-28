@@ -2,45 +2,113 @@
 class NnHanman extends ComicSource {
   name = "鸟鸟韩漫（私人）";
   key = "private_nnhanman";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js";
+  _activeDomain = "";
 
   settings = {
     domain: {
       title: "域名",
       type: "select",
       options: [
+        { value: "nnhm7.com", text: "nnhm7.com（推荐）" },
         { value: "nnhm81.com", text: "nnhm81.com（推荐）" },
         { value: "nnhanman.xyz", text: "nnhanman.xyz" },
         { value: "nnhanman66.com", text: "nnhanman66.com" },
         { value: "nnhanman88.com", text: "nnhanman88.com" },
         { value: "nnhm92.com", text: "nnhm92.com" },
         { value: "nnhm91.com", text: "nnhm91.com" },
+        { value: "nnhm8.com", text: "nnhm8.com（备用）" },
       ],
-      default: "nnhm81.com",
+      default: "nnhm7.com",
     },
   };
 
-  get baseUrl() {
-    let domain = this.loadSetting("domain") || this.settings.domain.default;
-    domain = String(domain).trim().replace(/^https?:\/\//i, "").replace(/\/+$/, "");
-    return `https://${domain}`;
+  normalizeDomain(value) {
+    return String(value || "").trim().replace(/^https?:\/\//i, "").replace(/\/+$/, "");
   }
 
-  get headers() {
+  get configuredDomain() {
+    return this.normalizeDomain(this.loadSetting("domain") || this.settings.domain.default);
+  }
+
+  get domainCandidates() {
+    let candidates = [
+      this._activeDomain,
+      this.configuredDomain,
+      "nnhm7.com",
+      "nnhm81.com",
+      "nnhm92.com",
+      "nnhm91.com",
+      "nnhm8.com",
+      "nnhanman.xyz",
+      "nnhanman66.com",
+      "nnhanman88.com",
+    ];
+    let result = [];
+    for (let domain of candidates) {
+      domain = this.normalizeDomain(domain);
+      if (domain && result.indexOf(domain) < 0) result.push(domain);
+    }
+    return result;
+  }
+
+  get baseUrl() {
+    return `https://${this._activeDomain || this.configuredDomain}`;
+  }
+
+  headersFor(domain) {
     return {
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
-      Referer: `${this.baseUrl}/`,
+      Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+      "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+      Referer: `https://${domain}/`,
     };
   }
 
-  absoluteUrl(value) {
+  get headers() {
+    return this.headersFor(this._activeDomain || this.configuredDomain);
+  }
+
+  absoluteUrl(value, domain) {
     if (!value) return "";
     value = String(value);
     if (/^https?:\/\//i.test(value)) return value;
     if (value.indexOf("//") === 0) return `https:${value}`;
-    return `${this.baseUrl}${value.indexOf("/") === 0 ? "" : "/"}${value}`;
+    let baseUrl = `https://${this.normalizeDomain(domain || this._activeDomain || this.configuredDomain)}`;
+    return `${baseUrl}${value.indexOf("/") === 0 ? "" : "/"}${value}`;
+  }
+
+  pathOf(value) {
+    let input = String(value || "/");
+    let match = input.match(/^https?:\/\/[^/]+(\/.*)?$/i);
+    return match ? match[1] || "/" : input;
+  }
+
+  async request(value) {
+    let input = String(value || "/");
+    let hostMatch = input.match(/^https?:\/\/([^/]+)(\/.*)?$/i);
+    let preferred = hostMatch ? this.normalizeDomain(hostMatch[1]) : "";
+    let path = hostMatch ? hostMatch[2] || "/" : input;
+    let candidates = this.domainCandidates;
+    if (preferred) {
+      candidates = [preferred].concat(candidates.filter((domain) => domain !== preferred));
+    }
+    let lastError = "";
+    for (let domain of candidates) {
+      try {
+        let res = await Network.get(this.absoluteUrl(path, domain), this.headersFor(domain));
+        if (res.status === 200) {
+          this._activeDomain = domain;
+          return res;
+        }
+        lastError = `Invalid status code: ${res.status}`;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    throw lastError || "无法连接到鸟鸟韩漫";
   }
 
   textOf(node) {
@@ -86,8 +154,7 @@ class NnHanman extends ComicSource {
   }
 
   async loadList(path) {
-    let res = await Network.get(this.absoluteUrl(path), this.headers);
-    if (res.status !== 200) throw `Invalid status code: ${res.status}`;
+    let res = await this.request(path);
     let document = new HtmlDocument(res.body);
     let result = { comics: this.parseComics(document), maxPage: this.parsePageCount(document) };
     document.dispose();
@@ -133,9 +200,8 @@ class NnHanman extends ComicSource {
 
   comic = {
     loadInfo: async (id) => {
-      let url = this.absoluteUrl(id);
-      let res = await Network.get(url, this.headers);
-      if (res.status !== 200) throw `Invalid status code: ${res.status}`;
+      let res = await this.request(id);
+      let url = this.absoluteUrl(this.pathOf(id));
       let document = new HtmlDocument(res.body);
       let title = this.textOf(document.querySelector(".txtItme2 h1"));
       let coverNode = document.querySelector("#Cover img");
@@ -167,9 +233,7 @@ class NnHanman extends ComicSource {
     },
 
     loadEp: async (comicId, epId) => {
-      let url = this.absoluteUrl(epId || comicId);
-      let res = await Network.get(url, this.headers);
-      if (res.status !== 200) throw `Invalid status code: ${res.status}`;
+      let res = await this.request(epId || comicId);
       let document = new HtmlDocument(res.body);
       let images = [];
       for (let node of document.querySelectorAll("#currentCache img[data-src], .view-imgBox img[data-src]")) {
@@ -182,10 +246,14 @@ class NnHanman extends ComicSource {
       return { images: images };
     },
 
-    onImageLoad: () => ({ headers: this.headers }),
+    onImageLoad: (url, comicId, epId) => ({
+      headers: Object.assign({}, this.headers, {
+        Referer: epId ? this.absoluteUrl(this.pathOf(epId)) : `${this.baseUrl}/`,
+      }),
+    }),
     onThumbnailLoad: () => ({ headers: this.headers }),
     link: {
-      domains: ["nnhanman.xyz", "nnhanman66.com", "nnhanman88.com", "nnhm81.com", "nnhm92.com", "nnhm91.com"],
+      domains: ["nnhm7.com", "nnhm81.com", "nnhm92.com", "nnhm91.com", "nnhm8.com", "nnhanman.xyz", "nnhanman66.com", "nnhanman88.com"],
       linkToId: (url) => {
         let match = String(url || "").match(/^(https?:\/\/[^/]+\/comic\/[^?#]+\.html)/i);
         return match ? match[1] : null;
