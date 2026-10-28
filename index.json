@@ -9,8 +9,8 @@
   {
     "name": "漫小肆（Ven）",
     "key": "mxs",
-    "version": "1.0.0",
-    "description": "Ven 配置；保留当前可达域名，并补回 mxshm.top、ikanwzd.cc 作为备用选项。",
+    "version": "1.0.1",
+    "description": "Ven 配置；使用移动端请求头，保留当前可达域名和备用选项。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js"
   },
   {
@@ -65,22 +65,22 @@
   {
     "name": "成色漫画（私人）",
     "key": "private_csmanhua",
-    "version": "1.0.0",
-    "description": "私人配置；支持分类、搜索、分页阅读和图片加载。",
+    "version": "1.0.1",
+    "description": "私人配置；使用移动端请求头，支持分类、搜索、分页阅读和图片加载。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/csmanhua.js"
   },
   {
     "name": "开心看漫画（私人）",
     "key": "private_kxmanhua",
-    "version": "1.0.1",
-    "description": "私人配置；支持备用域名自动切换、漫画库、搜索、详情、章节和图片加载。",
+    "version": "1.0.2",
+    "description": "私人配置；使用移动端请求头并支持备用域名自动切换、漫画库、搜索、详情、章节和图片加载。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kxmanhua.js"
   },
   {
     "name": "鸟鸟韩漫（私人）",
     "key": "private_nnhanman",
-    "version": "1.0.1",
-    "description": "私人配置；支持备用域名自动切换、更新列表、搜索、详情和章节图片。",
+    "version": "1.0.2",
+    "description": "私人配置；使用移动端请求头并支持备用域名自动切换、更新列表、搜索、详情和章节图片。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js"
   },
   {

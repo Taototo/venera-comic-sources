@@ -2,7 +2,7 @@
 class Csmanhua extends ComicSource {
   name = "成色漫画（私人）";
   key = "private_csmanhua";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/csmanhua.js";
 
@@ -22,7 +22,7 @@ class Csmanhua extends ComicSource {
 
   get headers() {
     return {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
+      "User-Agent": "Mozilla/5.0 (Linux; Android 10; K; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.0.0 Mobile Safari/537.36",
       Referer: `${this.baseUrl}/`,
     };
   }

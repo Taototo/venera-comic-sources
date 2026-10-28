@@ -2,7 +2,7 @@ class MXS extends ComicSource {
     // 漫画源基本信息
     name = "漫小肆（Ven）";
     key = "mxs";
-    version = "1.0.0";
+    version = "1.0.1";
     minAppVersion = "1.5.0";
     url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js";
 
@@ -167,7 +167,9 @@ class MXS extends ComicSource {
     // 执行网络请求并返回HTML文档对象
     async fetchDocument(url) {
         const res = await Network.get(url, {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            "User-Agent": "Mozilla/5.0 (Linux; Android 10; K; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.0.0 Mobile Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8"
         });
         
         if (res.status !== 200) {
