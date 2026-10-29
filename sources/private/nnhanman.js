@@ -1,10 +1,10 @@
 /** @type {import('../_venera_.js')} */
 class NnHanman extends ComicSource {
-  name = "鸟鸟韩漫（私人）";
+  name = "鸟鸟韩漫（18+）";
   key = "private_nnhanman";
-  version = "1.0.3";
+  version = "1.0.4";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.3";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.4";
   _activeDomain = "";
 
   settings = {

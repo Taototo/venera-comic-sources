@@ -2,12 +2,12 @@ class JM extends ComicSource {
     // Note: The fields which are marked as [Optional] should be removed if not used
 
     // name of the source
-    name = "禁漫天堂（Ven）"
+    name = "禁漫天堂（18+）"
 
     // unique id of the source
     key = "jm"
 
-    version = "1.4.0"
+    version = "1.4.1"
 
     minAppVersion = "1.5.0"
 

@@ -1,9 +1,9 @@
 /** @type {import('../_venera_.js')} */
 // Converted from the matching community source configuration.
 class PrivateMyhl extends ComicSource {
-  name = "魅影画廊（私人）"
+  name = "魅影画廊"
   key = "private_myhl"
-  version = "1.0.1"
+  version = "1.0.2"
   minAppVersion = "1.2.0"
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js"
 

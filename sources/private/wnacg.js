@@ -3,13 +3,13 @@ class PrivateWnacg extends ComicSource {
     // Note: The fields which are marked as [Optional] should be removed if not used
 
     // name of the source
-    name = "紳士漫畫（私人）"
+    name = "绅士漫画（18+）"
 
     // unique id of the source
     // 保留历史 key，已安装的私人源可直接更新。
     key = "hj_wnacg"
 
-    version = "1.0.7"
+    version = "1.0.8"
 
     minAppVersion = "1.0.0"
 
@@ -189,7 +189,7 @@ class PrivateWnacg extends ComicSource {
         {
             // title of the page.
             // title is used to identify the page, it should be unique
-            title: "紳士漫畫",
+            title: "绅士漫画",
 
             /// multiPartPage or multiPageComicList or mixed
             type: "multiPartPage",
@@ -238,7 +238,7 @@ class PrivateWnacg extends ComicSource {
     // categories
     category = {
         /// title of the category page, used to identify the page, it should be unique
-        title: "紳士漫畫",
+        title: "绅士漫画",
         parts: [
             {
                 // title of the part

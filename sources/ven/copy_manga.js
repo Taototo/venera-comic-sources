@@ -1,10 +1,10 @@
 class CopyManga extends ComicSource {
 
-    name = "拷贝漫画（Ven）"
+    name = "拷贝漫画"
 
     key = "copy_manga"
 
-    version = "1.4.2"
+    version = "1.4.3"
 
     minAppVersion = "1.6.0"
 

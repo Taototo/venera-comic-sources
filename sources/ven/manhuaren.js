@@ -1,10 +1,10 @@
 /** @type {import('../_venera_.js')} */
 class ManHuaRen extends ComicSource {
-    name = "漫画人（Ven）"
+    name = "漫画人"
 
     key = "manhuaren"
 
-    version = "1.0.0"
+    version = "1.0.1"
 
     minAppVersion = "1.6.0"
 

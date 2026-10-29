@@ -1,10 +1,10 @@
 class MXS extends ComicSource {
     // 漫画源基本信息
-    name = "漫小肆（Ven）";
+    name = "漫小肆（18+）";
     key = "mxs";
-    version = "1.0.5";
+    version = "1.0.6";
     minAppVersion = "1.5.0";
-    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.0.5";
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.0.6";
 
     // 漫画源设置项
     settings = {

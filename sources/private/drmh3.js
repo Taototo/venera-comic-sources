@@ -1,8 +1,8 @@
 /** @type {import('../_venera_.js')} */
 class PrivateDrmh3 extends ComicSource {
-  name = "大人漫画（私人）";
+  name = "大人漫画（18+）";
   key = "private_drmh3";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js";
 

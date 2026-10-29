@@ -1,8 +1,8 @@
 /** @type {import('../_venera_.js')} */
 class JmUu extends ComicSource {
-  name = "禁漫天堂（网页）";
+  name = "禁漫天堂（网页）（18+）";
   key = "private_jm_uu";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js";
 

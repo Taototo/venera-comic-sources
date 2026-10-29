@@ -1,8 +1,8 @@
 /** @type {import('../_venera_.js')} */
 class Kxmanhua extends ComicSource {
-  name = "开心看漫画（私人）";
+  name = "开心看漫画（18+）";
   key = "private_kxmanhua";
-  version = "1.0.3";
+  version = "1.0.4";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kxmanhua.js";
   _activeDomain = "";

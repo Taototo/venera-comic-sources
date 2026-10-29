@@ -1,100 +1,107 @@
 [
   {
-    "name": "再漫画（Ven）",
+    "name": "再漫画",
     "key": "zaimanhua",
-    "version": "1.0.2",
-    "description": "Ven 配置；更新列表和分类接口已通过当前网络检测。",
+    "version": "1.0.3",
+    "description": "默认配置；更新列表和分类接口已通过当前网络检测。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/zaimanhua.js"
   },
   {
-    "name": "漫小肆（Ven）",
+    "name": "漫小肆（18+）",
     "key": "mxs",
-    "version": "1.0.5",
-    "description": "Ven 配置；使用分页列表接口并兼容排行榜结构。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.0.5"
+    "version": "1.0.6",
+    "description": "18+ 配置；使用分页列表接口并兼容排行榜结构。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.0.6"
   },
   {
-    "name": "漫画人（Ven）",
+    "name": "漫画人",
     "key": "manhuaren",
-    "version": "1.0.0",
-    "description": "Ven 配置；首页、搜索和正文接口已通过当前网络检测。",
+    "version": "1.0.1",
+    "description": "默认配置；首页、搜索和正文接口已通过当前网络检测。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/manhuaren.js"
   },
   {
-    "name": "禁漫天堂（Ven）",
+    "name": "禁漫天堂（18+）",
     "key": "jm",
-    "version": "1.4.0",
-    "description": "Ven 配置；动态线路和图片链路已通过当前网络检测。",
+    "version": "1.4.1",
+    "description": "18+ 配置；动态线路和图片链路已通过当前网络检测。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/jm.js"
   },
   {
-    "name": "拷贝漫画（Ven）",
+    "name": "拷贝漫画",
     "key": "copy_manga",
-    "version": "1.4.2",
-    "description": "Ven 配置；使用已检测可达的 API 地址，支持手动切换线路。",
+    "version": "1.4.3",
+    "description": "默认配置；使用已检测可达的 API 地址，支持手动切换线路。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/copy_manga.js"
   },
   {
-    "name": "包子漫画（私人）",
+    "name": "包子漫画",
     "key": "hj_baozi",
-    "version": "1.1.7",
-    "description": "私人配置；保留可用的简繁站点和图片 CDN 选项。",
+    "version": "1.1.8",
+    "description": "默认配置；保留可用的简繁站点和图片 CDN 选项。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js"
   },
   {
-    "name": "紳士漫畫（私人）",
+    "name": "绅士漫画（18+）",
     "key": "hj_wnacg",
-    "version": "1.0.7",
-    "description": "私人配置；支持自定义域名，当前网络需自行选择可达线路。",
+    "version": "1.0.8",
+    "description": "18+ 配置；支持自定义域名，当前网络需自行选择可达线路。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/wnacg.js"
   },
   {
-    "name": "魅影画廊（私人）",
+    "name": "魅影画廊",
     "key": "private_myhl",
-    "version": "1.0.1",
-    "description": "私人配置；WordPress 图集列表、搜索和原图链接均已验证。",
+    "version": "1.0.2",
+    "description": "默认配置；WordPress 图集列表、搜索和原图链接均已验证。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js"
   },
   {
-    "name": "大人漫画（私人）",
+    "name": "大人漫画（18+）",
     "key": "private_drmh3",
-    "version": "1.0.0",
-    "description": "私人配置；列表、搜索、章节和多 CDN 图片链路均已验证。",
+    "version": "1.0.1",
+    "description": "18+ 配置；列表、搜索、章节和多 CDN 图片链路均已验证。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js"
   },
   {
-    "name": "成色漫画（私人）",
+    "name": "成色漫画（18+）",
     "key": "private_csmanhua",
-    "version": "1.0.1",
-    "description": "私人配置；使用移动端请求头，支持分类、搜索、分页阅读和图片加载。",
+    "version": "1.0.2",
+    "description": "18+ 配置；使用移动端请求头，支持分类、搜索、分页阅读和图片加载。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/csmanhua.js"
   },
   {
-    "name": "开心看漫画（私人）",
+    "name": "开心看漫画（18+）",
     "key": "private_kxmanhua",
-    "version": "1.0.3",
-    "description": "私人配置；使用移动端请求头并支持备用域名自动切换、漫画库、搜索、详情、章节和图片加载。",
+    "version": "1.0.4",
+    "description": "18+ 配置；使用移动端请求头并支持备用域名自动切换、漫画库、搜索、详情、章节和图片加载。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kxmanhua.js"
   },
   {
-    "name": "鸟鸟韩漫（私人）",
+    "name": "鸟鸟韩漫（18+）",
     "key": "private_nnhanman",
-    "version": "1.0.3",
-    "description": "私人配置；详情页兼容 App HTML 解析器，支持更新列表、搜索、详情和章节图片。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.3"
+    "version": "1.0.4",
+    "description": "18+ 配置；详情页兼容 App HTML 解析器，支持更新列表、搜索、详情和章节图片。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.4"
   },
   {
-    "name": "禁漫天堂（网页）",
+    "name": "禁漫天堂（网页）（18+）",
     "key": "private_jm_uu",
-    "version": "1.0.0",
-    "description": "私人配置；网页端漫画列表、搜索、详情和图片阅读。",
+    "version": "1.0.1",
+    "description": "18+ 配置；网页端漫画列表、搜索、详情和图片阅读。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js"
   },
   {
-    "name": "韩漫屋（私人）",
+    "name": "韩漫屋（18+）",
     "key": "private_hmanwu",
-    "version": "1.0.0",
-    "description": "私人配置；支持分类、搜索、详情、章节图片和评论读取。",
+    "version": "1.0.1",
+    "description": "18+ 配置；支持分类、搜索、详情、章节图片和评论读取。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js"
+  },
+  {
+    "name": "漫画站",
+    "key": "private_manhuazhan",
+    "version": "1.0.0",
+    "description": "默认配置；支持分类、详情、章节图片和图片解码。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/manhuazhan.js"
   }
 ]

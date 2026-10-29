@@ -1,8 +1,8 @@
 /** @type {import('../_venera_.js')} */
 class Hmanwu extends ComicSource {
-  name = "韩漫屋（私人）";
+  name = "韩漫屋（18+）";
   key = "private_hmanwu";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js";
 

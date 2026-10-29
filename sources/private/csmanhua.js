@@ -1,8 +1,8 @@
 /** @type {import('../_venera_.js')} */
 class Csmanhua extends ComicSource {
-  name = "成色漫画（私人）";
+  name = "成色漫画（18+）";
   key = "private_csmanhua";
-  version = "1.0.1";
+  version = "1.0.2";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/csmanhua.js";
 

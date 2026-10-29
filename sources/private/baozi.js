@@ -1,13 +1,13 @@
 // Adapted from the Venera community configuration.
 class PrivateBaozi extends ComicSource {
   // 此漫画源的名称
-  name = "包子漫画（私人）";
+  name = "包子漫画";
 
   // 唯一标识符
   // 保留历史 key，已安装的私人源可直接更新。
   key = "hj_baozi";
 
-  version = "1.1.7";
+  version = "1.1.8";
 
   minAppVersion = "1.0.0";
 

@@ -1,6 +1,6 @@
-# Venera 源集合（Ven + 私人）
+# Venera 漫画源集合
 
-这是按 [Venera 漫画源规范](https://github.com/venera-app/venera/blob/master/doc/comic_source.md) 整理的源集合。清单只使用“Ven”和“私人”两种显示标识。
+这是按 [Venera 漫画源规范](https://github.com/venera-app/venera/blob/master/doc/comic_source.md) 整理的源集合。清单按显示名称分为“18+”和“默认”两组；默认组不显示后缀。
 
 ## 在 Venera 中添加
 
@@ -33,19 +33,21 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kx
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js
+https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/manhuazhan.js
 ```
 不要填写 GitHub 的 `blob/...` 网页地址；Venera 需要的是清单或 JavaScript 原始地址。
 
 ## 目录和分类
 
-- `comic_index.json`：14 个漫画源的清单。
+- `comic_index.json`：15 个漫画源的清单。
 - `index.json`：兼容旧版本的漫画源清单。
-- `sources/ven/`：再漫画、漫小肆、漫画人、禁漫天堂和拷贝漫画。
-- `sources/private/`：包子漫画、紳士漫畫、魅影画廊、大人漫画、成色漫画、开心看漫画、鸟鸟韩漫、禁漫天堂网页端和韩漫屋。
+- 默认组：再漫画、漫画人、拷贝漫画、包子漫画、魅影画廊、漫画站。
+- 18+ 组：漫小肆、禁漫天堂、绅士漫画、大人漫画、成色漫画、开心看漫画、鸟鸟韩漫、韩漫屋；网页端禁漫天堂也保留为独立入口。
+- `sources/ven/` 和 `sources/private/`：按历史来源存放脚本，分组以清单中的显示名称为准。
 - `sources/_venera_.js`：Venera JavaScript API 类型提示文件，仅供编辑器使用。
 - `SOURCE_CHECK.md`：本次网络检测、搬运和排除结果。
 
-私人源中的包子漫画和紳士漫畫保留历史 key，已安装的源可以直接更新；清单中的显示名称统一为“（私人）”。
+包子漫画和绅士漫画保留历史 key，已安装的源可以直接更新；显示分组由名称后缀维护。
 
 ## 检查
 

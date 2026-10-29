@@ -1,8 +1,8 @@
 class Zaimanhua extends ComicSource {
   // 基础信息
-  name = "再漫画（Ven）";
+  name = "再漫画";
   key = "zaimanhua";
-  version = "1.0.2";
+  version = "1.0.3";
   minAppVersion = "1.0.0";
   url =
     "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/zaimanhua.js";
