@@ -2,9 +2,9 @@ class MXS extends ComicSource {
     // 漫画源基本信息
     name = "漫小肆（Ven）";
     key = "mxs";
-    version = "1.0.4";
+    version = "1.0.5";
     minAppVersion = "1.5.0";
-    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js";
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.0.5";
 
     // 漫画源设置项
     settings = {
@@ -177,8 +177,8 @@ class MXS extends ComicSource {
     }
 
     parseList(document) {
-        const comics = this.parseComicList(document.querySelectorAll(".manga-list-2 li"));
-        return comics.length ? comics : this.parseComicList(document.querySelectorAll(".manga-list-2 a[href*='book/']"));
+        const comics = this.parseComicList(document.querySelectorAll(".manga-list-2 li, .mh-list .mh-item"));
+        return comics.length ? comics : this.parseComicList(document.querySelectorAll(".manga-list-2 a[href*='book/'], .mh-item a[href*='book/']"));
     }
 
     parsePageCount(document) {
@@ -190,9 +190,7 @@ class MXS extends ComicSource {
         return maxPage;
     }
 
-    // The site replaced the old .mh-item markup with manga-list-2 and
-    // rank-list cards. Keep the old selectors as fallbacks for mirrors that
-    // have not rolled out the new template yet.
+    // Support both the current .mh-item markup and older source templates.
     parseComicList(items) {
         const comics = [];
         const seen = {};
@@ -341,8 +339,30 @@ class MXS extends ComicSource {
                     "end": "rankList_4",
                     "recommend": "rankList_5",
                 };
+                const rankTitleByKey = {
+                    "new": "新书榜",
+                    "total": "总榜",
+                    "popular": "总榜",
+                    "month": "月榜",
+                    "end": "完结榜",
+                    "recommend": "推荐",
+                };
                 const rankListId = rankListByKey[rankKey] || "rankList_1";
-                comics = this.parseComicList(doc.querySelectorAll("#" + rankListId + " a[href*='book/']"));
+                let rankItems = [];
+                const rankSections = doc.querySelectorAll(".top-cat li");
+                for (let section of rankSections) {
+                    if (this.textOf(section.querySelector(".title")) === rankTitleByKey[rankKey]) {
+                        rankItems = section.querySelectorAll(".mh-item");
+                        break;
+                    }
+                }
+                if (rankItems.length === 0) {
+                    rankItems = doc.querySelectorAll("#" + rankListId + " .mh-item, #" + rankListId + " li");
+                }
+                if (rankItems.length === 0) {
+                    rankItems = doc.querySelectorAll(".rank-list .mh-item, .rank-list li, .rank-list a[href*='book/']");
+                }
+                comics = this.parseComicList(rankItems);
                 doc.dispose();
                 return { comics, maxPage: 1 };
             } else {
@@ -399,7 +419,7 @@ class MXS extends ComicSource {
         load: async (keyword, options, page) => {
             const url = `${this.baseUrl}/search?keyword=${encodeURIComponent(keyword)}`;
             const doc = await this.fetchDocument(url);
-            const comics = this.parseComicList(doc.querySelectorAll(".manga-list-2 li"));
+            const comics = this.parseList(doc);
             
             doc.dispose();
             return {
@@ -468,7 +488,7 @@ class MXS extends ComicSource {
 
             // 提取评论和推荐漫画
             const comments = this.parseCommentList(doc.querySelectorAll(".view-comment-main .postlist li.dashed"));
-            const recommend = this.parseComicList(doc.querySelectorAll(".manga-list-2 li"));
+            const recommend = this.parseList(doc);
 
             doc.dispose();
             
