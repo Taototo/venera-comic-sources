@@ -9,8 +9,8 @@
   {
     "name": "漫小肆（Ven）",
     "key": "mxs",
-    "version": "1.0.3",
-    "description": "Ven 配置；使用移动端请求头，保留当前可达域名和备用选项。",
+    "version": "1.0.4",
+    "description": "Ven 配置；使用分页更新接口展示漫画列表，支持新旧列表结构。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js"
   },
   {

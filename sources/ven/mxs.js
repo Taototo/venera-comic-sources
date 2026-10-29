@@ -2,7 +2,7 @@ class MXS extends ComicSource {
     // 漫画源基本信息
     name = "漫小肆（Ven）";
     key = "mxs";
-    version = "1.0.3";
+    version = "1.0.4";
     minAppVersion = "1.5.0";
     url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js";
 
@@ -176,6 +176,20 @@ class MXS extends ComicSource {
         return this.baseUrl + (cover.indexOf("/") === 0 ? "" : "/") + cover;
     }
 
+    parseList(document) {
+        const comics = this.parseComicList(document.querySelectorAll(".manga-list-2 li"));
+        return comics.length ? comics : this.parseComicList(document.querySelectorAll(".manga-list-2 a[href*='book/']"));
+    }
+
+    parsePageCount(document) {
+        let maxPage = 1;
+        for (let link of document.querySelectorAll(".pagination a[href*='page=']")) {
+            const match = this.attribute(link, "href").match(/[?&]page=(\d+)/);
+            if (match) maxPage = Math.max(maxPage, Number(match[1]));
+        }
+        return maxPage;
+    }
+
     // The site replaced the old .mh-item markup with manga-list-2 and
     // rank-list cards. Keep the old selectors as fallbacks for mirrors that
     // have not rolled out the new template yet.
@@ -259,42 +273,15 @@ class MXS extends ComicSource {
     explore = [
         {
             title: "漫小肆",
-            type: "multiPartPage",
+            type: "multiPageComicList",
             load: async (page) => {
-                const doc = await this.fetchDocument(this.baseUrl);
-
-                // 最近更新部分
-                const updateSection = {
-                    title: "最近更新",
-                    comics: this.parseComicList(doc.querySelectorAll(".manga-list-2 li")),
-                    viewMore: {
-                        page: "category",
-                        attributes: { category: "最近更新" }
-                    }
-                };
-
-                // 热门漫画部分
-                const hotSection = {
-                    title: "热门漫画",
-                    comics: this.parseComicList(doc.querySelectorAll(".rank-list a[href*='book/']")),
-                    viewMore: {
-                        page: "category", 
-                        attributes: { category: "排行榜" }
-                    }
-                };
-
-                // 完结优选部分
-                const endSection = {
-                    title: "完结优选",
-                    comics: this.parseComicList(doc.querySelectorAll(".manga-list-2 li")),
-                    viewMore: {
-                        page: "category",
-                        attributes: { category: "全部漫画" }
-                    }
-                };
-
+                const currentPage = Number(page) || 1;
+                // The dedicated update page returns a consistent, paginated card list across mirrors.
+                const doc = await this.fetchDocument(`${this.baseUrl}/update?page=${currentPage}`);
+                const comics = this.parseList(doc);
+                const maxPage = this.parsePageCount(doc);
                 doc.dispose();
-                return [updateSection, hotSection, endSection];
+                return { comics, maxPage };
             }
         }
     ];
@@ -358,55 +345,12 @@ class MXS extends ComicSource {
                 comics = this.parseComicList(doc.querySelectorAll("#" + rankListId + " a[href*='book/']"));
                 doc.dispose();
                 return { comics, maxPage: 1 };
-                const selectedRank = options[0] || "new";
-                const rankMapping = {
-                    "new": "新书榜",
-                    "popular": "人气榜", 
-                    "end": "完结榜",
-                    "recommend": "推荐榜"
-                };
-
-                // 查找对应的排行榜列表
-                const rankLists = doc.querySelectorAll(".mh-list.col3.top-cat li");
-                let targetList = null;
-
-                for (let list of rankLists) {
-                    const titleElem = list.querySelector(".title");
-                    if (titleElem) {
-                        const title = titleElem.text.trim();
-                        if (title === rankMapping[selectedRank]) {
-                            targetList = list;
-                            break;
-                        }
-                    }
-                }
-
-                if (!targetList) {
-                    doc.dispose();
-                    throw "未找到对应的排行榜";
-                }
-
-                comics = this.parseComicList(targetList.querySelectorAll(".mh-item.horizontal, .mh-itme-top"));
             } else {
                 // 普通分类处理
-                comics = this.parseComicList(doc.querySelectorAll(".manga-list-2 li"));
+                comics = this.parseList(doc);
             }
 
-            // 解析最大页数（排行榜不分页）
-            let maxPage = 1;
-            if (category !== "排行榜") {
-                const pageLinks = doc.querySelectorAll(".pagination a[href*='page=']");
-                for (let link of pageLinks) {
-                    const match = link.attributes.href.match(/page=(\d+)/);
-                    if (match) {
-                        const pageNum = parseInt(match[1]);
-                        if (!isNaN(pageNum) && pageNum > maxPage) {
-                            maxPage = pageNum;
-                        }
-                    }
-                }
-            }
-
+            const maxPage = category === "排行榜" ? 1 : this.parsePageCount(doc);
             doc.dispose();
             return { comics, maxPage };
         },
