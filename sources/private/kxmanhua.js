@@ -2,7 +2,7 @@
 class Kxmanhua extends ComicSource {
   name = "开心看漫画（私人）";
   key = "private_kxmanhua";
-  version = "1.0.2";
+  version = "1.0.3";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kxmanhua.js";
   _activeDomain = "";
@@ -114,7 +114,9 @@ class Kxmanhua extends ComicSource {
       let link = item.querySelector(".product__item__text a[href*='/manga/']");
       if (!link) continue;
       let id = this.attribute(link, "href");
-      let title = this.attribute(link, "title") || this.textOf(link);
+      // The title attribute is prefixed with "漫画" by the site. The visible
+      // link text is the actual comic title and should therefore take priority.
+      let title = this.textOf(link) || this.attribute(link, "title").replace(/^漫画\s*/, "");
       let coverNode = item.querySelector(".product__item__pic");
       let cover = this.attribute(coverNode, "data-setbg");
       if (!cover) {

@@ -9,9 +9,9 @@
   {
     "name": "漫小肆（Ven）",
     "key": "mxs",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Ven 配置；使用移动端请求头，保留当前可达域名和备用选项。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@cef116b/sources/ven/mxs.js"
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js"
   },
   {
     "name": "漫画人（Ven）",
@@ -72,7 +72,7 @@
   {
     "name": "开心看漫画（私人）",
     "key": "private_kxmanhua",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "私人配置；使用移动端请求头并支持备用域名自动切换、漫画库、搜索、详情、章节和图片加载。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kxmanhua.js"
   },
@@ -89,12 +89,5 @@
     "version": "1.0.0",
     "description": "私人配置；网页端漫画列表、搜索、详情和图片阅读。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js"
-  },
-  {
-    "name": "55漫画（私人）",
-    "key": "private_55comics",
-    "version": "1.0.0",
-    "description": "私人配置；按 55comics 历史页面规则支持列表、搜索、详情和图片阅读。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/comics55.js"
   }
 ]
