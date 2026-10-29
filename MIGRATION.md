@@ -7,6 +7,6 @@
 | 类型 | 文件 |
 | --- | --- |
 | Ven 漫画 | `sources/ven/zaimanhua.js`、`sources/ven/mxs.js`、`sources/ven/manhuaren.js`、`sources/ven/jm.js`、`sources/ven/copy_manga.js` |
-| 私人漫画 | `sources/private/baozi.js`、`sources/private/wnacg.js`、`sources/private/myhl.js`、`sources/private/drmh3.js`、`sources/private/csmanhua.js`、`sources/private/kxmanhua.js`、`sources/private/nnhanman.js`、`sources/private/jm_uu.js`、`sources/private/comics55.js` |
+| 私人漫画 | `sources/private/baozi.js`、`sources/private/wnacg.js`、`sources/private/myhl.js`、`sources/private/drmh3.js`、`sources/private/csmanhua.js`、`sources/private/kxmanhua.js`、`sources/private/nnhanman.js`、`sources/private/jm_uu.js`、`sources/private/hmanwu.js` |
 
 源文件调整后需要同步更新对应清单的 `version`，并用 `node --check` 检查 JavaScript 语法。

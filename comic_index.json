@@ -89,5 +89,12 @@
     "version": "1.0.0",
     "description": "私人配置；网页端漫画列表、搜索、详情和图片阅读。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js"
+  },
+  {
+    "name": "韩漫屋（私人）",
+    "key": "private_hmanwu",
+    "version": "1.0.0",
+    "description": "私人配置；支持分类、搜索、详情、章节图片和评论读取。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js"
   }
 ]
