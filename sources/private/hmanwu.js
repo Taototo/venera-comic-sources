@@ -2,7 +2,7 @@
 class Hmanwu extends ComicSource {
   name = "韩漫屋（18+）";
   key = "private_hmanwu";
-  version = "1.1.0";
+  version = "1.1.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js";
 
@@ -371,9 +371,9 @@ class Hmanwu extends ComicSource {
       let updateTime = orderedChapters.length
         ? this.formatDate(orderedChapters[orderedChapters.length - 1].created_at)
         : "";
-      return new ComicDetails({
+      return {
         title: String(comic.title || "韩漫屋"),
-        subTitle: String(comic.author || ""),
+        subtitle: String(comic.author || ""),
         cover: String(comic.cover_url || ""),
         description: String(comic.description || ""),
         tags: {
@@ -388,7 +388,7 @@ class Hmanwu extends ComicSource {
         commentCount: undefined,
         updateTime: updateTime,
         url: `${this.baseUrl}/comic/${encodeURIComponent(comicId)}`,
-      });
+      };
     },
 
     loadEp: async (comicId, epId) => {
