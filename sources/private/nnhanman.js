@@ -2,9 +2,9 @@
 class NnHanman extends ComicSource {
   name = "鸟鸟韩漫（18+）";
   key = "private_nnhanman";
-  version = "1.0.4";
+  version = "1.0.5";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.4";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.5";
   _activeDomain = "";
 
   settings = {
@@ -220,12 +220,28 @@ class NnHanman extends ComicSource {
         if (value && tags.indexOf(value) < 0) tags.push(value);
       }
       let updateTime = this.textOf(document.querySelector(".sub_r .date"));
-      let chapters = new Map();
+      let chapterEntries = [];
       for (let node of document.querySelectorAll("#mh-chapter-list-ol-0 a[href*='/chapter-']")) {
         let href = this.attribute(node, "href");
         let chapterTitle = this.textOf(node);
-        if (href && chapterTitle) chapters.set(href, chapterTitle);
+        if (!href || !chapterTitle) continue;
+        let chapterMatch = chapterTitle.match(/第\s*(\d+(?:\.\d+)?)\s*(?:話|话|回|集)?/i);
+        chapterEntries.push({
+          href: href,
+          title: chapterTitle,
+          number: chapterMatch ? Number(chapterMatch[1]) : NaN,
+          order: chapterEntries.length,
+        });
       }
+      chapterEntries.sort((a, b) => {
+        let aNumber = Number.isFinite(a.number);
+        let bNumber = Number.isFinite(b.number);
+        if (aNumber && bNumber && a.number !== b.number) return a.number - b.number;
+        if (aNumber !== bNumber) return aNumber ? -1 : 1;
+        return a.order - b.order;
+      });
+      let chapters = new Map();
+      for (let chapter of chapterEntries) chapters.set(chapter.href, chapter.title);
       document.dispose();
       return new ComicDetails({
         title: title || "鸟鸟韩漫",

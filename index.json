@@ -79,9 +79,9 @@
   {
     "name": "鸟鸟韩漫（18+）",
     "key": "private_nnhanman",
-    "version": "1.0.4",
-    "description": "18+ 配置；使用移动端请求头并支持备用域名自动切换、更新列表、搜索、详情和章节图片。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js"
+    "version": "1.0.5",
+    "description": "18+ 配置；使用移动端请求头并支持备用域名自动切换、更新列表、搜索、详情和按章节顺序阅读。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.5"
   },
   {
     "name": "禁漫天堂（网页）（18+）",
@@ -93,8 +93,8 @@
   {
     "name": "韩漫屋（18+）",
     "key": "private_hmanwu",
-    "version": "1.1.1",
-    "description": "18+ 配置；首页推荐、最近更新、已完结、分类、搜索、详情和章节图片，详情字段兼容 Venera。",
+    "version": "1.1.2",
+    "description": "18+ 配置；首页推荐、最近更新、已完结支持查看更多，另有分类、搜索、详情和章节图片。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js"
   },
   {

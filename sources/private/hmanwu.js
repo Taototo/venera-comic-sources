@@ -2,7 +2,7 @@
 class Hmanwu extends ComicSource {
   name = "韩漫屋（18+）";
   key = "private_hmanwu";
-  version = "1.1.1";
+  version = "1.1.2";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js";
 
@@ -136,14 +136,15 @@ class Hmanwu extends ComicSource {
 
   parseHome(data) {
     let sections = [
-      { title: "推荐", list: data && data.featured },
-      { title: "最近更新", list: data && data.latest },
-      { title: "已完结", list: data && data.completed },
+      { title: "推荐", key: "home_featured", list: data && data.featured },
+      { title: "最近更新", key: "home_latest", list: data && data.latest },
+      { title: "已完结", key: "home_completed", list: data && data.completed },
     ];
     return sections
       .map((section) => ({
         title: section.title,
         comics: this.parseHomeList(section.list),
+        viewMore: `category:${section.title}@${section.key}`,
       }))
       .filter((section) => section.comics.length > 0);
   }
@@ -171,6 +172,13 @@ class Hmanwu extends ComicSource {
   category = {
     title: "韩漫屋",
     parts: [
+      {
+        name: "首页",
+        type: "fixed",
+        categories: ["推荐", "最近更新", "已完结"],
+        itemType: "category",
+        categoryParams: ["home_featured", "home_latest", "home_completed"],
+      },
       {
         name: "分类",
         type: "fixed",
@@ -303,10 +311,18 @@ class Hmanwu extends ComicSource {
   categoryComics = {
     load: async (category, param, options, page) => {
       let categoryName = String(param || "");
+      let homeParams = {
+        home_featured: { tag: "WEBTOON", sort: "views" },
+        home_latest: { tag: "WEBTOON", sort: "id" },
+        home_completed: { tag: "WEBTOON", status: "1", sort: "views" },
+      }[categoryName];
       return this.parseList(
         await this.request(
           "/api/comics",
-          this.listParams(page, categoryName ? { category: categoryName } : {})
+          this.listParams(
+            page,
+            homeParams || (categoryName ? { category: categoryName } : {})
+          )
         )
       );
     },
