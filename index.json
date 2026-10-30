@@ -93,8 +93,8 @@
   {
     "name": "韩漫屋（18+）",
     "key": "private_hmanwu",
-    "version": "1.0.1",
-    "description": "18+ 配置；支持分类、搜索、详情、章节图片和评论读取。",
+    "version": "1.1.0",
+    "description": "18+ 配置；首页推荐、最近更新、已完结、分类、搜索、详情和章节图片。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js"
   },
   {

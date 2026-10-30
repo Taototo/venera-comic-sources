@@ -2,7 +2,7 @@
 class Hmanwu extends ComicSource {
   name = "韩漫屋（18+）";
   key = "private_hmanwu";
-  version = "1.0.1";
+  version = "1.1.0";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js";
 
@@ -122,6 +122,32 @@ class Hmanwu extends ComicSource {
     };
   }
 
+  parseHomeList(value) {
+    let comics = [];
+    let seen = {};
+    for (let item of Array.isArray(value) ? value : []) {
+      let comic = this.parseComic(item);
+      if (!comic || seen[comic.id]) continue;
+      seen[comic.id] = true;
+      comics.push(comic);
+    }
+    return comics;
+  }
+
+  parseHome(data) {
+    let sections = [
+      { title: "推荐", list: data && data.featured },
+      { title: "最近更新", list: data && data.latest },
+      { title: "已完结", list: data && data.completed },
+    ];
+    return sections
+      .map((section) => ({
+        title: section.title,
+        comics: this.parseHomeList(section.list),
+      }))
+      .filter((section) => section.comics.length > 0);
+  }
+
   listParams(page, extra) {
     return Object.assign(
       {
@@ -137,8 +163,8 @@ class Hmanwu extends ComicSource {
   explore = [
     {
       title: "韩漫屋",
-      type: "multiPageComicList",
-      load: async (page) => this.parseList(await this.request("/api/comics", this.listParams(page))),
+      type: "multiPartPage",
+      load: async () => this.parseHome(await this.request("/api/home")),
     },
   ];
 
@@ -309,19 +335,41 @@ class Hmanwu extends ComicSource {
       let data = await this.request(`/api/comics/${encodeURIComponent(comicId)}/detail`);
       let comic = data.comic || {};
       let rawChapters = Array.isArray(data.chapters) ? data.chapters : [];
+      let orderedChapters = rawChapters
+        .filter((chapter) => {
+          return (
+            chapter &&
+            chapter.id !== null &&
+            chapter.id !== undefined &&
+            !(chapter.crawl_status !== undefined && Number(chapter.crawl_status) === 0)
+          );
+        })
+        .slice()
+        .sort((a, b) => {
+          let aNum = Number(a.chapter_num);
+          let bNum = Number(b.chapter_num);
+          if (Number.isFinite(aNum) && Number.isFinite(bNum) && aNum !== bNum) {
+            return aNum - bNum;
+          }
+          let aTime = Date.parse(a.created_at || "");
+          let bTime = Date.parse(b.created_at || "");
+          if (Number.isFinite(aTime) && Number.isFinite(bTime) && aTime !== bTime) {
+            return aTime - bTime;
+          }
+          return Number(a.id) - Number(b.id);
+        });
       let chapters = new Map();
-      for (let chapter of rawChapters) {
-        if (!chapter || chapter.id === null || chapter.id === undefined) continue;
-        if (chapter.crawl_status !== undefined && Number(chapter.crawl_status) === 0) continue;
+      for (let chapter of orderedChapters) {
         let title = chapter.title || (chapter.chapter_num ? `第${chapter.chapter_num}话` : "阅读");
-        chapters.set(String(chapter.id), String(title));
+        // Prefix numeric IDs so JS/Dart object conversion cannot reorder chapters by key.
+        chapters.set(`chapter-${String(chapter.id)}`, String(title));
       }
 
       let categories = this.values(comic.category);
       let tags = this.values(comic.tags);
       let status = Number(comic.status) === 1 ? "已完结" : "连载中";
-      let updateTime = rawChapters.length
-        ? this.formatDate(rawChapters[rawChapters.length - 1].created_at)
+      let updateTime = orderedChapters.length
+        ? this.formatDate(orderedChapters[orderedChapters.length - 1].created_at)
         : "";
       return new ComicDetails({
         title: String(comic.title || "韩漫屋"),
@@ -345,6 +393,8 @@ class Hmanwu extends ComicSource {
 
     loadEp: async (comicId, epId) => {
       let chapterId = String(epId || comicId || "");
+      let prefixedId = chapterId.match(/^chapter-(\d+)$/i);
+      if (prefixedId) chapterId = prefixedId[1];
       let data = await this.request(`/api/chapters/${encodeURIComponent(chapterId)}/read`);
       let images = (data.images || [])
         .slice()
