@@ -9,8 +9,8 @@
   {
     "name": "漫小肆（18+）",
     "key": "mxs",
-    "version": "1.0.6",
-    "description": "18+ 配置；使用移动端请求头，保留当前可达域名和备用选项。",
+    "version": "1.0.7",
+    "description": "18+ 配置；使用移动端请求头，保留当前可达域名和备用选项，详情字段兼容 Venera。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js"
   },
   {

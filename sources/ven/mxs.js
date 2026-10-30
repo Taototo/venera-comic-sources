@@ -2,9 +2,9 @@ class MXS extends ComicSource {
     // 漫画源基本信息
     name = "漫小肆（18+）";
     key = "mxs";
-    version = "1.0.6";
+    version = "1.0.7";
     minAppVersion = "1.5.0";
-    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.0.6";
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.0.7";
 
     // 漫画源设置项
     settings = {
@@ -438,14 +438,16 @@ class MXS extends ComicSource {
             const doc = await this.fetchDocument(url);
 
             // 提取标题信息
-            const title = doc.querySelector(".info h1")?.text?.trim();
+            const title = this.textOf(doc.querySelector(".info h1")) ||
+                this.textOf(doc.querySelector("h1")) ||
+                `漫小肆漫画 ${String(id)}`;
 
             // 提取副标题信息（别名和作者）
             let author = "";
             let subTitle = "";
             const subTitleElems = doc.querySelectorAll(".info .subtitle");
             for (let elem of subTitleElems) {
-                const text = elem.text;
+                const text = this.textOf(elem);
                 if (text.includes("别名：")) subTitle = text.replace("别名：", "").trim();
                 if (text.includes("作者：")) author = text.replace("作者：", "").trim();
             }
@@ -458,19 +460,19 @@ class MXS extends ComicSource {
             let clickCount = "";
             const tipElems = doc.querySelectorAll(".info .tip span");
             for (let elem of tipElems) {
-                const text = elem.text;
-                if (text.includes("状态：")) status = elem.querySelector("span")?.text?.trim();
-                if (text.includes("地区：")) area = elem.querySelector("a")?.text?.trim();
-                if (text.includes("更新时间：")) updateTime = elem.text.replace("更新时间：", "").trim();
-                if (text.includes("点击：")) clickCount = elem.text.replace("点击：", "").trim();
+                const text = this.textOf(elem);
+                if (text.includes("状态：")) status = this.textOf(elem.querySelector("span"));
+                if (text.includes("地区：")) area = this.textOf(elem.querySelector("a"));
+                if (text.includes("更新时间：")) updateTime = text.replace("更新时间：", "").trim();
+                if (text.includes("点击：")) clickCount = text.replace("点击：", "").trim();
             }
-            const description = doc.querySelector(".info .content")?.text?.trim();
+            const description = this.textOf(doc.querySelector(".info .content"));
 
             // 提取标签信息
             const tagList = [];
             const tagElems = doc.querySelectorAll(".info .tip a[href*='tag=']");
             for (let elem of tagElems) {
-                const tagName = elem.text?.trim();
+                const tagName = this.textOf(elem);
                 if (tagName) tagList.push(tagName);
             }
 
@@ -479,7 +481,7 @@ class MXS extends ComicSource {
             const chapterElems = doc.querySelectorAll("#detail-list-select li a");
             for (let elem of chapterElems) {
                 const chapterUrl = elem.attributes?.href;
-                const chapterTitle = elem.text?.trim();
+                const chapterTitle = this.textOf(elem);
                 if (chapterUrl && chapterTitle) {
                     const chapterId = chapterUrl.split("/").pop();
                     if (chapterId) chapters[chapterId] = chapterTitle;
@@ -494,16 +496,16 @@ class MXS extends ComicSource {
             
             // 创建并返回漫画详情对象
             return new ComicDetails({
-                title: title,
-                subTitle: subTitle,
+                title: String(title),
+                subTitle: String(subTitle || ""),
                 cover: `${this.baseUrl}/static/upload/book/${id}/cover.jpg`,
-                description: description,
+                description: String(description || ""),
                 tags: {
                     "作者": authors,
                     "题材": tagList,
-                    "地区": [area],
-                    "状态": [status],
-                    "热度": [`🔥${clickCount}`]
+                    "地区": [String(area || "")],
+                    "状态": [String(status || "")],
+                    "热度": [`🔥${String(clickCount || "")}`]
                 },
                 chapters: chapters,
                 recommend: recommend,
