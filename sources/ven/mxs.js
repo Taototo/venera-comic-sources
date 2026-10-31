@@ -2,9 +2,9 @@ class MXS extends ComicSource {
     // 漫画源基本信息
     name = "漫小肆（18+）";
     key = "mxs";
-    version = "1.0.9";
+    version = "1.1.0";
     minAppVersion = "1.5.0";
-    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@59498e6/sources/ven/mxs.js?v=1.0.9";
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.1.0";
 
     // 漫画源设置项
     settings = {
@@ -217,6 +217,13 @@ class MXS extends ComicSource {
                 this.textOf(item.querySelector(".rank-list-info-right-subtitle")) ||
                 this.textOf(item.querySelector(".chapter")).replace(/^更新/, "") ||
                 this.textOf(item.querySelector(".zl"));
+            // Some mirrors expose the date on the card. Keep it in a namespaced
+            // tag so the app can show its update badge without loading details.
+            const itemText = this.textOf(item);
+            const updateMatch = itemText.match(
+                /(?:更新时间|更新日期)\s*[：:]\s*(\d{4}[-/.]\d{1,2}[-/.]\d{1,2})/
+            ) || itemText.match(/\b(\d{4}[-/.]\d{1,2}[-/.]\d{1,2})\b/);
+            const updateTags = updateMatch ? [`更新时间: ${updateMatch[1]}`] : undefined;
             if (id && title && !seen[id]) {
                 seen[id] = true;
                 comics.push(new Comic({
@@ -224,6 +231,7 @@ class MXS extends ComicSource {
                     title: title,
                     subTitle: author,
                     cover: cover,
+                    tags: updateTags,
                     description: description,
                 }));
             }
@@ -459,7 +467,19 @@ class MXS extends ComicSource {
             let updateTime = "";
             let clickCount = "";
             const tipText = this.textOf(doc.querySelector(".info .tip"));
+            const infoBlocks = doc.querySelectorAll(".info .tip .block");
             const readTipValue = (label) => {
+                // Read each labelled block first. The site puts the value in a
+                // nested span or anchor, and this preserves that boundary.
+                const blockPattern = new RegExp(
+                    "^" + label + "\\s*[：:]\\s*(.*)$"
+                );
+                for (let block of infoBlocks) {
+                    const blockMatch = this.textOf(block).match(blockPattern);
+                    if (blockMatch && blockMatch[1]) return blockMatch[1].trim();
+                }
+
+                // Fallback for older mirrors that render one plain text block.
                 const labels = "状态|地区|更新时间|点击|标签";
                 const match = tipText.match(new RegExp(
                     label + "\\s*[：:]\\s*([\\s\\S]*?)(?=\\s*(?:" + labels + ")\\s*[：:]|$)"
@@ -515,7 +535,7 @@ class MXS extends ComicSource {
                 chapters: chapters,
                 recommend: recommend,
                 commentCount: comments.length,
-                updateTime: updateTime,
+                updateTime: updateTime || null,
                 url: url,
                 comments: comments
             });
