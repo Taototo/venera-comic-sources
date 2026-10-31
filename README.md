@@ -33,13 +33,12 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kx
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/manhuazhan.js
 ```
 不要填写 GitHub 的 `blob/...` 网页地址；Venera 需要的是清单或 JavaScript 原始地址。
 
 ## 目录和分类
 
-- `comic_index.json`：15 个漫画源的清单。
+- `comic_index.json`：14 个漫画源的清单。
 - `index.json`：兼容旧版本的漫画源清单。
 - 默认组：再漫画、漫画人、拷贝漫画、包子漫画、魅影画廊。
 - 18+ 组：漫小肆、禁漫天堂、绅士漫画、大人漫画、成色漫画、开心看漫画、鸟鸟韩漫、韩漫屋；网页端禁漫天堂也保留为独立入口。
