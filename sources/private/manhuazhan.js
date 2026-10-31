@@ -2,9 +2,9 @@
 class Manhuazhan extends ComicSource {
   name = "漫画站";
   key = "private_manhuazhan";
-  version = "1.0.1";
+  version = "1.0.2";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/manhuazhan.js?v=1.0.1";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/manhuazhan.js?v=1.0.2";
   _activeDomain = "";
 
   settings = {
@@ -50,6 +50,7 @@ class Manhuazhan extends ComicSource {
 
   headersFor(domain) {
     return {
+      "http_client": "dart:io",
       "User-Agent":
         "Mozilla/5.0 (Linux; Android 10; K; wv) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36",
       Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",

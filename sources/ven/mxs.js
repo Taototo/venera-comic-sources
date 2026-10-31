@@ -2,9 +2,9 @@ class MXS extends ComicSource {
     // 漫画源基本信息
     name = "漫小肆（18+）";
     key = "mxs";
-    version = "1.0.7";
+    version = "1.0.8";
     minAppVersion = "1.5.0";
-    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.0.7";
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.0.8";
 
     // 漫画源设置项
     settings = {
@@ -458,13 +458,18 @@ class MXS extends ComicSource {
             let area = "";
             let updateTime = "";
             let clickCount = "";
-            const tipElems = doc.querySelectorAll(".info .tip span");
+            let tipElems = doc.querySelectorAll(".info .tip .block");
+            if (tipElems.length === 0) tipElems = doc.querySelectorAll(".info .tip span");
             for (let elem of tipElems) {
                 const text = this.textOf(elem);
-                if (text.includes("状态：")) status = this.textOf(elem.querySelector("span"));
-                if (text.includes("地区：")) area = this.textOf(elem.querySelector("a"));
-                if (text.includes("更新时间：")) updateTime = text.replace("更新时间：", "").trim();
-                if (text.includes("点击：")) clickCount = text.replace("点击：", "").trim();
+                const separator = text.indexOf("：") >= 0 ? text.indexOf("：") : text.indexOf(":");
+                if (separator < 0) continue;
+                const label = text.substring(0, separator).trim();
+                const value = text.substring(separator + 1).trim();
+                if (label === "状态") status = value;
+                if (label === "地区") area = value;
+                if (label === "更新时间") updateTime = value;
+                if (label === "点击") clickCount = value;
             }
             const description = this.textOf(doc.querySelector(".info .content"));
 
