@@ -7,12 +7,13 @@ class PrivateBaozi extends ComicSource {
   // 保留历史 key，已安装的私人源可直接更新。
   key = "hj_baozi";
 
-  version = "1.1.8";
+  version = "1.1.9";
 
   minAppVersion = "1.0.0";
 
   // 更新链接
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js?v=1.1.9";
+  _activeDomain = "";
 
   settings = {
     language: {
@@ -35,7 +36,7 @@ class PrivateBaozi extends ComicSource {
         { value: "twmanga.com" },
         { value: "dinnerku.com" },
       ],
-      default: "bzmgcn.com",
+      default: "webmota.com",
     },
     cdn_domains: {
       title: "图片资源站域名",
@@ -71,9 +72,60 @@ class PrivateBaozi extends ComicSource {
   get lang() {
     return this.loadSetting("language") || this.settings.language.default;
   }
+
+  normalizeDomain(value) {
+    return String(value || "")
+      .trim()
+      .replace(/^https?:\/\//i, "")
+      .replace(/\/+$/, "");
+  }
+
+  get configuredDomain() {
+    return this.normalizeDomain(this.loadSetting("domains") || this.settings.domains.default);
+  }
+
+  get domainCandidates() {
+    let candidates = [
+      this._activeDomain,
+      this.configuredDomain,
+      "webmota.com",
+      "kukuc.co",
+      "twmanga.com",
+      "dinnerku.com",
+      "bzmgcn.com",
+      "baozimhcn.com",
+    ];
+    let result = [];
+    for (let domain of candidates) {
+      domain = this.normalizeDomain(domain);
+      if (domain && result.indexOf(domain) < 0) result.push(domain);
+    }
+    return result;
+  }
+
   get baseUrl() {
-    let domain = this.loadSetting("domains") || this.settings.domains.default;
+    let domain = this._activeDomain || this.configuredDomain;
     return `https://${this.lang}.${domain}`;
+  }
+
+  async request(path) {
+    let input = String(path || "/");
+    let pathOnly = input.replace(/^https?:\/\/[^/]+/i, "") || "/";
+    let lastError = "";
+    for (let domain of this.domainCandidates) {
+      try {
+        let baseUrl = `https://${this.lang}.${domain}`;
+        let res = await Network.get(`${baseUrl}${pathOnly}`, {});
+        if (res.status === 200) {
+          this._activeDomain = domain;
+          return res;
+        }
+        lastError = `Invalid status code: ${res.status}`;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    throw lastError || "无法连接到包子漫画";
   }
 
   /// 账号
@@ -160,10 +212,7 @@ class PrivateBaozi extends ComicSource {
       type: "singlePageWithMultiPart",
 
       load: async () => {
-        var res = await Network.get(this.baseUrl);
-        if (res.status !== 200) {
-          throw "Invalid status code: " + res.status;
-        }
+        var res = await this.request("/");
         let document = new HtmlDocument(res.body);
         let parts = document.querySelectorAll("div.index-recommend-items");
         let result = {};
@@ -268,12 +317,9 @@ class PrivateBaozi extends ComicSource {
   /// 分类漫画页面, 即点击分类标签后进入的页面
   categoryComics = {
     load: async (category, param, options, page) => {
-      let res = await Network.get(
-        `${this.baseUrl}/api/bzmhq/amp_comic_list?type=${param}&region=${options[0]}&state=${options[1]}&filter=%2a&page=${page}&limit=36&language=${this.lang}&__amp_source_origin=${this.baseUrl}`
+      let res = await this.request(
+        `/api/bzmhq/amp_comic_list?type=${param}&region=${options[0]}&state=${options[1]}&filter=%2a&page=${page}&limit=36&language=${this.lang}`
       );
-      if (res.status !== 200) {
-        throw "Invalid status code: " + res.status;
-      }
       let maxPage = null;
       let json = JSON.parse(res.body);
       if (!json.next) {
@@ -298,10 +344,7 @@ class PrivateBaozi extends ComicSource {
   /// 搜索
   search = {
     load: async (keyword, options, page) => {
-      let res = await Network.get(`${this.baseUrl}/search?q=${keyword}`);
-      if (res.status !== 200) {
-        throw "Invalid status code: " + res.status;
-      }
+      let res = await this.request(`/search?q=${encodeURIComponent(String(keyword || ""))}`);
       let document = new HtmlDocument(res.body);
       let comics = document
         .querySelectorAll("div.comics-card")
@@ -345,10 +388,7 @@ class PrivateBaozi extends ComicSource {
     loadFolders: null,
     /// 加载漫画
     loadComics: async (page, folder) => {
-      let res = await Network.get(`${this.baseUrl}/user/my_bookshelf`);
-      if (res.status !== 200) {
-        throw "Invalid status code: " + res.status;
-      }
+      let res = await this.request("/user/my_bookshelf");
       let document = new HtmlDocument(res.body);
       function parseComic(e) {
         let title = e.querySelector("h4 > a").text.trim();
@@ -384,10 +424,7 @@ class PrivateBaozi extends ComicSource {
   comic = {
     // 加载漫画信息
     loadInfo: async (id) => {
-      let res = await Network.get(`${this.baseUrl}/comic/${id}`);
-      if (res.status !== 200) {
-        throw "Invalid status code: " + res.status;
-      }
+      let res = await this.request(`/comic/${id}`);
       let document = new HtmlDocument(res.body);
 
       let title = document.querySelector("h1.comics-detail__title").text.trim();

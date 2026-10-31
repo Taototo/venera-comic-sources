@@ -2,40 +2,73 @@
 class Manhuazhan extends ComicSource {
   name = "漫画站";
   key = "private_manhuazhan";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/manhuazhan.js";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/manhuazhan.js?v=1.0.1";
+  _activeDomain = "";
 
   settings = {
     domain: {
       title: "域名",
       type: "input",
-      default: "www.manhuazhan.com",
+      default: "manhuazhan.org",
     },
   };
 
+  normalizeDomain(value) {
+    return String(value || "")
+      .trim()
+      .replace(/^https?:\/\//i, "")
+      .replace(/\/+$/, "");
+  }
+
+  get configuredDomain() {
+    return this.normalizeDomain(this.loadSetting("domain") || this.settings.domain.default);
+  }
+
+  get domainCandidates() {
+    let candidates = [
+      this._activeDomain,
+      this.configuredDomain,
+      "manhuazhan.org",
+      "manhuazhan.com",
+      "www.manhuazhan.org",
+      "www.manhuazhan.com",
+    ];
+    let result = [];
+    for (let domain of candidates) {
+      domain = this.normalizeDomain(domain);
+      if (domain && result.indexOf(domain) < 0) result.push(domain);
+    }
+    return result;
+  }
+
   get baseUrl() {
-    let domain = this.loadSetting("domain") || this.settings.domain.default;
-    domain = String(domain).trim().replace(/^https?:\/\//i, "").replace(/\/+$/, "");
+    let domain = this._activeDomain || this.configuredDomain;
     return `https://${domain}`;
   }
 
-  get headers() {
+  headersFor(domain) {
     return {
       "User-Agent":
         "Mozilla/5.0 (Linux; Android 10; K; wv) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36",
       Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
       "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
-      Referer: `${this.baseUrl}/`,
+      Referer: `https://${domain}/`,
     };
   }
 
-  absoluteUrl(value) {
+  get headers() {
+    return this.headersFor(this._activeDomain || this.configuredDomain);
+  }
+
+  absoluteUrl(value, domain) {
     if (!value) return "";
     value = String(value).trim();
     if (/^https?:\/\//i.test(value)) return value.replace(/^http:/i, "https:");
     if (value.indexOf("//") === 0) return `https:${value}`;
-    return `${this.baseUrl}${value.indexOf("/") === 0 ? "" : "/"}${value}`;
+    let baseUrl = `https://${this.normalizeDomain(domain || this._activeDomain || this.configuredDomain)}`;
+    return `${baseUrl}${value.indexOf("/") === 0 ? "" : "/"}${value}`;
   }
 
   textOf(node) {
@@ -47,9 +80,22 @@ class Manhuazhan extends ComicSource {
   }
 
   async request(path) {
-    let res = await Network.get(this.absoluteUrl(path), this.headers);
-    if (res.status !== 200) throw `请求失败: ${res.status}`;
-    return res;
+    let input = String(path || "/");
+    let pathOnly = input.replace(/^https?:\/\/[^/]+/i, "") || "/";
+    let lastError = "";
+    for (let domain of this.domainCandidates) {
+      try {
+        let res = await Network.get(this.absoluteUrl(pathOnly, domain), this.headersFor(domain));
+        if (res.status === 200) {
+          this._activeDomain = domain;
+          return res;
+        }
+        lastError = `请求失败: ${res.status}`;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    throw lastError || "无法连接到漫画站";
   }
 
   pageUrl(path, page) {

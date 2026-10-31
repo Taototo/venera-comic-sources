@@ -37,9 +37,9 @@
   {
     "name": "包子漫画",
     "key": "hj_baozi",
-    "version": "1.1.8",
-    "description": "默认配置；保留可用的简繁站点和图片 CDN 选项。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js"
+    "version": "1.1.9",
+    "description": "默认配置；支持镜像自动切换，保留简繁站点和图片 CDN 选项。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js?v=1.1.9"
   },
   {
     "name": "绅士漫画（18+）",
@@ -100,8 +100,8 @@
   {
     "name": "漫画站",
     "key": "private_manhuazhan",
-    "version": "1.0.0",
-    "description": "默认配置；支持分类、详情、章节图片和图片解码。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/manhuazhan.js"
+    "version": "1.0.1",
+    "description": "默认配置；支持域名自动切换、分类、详情、章节图片和图片解码。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/manhuazhan.js?v=1.0.1"
   }
 ]
