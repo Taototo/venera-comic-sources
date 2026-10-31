@@ -9,9 +9,9 @@
   {
     "name": "漫小肆（18+）",
     "key": "mxs",
-    "version": "1.1.0",
-    "description": "18+ 配置；详情页提供状态、地区、更新时间和点击量，列表兼容更新时间角标。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@03a9bec/sources/ven/mxs.js?v=1.1.0"
+    "version": "1.2.0",
+    "description": "18+ 配置；兼容桌面和移动详情模板，提供状态、地区、更新时间和点击量。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.2.0"
   },
   {
     "name": "漫画人",

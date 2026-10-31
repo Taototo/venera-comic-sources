@@ -2,9 +2,9 @@ class MXS extends ComicSource {
     // 漫画源基本信息
     name = "漫小肆（18+）";
     key = "mxs";
-    version = "1.1.0";
+    version = "1.2.0";
     minAppVersion = "1.5.0";
-    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.1.0";
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.2.0";
 
     // 漫画源设置项
     settings = {
@@ -81,6 +81,16 @@ class MXS extends ComicSource {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
             "Referer": `${this.baseUrl}/`
+        };
+    }
+
+    // The desktop detail template contains status, update date and click count.
+    // Keep the mobile headers for lists and images, which are more reliable on
+    // mirrors that reset connections for desktop requests.
+    get detailHeaders() {
+        return {
+            ...this.headers,
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
         };
     }
 
@@ -265,8 +275,8 @@ class MXS extends ComicSource {
     }
 
     // 执行网络请求并返回HTML文档对象
-    async fetchDocument(url) {
-        const res = await Network.get(url, this.headers);
+    async fetchDocument(url, headers = this.headers) {
+        const res = await Network.get(url, headers);
         
         if (res.status !== 200) {
             throw `请求失败: ${res.status}`;
@@ -443,29 +453,50 @@ class MXS extends ComicSource {
         // 加载漫画详情
         loadInfo: async (id) => {
             const url = `${this.baseUrl}/book/${id}`;
-            const doc = await this.fetchDocument(url);
+            const doc = await this.fetchDocument(url, this.detailHeaders);
+
+            const readLabeledValue = (text, label) => {
+                const normalized = String(text || "").replace(/\s+/g, " ").trim();
+                const match = normalized.match(new RegExp(
+                    "^" + label + "\\s*[：:]\\s*(.*)$"
+                ));
+                return match ? match[1].trim() : "";
+            };
+
+            const normalizeDate = (value) => {
+                const match = String(value || "").match(
+                    /(\d{4})\s*[-/.年]\s*(\d{1,2})\s*[-/.月]\s*(\d{1,2})/
+                );
+                if (!match) return "";
+                return `${match[1]}-${String(match[2]).padStart(2, "0")}-${String(match[3]).padStart(2, "0")}`;
+            };
 
             // 提取标题信息
             const title = this.textOf(doc.querySelector(".info h1")) ||
+                this.textOf(doc.querySelector(".detail-main-info-title")) ||
                 this.textOf(doc.querySelector("h1")) ||
                 `漫小肆漫画 ${String(id)}`;
 
-            // 提取副标题信息（别名和作者）
+            // 桌面模板使用 .subtitle，移动模板使用 .detail-main-info-author。
             let author = "";
             let subTitle = "";
-            const subTitleElems = doc.querySelectorAll(".info .subtitle");
+            let mobileArea = "";
+            const subTitleElems = [
+                ...doc.querySelectorAll(".info .subtitle"),
+                ...doc.querySelectorAll(".detail-main-info-author")
+            ];
             for (let elem of subTitleElems) {
                 const text = this.textOf(elem);
-                if (text.includes("别名：")) subTitle = text.replace("别名：", "").trim();
-                if (text.includes("作者：")) author = text.replace("作者：", "").trim();
+                const alias = readLabeledValue(text, "别名");
+                const authorValue = readLabeledValue(text, "作者");
+                const areaValue = readLabeledValue(text, "地区");
+                if (alias) subTitle = alias;
+                if (authorValue) author = authorValue;
+                if (areaValue) mobileArea = areaValue;
             }
             const authors = author ? author.split("&").map(a => a.trim()).filter(a => a) : [];
 
-            // 提取其他信息（状态、地区、更新时间、点击量和描述信息）
-            let status = "";
-            let area = "";
-            let updateTime = "";
-            let clickCount = "";
+            // 桌面模板的字段在 .info .tip 中，移动模板则放在章节标题栏。
             const tipText = this.textOf(doc.querySelector(".info .tip"));
             const infoBlocks = doc.querySelectorAll(".info .tip .block");
             const readTipValue = (label) => {
@@ -486,15 +517,22 @@ class MXS extends ComicSource {
                 ));
                 return match ? match[1].trim() : "";
             };
-            status = readTipValue("状态");
-            area = readTipValue("地区");
-            updateTime = readTipValue("更新时间");
-            clickCount = readTipValue("点击");
-            const description = this.textOf(doc.querySelector(".info .content"));
+            const status = readTipValue("状态") ||
+                this.textOf(doc.querySelector(".detail-list-title-1"));
+            const area = readTipValue("地区") || mobileArea;
+            const rawUpdateTime = readTipValue("更新时间") ||
+                this.textOf(doc.querySelector(".detail-list-title-3"));
+            const updateTime = normalizeDate(rawUpdateTime) || rawUpdateTime;
+            const clickCount = readTipValue("点击");
+            const description = this.textOf(doc.querySelector(".info .content")) ||
+                this.textOf(doc.querySelector(".detail-desc"));
 
             // 提取标签信息
             const tagList = [];
-            const tagElems = doc.querySelectorAll(".info .tip a[href*='tag=']");
+            const tagElems = [
+                ...doc.querySelectorAll(".info .tip a[href*='tag=']"),
+                ...doc.querySelectorAll(".detail-main-info-class a[href*='tag=']")
+            ];
             for (let elem of tagElems) {
                 const tagName = this.textOf(elem);
                 if (tagName) tagList.push(tagName);
