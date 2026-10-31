@@ -9,9 +9,9 @@
   {
     "name": "漫小肆（18+）",
     "key": "mxs",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "description": "18+ 配置；使用移动端请求头，保留当前可达域名和备用选项，详情字段兼容 Venera。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@9d1a00c/sources/ven/mxs.js?v=1.0.8"
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@9d1a00c/sources/ven/mxs.js?v=1.0.9"
   },
   {
     "name": "漫画人",
@@ -96,12 +96,5 @@
     "version": "1.1.2",
     "description": "18+ 配置；首页推荐、最近更新、已完结支持查看更多，另有分类、搜索、详情和章节图片。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js"
-  },
-  {
-    "name": "漫画站",
-    "key": "private_manhuazhan",
-    "version": "1.0.2",
-    "description": "默认配置；支持域名自动切换、Dart 网络请求、分类、详情、章节图片和图片解码。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@9d1a00c/sources/private/manhuazhan.js?v=1.0.2"
   }
 ]

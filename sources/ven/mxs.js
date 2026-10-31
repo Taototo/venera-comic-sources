@@ -2,9 +2,9 @@ class MXS extends ComicSource {
     // 漫画源基本信息
     name = "漫小肆（18+）";
     key = "mxs";
-    version = "1.0.8";
+    version = "1.0.9";
     minAppVersion = "1.5.0";
-    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@9d1a00c/sources/ven/mxs.js?v=1.0.8";
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@9d1a00c/sources/ven/mxs.js?v=1.0.9";
 
     // 漫画源设置项
     settings = {
@@ -458,19 +458,18 @@ class MXS extends ComicSource {
             let area = "";
             let updateTime = "";
             let clickCount = "";
-            let tipElems = doc.querySelectorAll(".info .tip .block");
-            if (tipElems.length === 0) tipElems = doc.querySelectorAll(".info .tip span");
-            for (let elem of tipElems) {
-                const text = this.textOf(elem);
-                const separator = text.indexOf("：") >= 0 ? text.indexOf("：") : text.indexOf(":");
-                if (separator < 0) continue;
-                const label = text.substring(0, separator).trim();
-                const value = text.substring(separator + 1).trim();
-                if (label === "状态") status = value;
-                if (label === "地区") area = value;
-                if (label === "更新时间") updateTime = value;
-                if (label === "点击") clickCount = value;
-            }
+            const tipText = this.textOf(doc.querySelector(".info .tip"));
+            const readTipValue = (label) => {
+                const labels = "状态|地区|更新时间|点击|标签";
+                const match = tipText.match(new RegExp(
+                    label + "\\s*[：:]\\s*([\\s\\S]*?)(?=\\s*(?:" + labels + ")\\s*[：:]|$)"
+                ));
+                return match ? match[1].trim() : "";
+            };
+            status = readTipValue("状态");
+            area = readTipValue("地区");
+            updateTime = readTipValue("更新时间");
+            clickCount = readTipValue("点击");
             const description = this.textOf(doc.querySelector(".info .content"));
 
             // 提取标签信息
@@ -508,9 +507,10 @@ class MXS extends ComicSource {
                 tags: {
                     "作者": authors,
                     "题材": tagList,
-                    "地区": [String(area || "")],
-                    "状态": [String(status || "")],
-                    "热度": [`🔥${String(clickCount || "")}`]
+                    "地区": area ? [String(area)] : [],
+                    "状态": status ? [String(status)] : [],
+                    "更新时间": updateTime ? [String(updateTime)] : [],
+                    "点击量": clickCount ? [String(clickCount)] : []
                 },
                 chapters: chapters,
                 recommend: recommend,
