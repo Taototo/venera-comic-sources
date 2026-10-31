@@ -11,7 +11,7 @@
     "key": "mxs",
     "version": "1.0.8",
     "description": "18+ 配置；使用分页列表接口并兼容排行榜结构，详情字段兼容 Venera。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.0.8"
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@9d1a00c/sources/ven/mxs.js?v=1.0.8"
   },
   {
     "name": "漫画人",
@@ -102,6 +102,6 @@
     "key": "private_manhuazhan",
     "version": "1.0.2",
     "description": "默认配置；支持域名自动切换、Dart 网络请求、分类、详情、章节图片和图片解码。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/manhuazhan.js?v=1.0.2"
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@9d1a00c/sources/private/manhuazhan.js?v=1.0.2"
   }
 ]

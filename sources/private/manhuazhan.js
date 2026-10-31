@@ -4,7 +4,7 @@ class Manhuazhan extends ComicSource {
   key = "private_manhuazhan";
   version = "1.0.2";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/manhuazhan.js?v=1.0.2";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@9d1a00c/sources/private/manhuazhan.js?v=1.0.2";
   _activeDomain = "";
 
   settings = {

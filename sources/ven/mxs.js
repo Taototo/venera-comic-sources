@@ -4,7 +4,7 @@ class MXS extends ComicSource {
     key = "mxs";
     version = "1.0.8";
     minAppVersion = "1.5.0";
-    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.0.8";
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@9d1a00c/sources/ven/mxs.js?v=1.0.8";
 
     // 漫画源设置项
     settings = {
