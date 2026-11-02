@@ -2,9 +2,9 @@
 class JmUu extends ComicSource {
   name = "禁漫天堂（网页）（18+）";
   key = "private_jm_uu";
-  version = "1.0.1";
+  version = "1.0.2";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js?v=1.0.2";
 
   settings = {
     domain: {
@@ -83,13 +83,13 @@ class JmUu extends ComicSource {
   }
 
   explore = [{
-    title: "禁漫天堂",
+    title: "禁漫天堂（网页）",
     type: "multiPageComicList",
     load: async (page) => this.loadList(`/albums?page=${Number(page) || 1}`),
   }];
 
   category = {
-    title: "禁漫天堂",
+    title: "禁漫天堂（网页）",
     parts: [{
       name: "分类",
       type: "fixed",
