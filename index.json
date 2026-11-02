@@ -88,7 +88,7 @@
     "key": "private_jm_uu",
     "version": "1.0.2",
     "description": "18+ 配置；网页端漫画列表、搜索、详情和图片阅读；发现页与分类页独立显示。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js?v=1.0.2"
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@32f98c1/sources/private/jm_uu.js?v=1.0.2"
   },
   {
     "name": "韩漫屋（18+）",
