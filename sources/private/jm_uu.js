@@ -2,9 +2,9 @@
 class JmUu extends ComicSource {
   name = "禁漫天堂（网页）（18+）";
   key = "private_jm_uu";
-  version = "1.0.2";
+  version = "1.0.3";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js?v=1.0.2";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js?v=1.0.3";
 
   settings = {
     domain: {
@@ -12,23 +12,59 @@ class JmUu extends ComicSource {
       type: "select",
       options: [
         { value: "comic18j-moco.work", text: "comic18j-moco.work（当前）" },
-        { value: "jm-uu.cc", text: "jm-uu.cc" },
+        { value: "www.comic18j-moco.work", text: "www.comic18j-moco.work（备用）" },
+        { value: "jm-uu.cc", text: "jm-uu.cc（旧入口）" },
       ],
       default: "comic18j-moco.work",
     },
   };
 
+  _activeDomain = "";
+
+  normalizeDomain(value) {
+    return String(value || "")
+      .trim()
+      .replace(/^https?:\/\//i, "")
+      .replace(/\/+$/, "");
+  }
+
+  get configuredDomain() {
+    return this.normalizeDomain(this.loadSetting("domain") || this.settings.domain.default);
+  }
+
+  get domainCandidates() {
+    let candidates = [
+      this._activeDomain,
+      this.configuredDomain,
+      "www.comic18j-moco.work",
+      "comic18j-moco.work",
+      "jm-uu.cc",
+    ];
+    let result = [];
+    for (let domain of candidates) {
+      domain = this.normalizeDomain(domain);
+      if (domain && result.indexOf(domain) < 0) result.push(domain);
+    }
+    return result;
+  }
+
+  baseUrlFor(domain) {
+    return `https://${this.normalizeDomain(domain)}`;
+  }
+
   get baseUrl() {
-    let domain = this.loadSetting("domain") || this.settings.domain.default;
-    domain = String(domain).trim().replace(/^https?:\/\//i, "").replace(/\/+$/, "");
-    return `https://${domain}`;
+    return this.baseUrlFor(this._activeDomain || this.configuredDomain);
+  }
+
+  headersFor(domain) {
+    return {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
+      Referer: `${this.baseUrlFor(domain)}/`,
+    };
   }
 
   get headers() {
-    return {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
-      Referer: `${this.baseUrl}/`,
-    };
+    return this.headersFor(this._activeDomain || this.configuredDomain);
   }
 
   absoluteUrl(value) {
@@ -37,6 +73,25 @@ class JmUu extends ComicSource {
     if (/^https?:\/\//i.test(value)) return value;
     if (value.indexOf("//") === 0) return `https:${value}`;
     return `${this.baseUrl}${value.indexOf("/") === 0 ? "" : "/"}${value}`;
+  }
+
+  async request(path) {
+    let input = String(path || "/");
+    let pathOnly = input.replace(/^https?:\/\/[^/]+/i, "") || "/";
+    let lastError = "";
+    for (let domain of this.domainCandidates) {
+      try {
+        let res = await Network.get(`${this.baseUrlFor(domain)}${pathOnly}`, this.headersFor(domain));
+        if (res.status === 200) {
+          this._activeDomain = domain;
+          return res;
+        }
+        lastError = `Invalid status code: ${res.status}`;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    throw lastError || "无法连接到禁漫天堂网页源";
   }
 
   textOf(node) {
@@ -74,8 +129,7 @@ class JmUu extends ComicSource {
   }
 
   async loadList(path) {
-    let res = await Network.get(this.absoluteUrl(path), this.headers);
-    if (res.status !== 200) throw `Invalid status code: ${res.status}`;
+    let res = await this.request(path);
     let document = new HtmlDocument(res.body);
     let result = { comics: this.parseComics(document), maxPage: this.parsePageCount(document) };
     document.dispose();
@@ -120,9 +174,8 @@ class JmUu extends ComicSource {
 
   comic = {
     loadInfo: async (id) => {
+      let res = await this.request(id);
       let url = this.absoluteUrl(id);
-      let res = await Network.get(url, this.headers);
-      if (res.status !== 200) throw `Invalid status code: ${res.status}`;
       let document = new HtmlDocument(res.body);
       let title = this.textOf(document.querySelector("h1.book-name"));
       let cover = "";
@@ -158,9 +211,9 @@ class JmUu extends ComicSource {
     },
 
     loadEp: async (comicId, epId) => {
-      let url = this.absoluteUrl(epId || comicId);
-      let res = await Network.get(url, this.headers);
-      if (res.status !== 200) throw `Invalid status code: ${res.status}`;
+      let page = epId || comicId;
+      let res = await this.request(page);
+      let url = this.absoluteUrl(page);
       let document = new HtmlDocument(res.body);
       let images = [];
       for (let node of document.querySelectorAll("img[data-src], img[data-original], img.owl-lazy")) {
@@ -178,7 +231,7 @@ class JmUu extends ComicSource {
     onImageLoad: () => ({ headers: this.headers }),
     onThumbnailLoad: () => ({ headers: this.headers }),
     link: {
-      domains: ["jm-uu.cc", "comic18j-moco.work"],
+      domains: ["jm-uu.cc", "comic18j-moco.work", "www.comic18j-moco.work"],
       linkToId: (url) => {
         let match = String(url || "").match(/^(https?:\/\/[^/]+\/(?:album|photo)\/[^?#]+)/i);
         return match ? match[1] : null;

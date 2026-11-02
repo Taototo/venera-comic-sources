@@ -7,13 +7,20 @@ class PrivateBaozi extends ComicSource {
   // 保留历史 key，已安装的私人源可直接更新。
   key = "hj_baozi";
 
-  version = "1.1.9";
+  version = "1.2.0";
 
   minAppVersion = "1.0.0";
 
   // 更新链接
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js?v=1.1.9";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js?v=1.2.0";
   _activeDomain = "";
+
+  defaultCoverUrl = "https://static-tw.baozimh.com/cover/default_cover.png";
+
+  // 站点仍返回该旧文件名，但原图已不存在；沿用网页 AMP 的默认回退图。
+  missingCoverFiles = [
+    "quanminzhuanzhiwoshenqicitiaowuxiandiejia-feixueliantianyuanzhushiliuhui.jpg",
+  ];
 
   settings = {
     language: {
@@ -178,7 +185,7 @@ class PrivateBaozi extends ComicSource {
     let url = e.querySelector("a").attributes["href"];
     let id = url.split("/").pop();
     let title = e.querySelector("h3").text.trim();
-    let cover = e.querySelector("a > amp-img").attributes["src"];
+    let cover = this.normalizeCover(e.querySelector("a > amp-img").attributes["src"]);
     let tags = e.querySelectorAll("div.tabs > span").map((e) => e.text.trim());
     let description = e.querySelector("small").text.trim();
     return {
@@ -195,9 +202,23 @@ class PrivateBaozi extends ComicSource {
       id: e.comic_id,
       title: e.name,
       subTitle: e.author,
-      cover: `https://static-tw.baozimh.com/cover/${e.topic_img}?w=285&h=375&q=100`,
+      cover: this.coverUrl(e.topic_img),
       tags: e.type_names,
     };
+  }
+
+  coverUrl(value) {
+    let file = String(value || "").trim();
+    if (!file || this.missingCoverFiles.indexOf(file.toLowerCase()) >= 0) {
+      return this.defaultCoverUrl;
+    }
+    return `https://static-tw.baozimh.com/cover/${file}?w=285&h=375&q=100`;
+  }
+
+  normalizeCover(value) {
+    let cover = String(value || "").trim();
+    let file = cover.split("?")[0].split("/").pop().toLowerCase();
+    return this.missingCoverFiles.indexOf(file) >= 0 ? this.defaultCoverUrl : cover;
   }
 
   /// 探索页面
@@ -390,7 +411,7 @@ class PrivateBaozi extends ComicSource {
     loadComics: async (page, folder) => {
       let res = await this.request("/user/my_bookshelf");
       let document = new HtmlDocument(res.body);
-      function parseComic(e) {
+      const parseComic = (e) => {
         let title = e.querySelector("h4 > a").text.trim();
         let url = e.querySelector("h4 > a").attributes["href"];
         let id = url.split("/").pop();
@@ -407,9 +428,9 @@ class PrivateBaozi extends ComicSource {
           title: title,
           subTitle: author,
           description: description,
-          cover: e.querySelector("amp-img").attributes["src"],
+          cover: this.normalizeCover(e.querySelector("amp-img").attributes["src"]),
         };
-      }
+      };
       let comics = document
         .querySelectorAll("div.bookshelf-items")
         .map((e) => parseComic(e));
@@ -428,8 +449,10 @@ class PrivateBaozi extends ComicSource {
       let document = new HtmlDocument(res.body);
 
       let title = document.querySelector("h1.comics-detail__title").text.trim();
-      let cover = document.querySelector("div.l-content > div > div > amp-img")
-        .attributes["src"];
+      let cover = this.normalizeCover(
+        document.querySelector("div.l-content > div > div > amp-img")
+          .attributes["src"]
+      );
       let author = document
         .querySelector("h2.comics-detail__author")
         .text.trim();
@@ -494,7 +517,7 @@ class PrivateBaozi extends ComicSource {
       for (let c of document.querySelectorAll("div.recommend--item")) {
         if (c.querySelectorAll("div.tag-comic").length > 0) {
           let title = c.querySelector("span").text.trim();
-          let cover = c.querySelector("amp-img").attributes["src"];
+          let cover = this.normalizeCover(c.querySelector("amp-img").attributes["src"]);
           let url = c.querySelector("a").attributes["href"];
           let id = url.split("/").pop();
           recommend.push({
@@ -522,6 +545,7 @@ class PrivateBaozi extends ComicSource {
         recommend: recommend,
         updateTime: updateDate,
       });
+
     },
     loadEp: async (comicId, epId) => {
       const images = [];
@@ -551,5 +575,10 @@ class PrivateBaozi extends ComicSource {
       });
       return { images: images };
     },
+
+    onThumbnailLoad: (url) => ({
+      url: this.normalizeCover(url),
+      headers: {},
+    }),
   };
 }

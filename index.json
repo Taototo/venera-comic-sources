@@ -37,9 +37,9 @@
   {
     "name": "包子漫画",
     "key": "hj_baozi",
-    "version": "1.1.9",
-    "description": "默认配置；支持镜像自动切换，保留简繁站点和图片 CDN 选项。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js?v=1.1.9"
+    "version": "1.2.0",
+    "description": "默认配置；支持镜像自动切换，失效封面使用站点默认图，并保留简繁站点和图片 CDN 选项。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js?v=1.2.0"
   },
   {
     "name": "绅士漫画（18+）",
@@ -86,9 +86,9 @@
   {
     "name": "禁漫天堂（网页）（18+）",
     "key": "private_jm_uu",
-    "version": "1.0.2",
-    "description": "18+ 配置；网页端漫画列表、搜索、详情和图片阅读；发现页与分类页独立显示。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@32f98c1/sources/private/jm_uu.js?v=1.0.2"
+    "version": "1.0.3",
+    "description": "18+ 配置；网页端列表、搜索、详情和图片阅读，支持备用域名自动重试；发现页与分类页独立显示。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/jm_uu.js?v=1.0.3"
   },
   {
     "name": "韩漫屋（18+）",
