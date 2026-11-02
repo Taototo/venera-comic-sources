@@ -84,13 +84,6 @@
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.5"
   },
   {
-    "name": "禁漫天堂（网页）（18+）",
-    "key": "private_jm_uu",
-    "version": "1.0.3",
-    "description": "18+ 配置；网页端列表、搜索、详情和图片阅读，支持备用域名自动重试；发现页与分类页独立显示。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@4c72cc7/sources/private/jm_uu.js?v=1.0.3"
-  },
-  {
     "name": "韩漫屋（18+）",
     "key": "private_hmanwu",
     "version": "1.1.2",
