@@ -7,12 +7,12 @@ class PrivateBaozi extends ComicSource {
   // 保留历史 key，已安装的私人源可直接更新。
   key = "hj_baozi";
 
-  version = "1.2.0";
+  version = "1.2.1";
 
   minAppVersion = "1.0.0";
 
   // 更新链接
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js?v=1.2.0";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js?v=1.2.1";
   _activeDomain = "";
 
   defaultCoverUrl = "https://static-tw.baozimh.com/cover/default_cover.png";
@@ -535,12 +535,22 @@ class PrivateBaozi extends ComicSource {
 
       return new ComicDetails({
         title: title,
+        subTitle: author,
         cover: cover,
         description: description,
-        tags: {
-          作者: [author],
-          标签: tags,
-        },
+        tags: (() => {
+          let status = tags[0] || "";
+          let categories = tags.slice(1);
+          let result = {
+            作者: author ? [author] : [],
+            分类: categories,
+          };
+          if (status) result["状态"] = [status];
+          if (updateDate && updateDate !== "暂无更新信息") {
+            result["更新时间"] = [updateDate];
+          }
+          return result;
+        })(),
         chapters: chapters,
         recommend: recommend,
         updateTime: updateDate,

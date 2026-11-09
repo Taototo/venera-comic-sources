@@ -2,9 +2,9 @@
 class NnHanman extends ComicSource {
   name = "鸟鸟韩漫（18+）";
   key = "private_nnhanman";
-  version = "1.0.5";
+  version = "1.0.6";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.5";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.6";
   _activeDomain = "";
 
   settings = {
@@ -119,6 +119,21 @@ class NnHanman extends ComicSource {
     return node && node.attributes ? node.attributes[name] || "" : "";
   }
 
+  cleanTitle(value) {
+    return String(value || "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/^[《「『]\s*/, "")
+      .replace(/\s*[》」』]$/, "")
+      .trim();
+  }
+
+  fallbackTitle(id) {
+    let path = this.pathOf(id).replace(/\/+$/, "");
+    let value = path.substring(path.lastIndexOf("/") + 1);
+    return this.cleanTitle(value.replace(/\.html$/i, ""));
+  }
+
   parsePageCount(document) {
     let maxPage = 1;
     for (let node of document.querySelectorAll("a[href]")) {
@@ -203,23 +218,35 @@ class NnHanman extends ComicSource {
       let res = await this.request(id);
       let url = this.absoluteUrl(this.pathOf(id));
       let document = new HtmlDocument(res.body);
-      let title = this.textOf(document.querySelector(".txtItme2 h1"));
       let coverNode = document.querySelector("#Cover img");
       let cover = this.attribute(coverNode, "src") || this.attribute(coverNode, "data-src");
+      let title = this.cleanTitle(this.textOf(document.querySelector(".txtItme2 h1")));
+      if (!title) title = this.cleanTitle(this.textOf(document.querySelector(".txtItme2")));
+      if (!title) title = this.cleanTitle(this.attribute(coverNode, "title"));
+      if (!title) {
+        let titleNode = document.querySelector("title");
+        title = this.cleanTitle(this.textOf(titleNode).replace(/\s*[-|｜]\s*鸟鸟韩漫.*$/i, ""));
+      }
+      if (!title) title = this.fallbackTitle(id) || "未命名漫画";
       let author = "";
       for (let node of document.querySelectorAll(".sub_r .txtItme")) {
         if (!node.querySelector("a") && !node.querySelector(".date")) {
-          author = this.textOf(node);
+          author = this.textOf(node).replace(/^(作者|作者名)\s*[：:]/, "").trim();
           break;
         }
       }
       let description = this.textOf(document.querySelector(".txtDesc"));
       let tags = [];
-      for (let node of document.querySelectorAll(".sub_r a[href^='/comics/']")) {
+      for (let node of document.querySelectorAll(".sub_r a[href]")) {
+        let href = this.attribute(node, "href");
+        if (href.indexOf("/comics/") < 0 && href.indexOf("/search/") < 0) continue;
         let value = this.textOf(node);
         if (value && tags.indexOf(value) < 0) tags.push(value);
       }
-      let updateTime = this.textOf(document.querySelector(".sub_r .date"));
+      let statusText = this.textOf(document.querySelector(".sub_r .date"));
+      let statusMatch = statusText.match(/^(连载中|連載中|连载|連載|已完结|已完結|完结|完結|停更|暂停|暫停)/i);
+      let status = statusMatch ? statusMatch[1] : "";
+      let updateTime = statusText.replace(status, "").trim();
       let chapterEntries = [];
       for (let node of document.querySelectorAll("#mh-chapter-list-ol-0 a[href*='/chapter-']")) {
         let href = this.attribute(node, "href");
@@ -243,11 +270,18 @@ class NnHanman extends ComicSource {
       let chapters = new Map();
       for (let chapter of chapterEntries) chapters.set(chapter.href, chapter.title);
       document.dispose();
+      let detailTags = {
+        "作者": author ? [author] : [],
+        "分类": tags,
+      };
+      if (status) detailTags["状态"] = [status];
+      if (updateTime) detailTags["更新时间"] = [updateTime];
       return new ComicDetails({
-        title: title || "鸟鸟韩漫",
+        title: title,
+        subTitle: author,
         cover: this.absoluteUrl(cover),
         description: description,
-        tags: { "作者": author ? [author] : [], "标签": tags },
+        tags: detailTags,
         chapters: chapters,
         updateTime: updateTime,
         url: url,
