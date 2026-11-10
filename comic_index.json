@@ -2,16 +2,16 @@
   {
     "name": "再漫画",
     "key": "zaimanhua",
-    "version": "1.0.3",
-    "description": "默认配置；更新列表和分类接口已通过当前网络检测。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/zaimanhua.js"
+    "version": "1.0.4",
+    "description": "默认配置；分类筛选补充排序、类型、进度和地区分组。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/zaimanhua.js?v=1.0.4"
   },
   {
     "name": "漫小肆（18+）",
     "key": "mxs",
-    "version": "1.2.0",
-    "description": "18+ 配置；兼容桌面和移动详情模板，提供状态、地区、更新时间和点击量。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@5c28a13/sources/ven/mxs.js?v=1.2.0"
+    "version": "1.2.1",
+    "description": "18+ 配置；补充题材、地区和进度筛选，详情提供状态、地区、更新时间和点击量。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/mxs.js?v=1.2.1"
   },
   {
     "name": "漫画人",
@@ -30,16 +30,16 @@
   {
     "name": "拷贝漫画",
     "key": "copy_manga",
-    "version": "1.4.3",
-    "description": "默认配置；使用已检测可达的 API 地址，支持手动切换线路。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/copy_manga.js"
+    "version": "1.4.4",
+    "description": "默认配置；分类筛选补充分组标题，支持手动切换线路。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/copy_manga.js?v=1.4.4"
   },
   {
     "name": "包子漫画",
     "key": "hj_baozi",
-    "version": "1.2.1",
-    "description": "默认配置；支持镜像自动切换，失效封面使用站点默认图，并补齐作者、分类、状态和更新时间。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js?v=1.2.1"
+    "version": "1.2.2",
+    "description": "默认配置；分类筛选补充地区和进度分组，支持镜像自动切换并补齐漫画元数据。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js?v=1.2.2"
   },
   {
     "name": "绅士漫画（18+）",
@@ -58,9 +58,9 @@
   {
     "name": "大人漫画（18+）",
     "key": "private_drmh3",
-    "version": "1.0.1",
-    "description": "18+ 配置；列表、搜索、章节和多 CDN 图片链路均已验证。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js"
+    "version": "1.0.2",
+    "description": "18+ 配置；分类按分类、进度、排序分组，列表、搜索、章节和多 CDN 图片链路均已验证。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js?v=1.0.2"
   },
   {
     "name": "成色漫画（18+）",
@@ -72,16 +72,16 @@
   {
     "name": "开心看漫画（18+）",
     "key": "private_kxmanhua",
-    "version": "1.0.4",
-    "description": "18+ 配置；使用移动端请求头并支持备用域名自动切换、漫画库、搜索、详情、章节和图片加载。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kxmanhua.js"
+    "version": "1.0.5",
+    "description": "18+ 配置；分类筛选补充进度和排序分组，支持备用域名自动切换及漫画库、搜索、详情、章节和图片加载。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kxmanhua.js?v=1.0.5"
   },
   {
     "name": "鸟鸟韩漫（18+）",
     "key": "private_nnhanman",
-    "version": "1.0.6",
-    "description": "18+ 配置；使用移动端请求头并支持备用域名自动切换，详情补齐标题、作者、分类、状态和更新时间。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.6"
+    "version": "1.0.7",
+    "description": "18+ 配置；分类按分类、进度、排序分组，支持备用域名自动切换，详情补齐标题、作者、分类、状态和更新时间。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.7"
   },
   {
     "name": "韩漫屋（18+）",

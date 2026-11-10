@@ -2,10 +2,10 @@ class Zaimanhua extends ComicSource {
   // 基础信息
   name = "再漫画";
   key = "zaimanhua";
-  version = "1.0.3";
+  version = "1.0.4";
   minAppVersion = "1.0.0";
   url =
-    "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/zaimanhua.js";
+    "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/zaimanhua.js?v=1.0.4";
 
   // 初始化请求头
   init() {
@@ -234,11 +234,13 @@ class Zaimanhua extends ComicSource {
     },
     optionList: [
       {
+        label: "排序",
         options: ["1-更新", "2-人气"],
         notShowWhen: null,
         showWhen: Object.keys(Zaimanhua.categoryParamMap),
       },
       {
+        label: "类型",
         options: [
           "0-全部",
           "3262-少年漫画",
@@ -250,11 +252,13 @@ class Zaimanhua extends ComicSource {
         showWhen: Object.keys(Zaimanhua.categoryParamMap),
       },
       {
+        label: "进度",
         options: ["0-全部", "2309-连载中", "2310-已完结", "29205-短篇"],
         notShowWhen: null,
         showWhen: Object.keys(Zaimanhua.categoryParamMap),
       },
       {
+        label: "地区",
         options: [
           "0-全部",
           "2304-日本",
@@ -268,6 +272,7 @@ class Zaimanhua extends ComicSource {
         showWhen: Object.keys(Zaimanhua.categoryParamMap),
       },
       {
+        label: "排序",
         options: ["0-人气", "1-吐槽", "2-订阅"],
         notshowWhen: null,
         showWhen: ["日排行", "周排行", "月排行", "总排行"],

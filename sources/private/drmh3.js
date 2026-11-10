@@ -2,9 +2,9 @@
 class PrivateDrmh3 extends ComicSource {
   name = "大人漫画（18+）";
   key = "private_drmh3";
-  version = "1.0.1";
+  version = "1.0.2";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js?v=1.0.2";
 
   settings = {
     domains: {
@@ -169,18 +169,6 @@ class PrivateDrmh3 extends ComicSource {
     title: "大人漫画",
     parts: [
       {
-        name: "页面",
-        type: "fixed",
-        categories: ["最新更新", "新书上架", "推荐漫画", "热门排行"],
-        itemType: "category",
-        categoryParams: [
-          "/latest-comics",
-          "/latest-comics/latest-comics",
-          "/latest-comics/recommend",
-          "/desirable-comics",
-        ],
-      },
-      {
         name: "分类",
         type: "fixed",
         categories: ["全部", "韩漫", "日漫", "真人", "3D漫画"],
@@ -196,15 +184,21 @@ class PrivateDrmh3 extends ComicSource {
       let value = String(param || "");
       if (value.indexOf("/") === 0) return this.loadList(value, page || 1);
 
-      let order = this.optionValue(options && options[0], "time");
-      let status = this.optionValue(options && options[1], "all");
+      let status = this.optionValue(options && options[0], "all");
+      let order = this.optionValue(options && options[1], "time");
       let categoryPath = encodeURIComponent(value || "all");
       let path = `/comics-catalog/${categoryPath}/ob/${order}/st/${status}`;
       return this.loadList(path, page || 1);
     },
     optionList: [
-      { options: ["time-按时间", "hits-按阅读"] },
-      { options: ["all-全部", "serialized-连载中", "completed-已完结"] },
+      {
+        label: "进度",
+        options: ["all-全部", "serialized-连载中", "completed-已完结"],
+      },
+      {
+        label: "排序",
+        options: ["time-按时间", "hits-按阅读"],
+      },
     ],
   };
 

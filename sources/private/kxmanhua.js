@@ -2,9 +2,9 @@
 class Kxmanhua extends ComicSource {
   name = "开心看漫画（18+）";
   key = "private_kxmanhua";
-  version = "1.0.4";
+  version = "1.0.5";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kxmanhua.js";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kxmanhua.js?v=1.0.5";
   _activeDomain = "";
 
   settings = {
@@ -164,8 +164,14 @@ class Kxmanhua extends ComicSource {
       return this.loadList(`/manga/library?type=${encodeURIComponent(type)}&complete=${encodeURIComponent(complete)}&page=${Number(page) || 1}&orderby=${encodeURIComponent(order)}`);
     },
     optionList: [
-      { options: ["1-全部", "2-完结", "3-连载"] },
-      { options: ["1-最热门", "2-最近更新", "3-最新上架"] },
+      {
+        label: "进度",
+        options: ["1-全部", "2-完结", "3-连载"],
+      },
+      {
+        label: "排序",
+        options: ["1-最热门", "2-最近更新", "3-最新上架"],
+      },
     ],
   };
 

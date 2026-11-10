@@ -4,11 +4,11 @@ class CopyManga extends ComicSource {
 
     key = "copy_manga"
 
-    version = "1.4.3"
+    version = "1.4.4"
 
     minAppVersion = "1.6.0"
 
-    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/copy_manga.js"
+    url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/ven/copy_manga.js?v=1.4.4"
 
     async getReqID() {
         if (this.copyRegion === "0") {
@@ -425,6 +425,7 @@ class CopyManga extends ComicSource {
         },
         optionList: [
             {
+                label: "筛选",
                 options: [
                     "-全部",
                     "japan-日漫",
@@ -436,6 +437,7 @@ class CopyManga extends ComicSource {
                 showWhen: Object.keys(CopyManga.category_param_dict)
             },
             {
+                label: "排序",
                 options: [
                     "*datetime_updated-时间倒序",
                     "datetime_updated-时间正序",
@@ -446,6 +448,7 @@ class CopyManga extends ComicSource {
                 showWhen: Object.keys(CopyManga.category_param_dict)
             },
             {
+                label: "受众",
                 options: [
                     "male-男频",
                     "female-女频"
@@ -454,6 +457,7 @@ class CopyManga extends ComicSource {
                 showWhen: ["排行"]
             },
             {
+                label: "时间范围",
                 options: [
                     "day-上升最快",
                     "week-最近7天",

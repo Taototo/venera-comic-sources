@@ -7,12 +7,12 @@ class PrivateBaozi extends ComicSource {
   // 保留历史 key，已安装的私人源可直接更新。
   key = "hj_baozi";
 
-  version = "1.2.1";
+  version = "1.2.2";
 
   minAppVersion = "1.0.0";
 
   // 更新链接
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js?v=1.2.1";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/baozi.js?v=1.2.2";
   _activeDomain = "";
 
   defaultCoverUrl = "https://static-tw.baozimh.com/cover/default_cover.png";
@@ -258,7 +258,7 @@ class PrivateBaozi extends ComicSource {
     title: "包子漫画",
     parts: [
       {
-        name: "类型",
+        name: "分类",
 
         // fixed 或者 random
         // random用于分类数量相当多时, 随机显示其中一部分
@@ -354,9 +354,11 @@ class PrivateBaozi extends ComicSource {
     // 提供选项
     optionList: [
       {
+        label: "地区",
         options: ["all-全部", "cn-国漫", "jp-日本", "kr-韩国", "en-欧美"],
       },
       {
+        label: "进度",
         options: ["all-全部", "serial-连载中", "pub-已完结"],
       },
     ],

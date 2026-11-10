@@ -2,9 +2,9 @@
 class NnHanman extends ComicSource {
   name = "鸟鸟韩漫（18+）";
   key = "private_nnhanman";
-  version = "1.0.6";
+  version = "1.0.7";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.6";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.7";
   _activeDomain = "";
 
   settings = {
@@ -184,20 +184,53 @@ class NnHanman extends ComicSource {
 
   category = {
     title: "鸟鸟韩漫",
-    parts: [{
-      name: "页面",
-      type: "fixed",
-      categories: ["最新更新", "排行", "分类"],
-      itemType: "category",
-      categoryParams: ["/update", "/ranking", "/comics"],
-    }],
+    parts: [
+      {
+        name: "分类",
+        type: "fixed",
+        categories: [
+          "全部", "正妹", "恋爱", "出版漫画", "肉慾", "浪漫", "大尺度",
+          "巨乳", "有夫之婦", "女大生", "狗血劇", "同居", "好友", "調教",
+          "动作", "後宮", "不倫", "3D", "校園", "耽美", "日漫",
+        ],
+        itemType: "category",
+        categoryParams: [
+          "tag:all", "tag:正妹", "tag:恋爱", "tag:出版漫画", "tag:肉慾", "tag:浪漫",
+          "tag:大尺度", "tag:巨乳", "tag:有夫之婦", "tag:女大生", "tag:狗血劇",
+          "tag:同居", "tag:好友", "tag:調教", "tag:动作", "tag:後宮", "tag:不倫",
+          "tag:3D", "tag:校園", "tag:耽美", "tag:日漫",
+        ],
+      },
+      {
+        name: "进度",
+        type: "fixed",
+        categories: ["全部", "已完结", "连载中"],
+        itemType: "category",
+        categoryParams: ["status:all", "status:completed", "status:serialized"],
+      },
+      {
+        name: "排序",
+        type: "fixed",
+        categories: ["按时间", "按热度"],
+        itemType: "category",
+        categoryParams: ["sort:time", "sort:hits"],
+      },
+    ],
     enableRankingPage: false,
   };
 
   categoryComics = {
     load: async (category, param, options, page) => {
-      let path = String(param || "/update");
-      if (Number(page) > 1 && path === "/update") path += `?page=${Number(page)}`;
+      let filters = { tag: "all", status: "all", sort: "time" };
+      let value = String(param || "tag:all");
+      let separator = value.indexOf(":");
+      let type = separator >= 0 ? value.substring(0, separator) : "tag";
+      let selected = separator >= 0 ? value.substring(separator + 1) : value;
+      if (type === "tag" && selected) filters.tag = selected;
+      if (type === "status" && selected) filters.status = selected;
+      if (type === "sort" && selected) filters.sort = selected;
+      let path = `/comics/${filters.tag}/ob/${filters.sort}/st/${filters.status}`;
+      if (Number(page) > 1) path += `?page=${Number(page)}`;
       return this.loadList(path);
     },
     optionList: [],
