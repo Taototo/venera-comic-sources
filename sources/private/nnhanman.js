@@ -2,9 +2,9 @@
 class NnHanman extends ComicSource {
   name = "鸟鸟韩漫（18+）";
   key = "private_nnhanman";
-  version = "1.0.7";
+  version = "1.0.8";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.7";
+  url = "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.8";
   _activeDomain = "";
 
   settings = {
@@ -139,16 +139,36 @@ class NnHanman extends ComicSource {
     for (let node of document.querySelectorAll("a[href]")) {
       let href = this.attribute(node, "href");
       let match = href.match(/[?&]page=(\d+)/i);
+      if (!match) match = href.match(/\/page\/(\d+)(?:[/?#]|$)/i);
       if (match) maxPage = Math.max(maxPage, parseInt(match[1], 10));
     }
     return maxPage;
   }
 
+  pagePath(path, page) {
+    let value = String(path || "/");
+    let current = Number(page) || 1;
+    if (current <= 1) return value;
+    if (/\/page\/\d+(?:[/?#]|$)/i.test(value)) {
+      return value.replace(/\/page\/\d+(?=$|[?#])/i, `/page/${current}`);
+    }
+    return `${value.replace(/\/$/, "")}/page/${current}`;
+  }
+
   parseComics(document) {
     let comics = [];
     let seen = {};
-    for (let item of document.querySelectorAll(".itemBox, .col_3_1 li")) {
-      let link = item.querySelector("a[href^='/comic/'][href$='.html']");
+    let items = document.querySelectorAll(".itemBox");
+    if (items.length === 0) items = document.querySelectorAll(".col_3_1 li");
+    for (let item of items) {
+      let link = null;
+      for (let candidate of item.querySelectorAll("a[href]")) {
+        let href = this.attribute(candidate, "href");
+        if (/^\/comic\/[^?#]+\.html$/i.test(href)) {
+          link = candidate;
+          break;
+        }
+      }
       if (!link) continue;
       let id = this.attribute(link, "href");
       let titleNode = item.querySelector("a.title, a.txtA") || link;
@@ -230,8 +250,7 @@ class NnHanman extends ComicSource {
       if (type === "status" && selected) filters.status = selected;
       if (type === "sort" && selected) filters.sort = selected;
       let path = `/comics/${filters.tag}/ob/${filters.sort}/st/${filters.status}`;
-      if (Number(page) > 1) path += `?page=${Number(page)}`;
-      return this.loadList(path);
+      return this.loadList(this.pagePath(path, page));
     },
     optionList: [],
   };

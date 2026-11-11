@@ -28,7 +28,6 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/ba
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/wnacg.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/myhl.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js
-https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/csmanhua.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/kxmanhua.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js
 https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js
@@ -37,10 +36,10 @@ https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hm
 
 ## 目录和分类
 
-- `comic_index.json`：13 个漫画源的清单。
+- `comic_index.json`：12 个漫画源的清单。
 - `index.json`：兼容旧版本的漫画源清单。
 - 默认组：再漫画、漫画人、拷贝漫画、包子漫画、魅影画廊。
-- 18+ 组：漫小肆、禁漫天堂、绅士漫画、大人漫画、成色漫画、开心看漫画、鸟鸟韩漫、韩漫屋。
+- 18+ 组：漫小肆、禁漫天堂、绅士漫画、大人漫画、开心看漫画、鸟鸟韩漫、韩漫屋。
 - `sources/ven/` 和 `sources/private/`：按历史来源存放脚本，分组以清单中的显示名称为准。
 - `sources/_venera_.js`：Venera JavaScript API 类型提示文件，仅供编辑器使用。
 - `SOURCE_CHECK.md`：本次网络检测、搬运和排除结果。

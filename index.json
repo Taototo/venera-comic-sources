@@ -63,13 +63,6 @@
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/drmh3.js?v=1.0.2"
   },
   {
-    "name": "成色漫画（18+）",
-    "key": "private_csmanhua",
-    "version": "1.0.2",
-    "description": "18+ 配置；使用移动端请求头，支持分类、搜索、分页阅读和图片加载。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/csmanhua.js"
-  },
-  {
     "name": "开心看漫画（18+）",
     "key": "private_kxmanhua",
     "version": "1.0.5",
@@ -79,9 +72,9 @@
   {
     "name": "鸟鸟韩漫（18+）",
     "key": "private_nnhanman",
-    "version": "1.0.7",
-    "description": "18+ 配置；分类按分类、进度、排序分组，支持备用域名自动切换，详情补齐标题、作者、分类、状态和更新时间。",
-    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.7"
+    "version": "1.0.8",
+    "description": "18+ 配置；修复分类分页，按分类、进度、排序分组，支持备用域名自动切换，详情补齐标题、作者、分类、状态和更新时间。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/nnhanman.js?v=1.0.8"
   },
   {
     "name": "韩漫屋（18+）",
