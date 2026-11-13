@@ -82,5 +82,19 @@
     "version": "1.1.2",
     "description": "18+ 配置；首页推荐、最近更新、已完结支持查看更多，另有分类、搜索、详情和章节图片。",
     "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/hmanwu.js"
+  },
+  {
+    "name": "大鸟禁漫（18+）",
+    "key": "private_daniao9",
+    "version": "1.0.0",
+    "description": "18+ 配置；支持推荐、更新、分类筛选、搜索、详情、章节和图片。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/daniao9.js?v=1.0.0"
+  },
+  {
+    "name": "漫画大湿（18+）",
+    "key": "private_mhds7",
+    "version": "1.0.0",
+    "description": "18+ 配置；支持首页分区、分类筛选、搜索、详情、章节和图片。",
+    "url": "https://cdn.jsdelivr.net/gh/Taototo/venera-comic-sources@main/sources/private/mhds7.js?v=1.0.0"
   }
 ]

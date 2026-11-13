@@ -7,6 +7,6 @@
 | 分组 | 文件 |
 | --- | --- |
 | 默认 | `sources/ven/zaimanhua.js`、`sources/ven/manhuaren.js`、`sources/ven/copy_manga.js`、`sources/private/baozi.js`、`sources/private/myhl.js` |
-| 18+ | `sources/ven/mxs.js`、`sources/ven/jm.js`、`sources/private/wnacg.js`、`sources/private/drmh3.js`、`sources/private/kxmanhua.js`、`sources/private/nnhanman.js`、`sources/private/hmanwu.js` |
+| 18+ | `sources/ven/mxs.js`、`sources/ven/jm.js`、`sources/private/wnacg.js`、`sources/private/drmh3.js`、`sources/private/kxmanhua.js`、`sources/private/nnhanman.js`、`sources/private/hmanwu.js`、`sources/private/daniao9.js`、`sources/private/mhds7.js` |
 
 源文件调整后需要同步更新对应清单的 `version`，并用 `node --check` 检查 JavaScript 语法。
